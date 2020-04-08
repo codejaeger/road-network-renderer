@@ -12,7 +12,7 @@ BINDIR1=./bin/sample_bin
 SRCDIR1=./src/sample
 
 SHADERCPP=./src/shader_util.cpp
-SHADEROBJ=$(OBJECTFILES)/shader.cc
+SHADEROBJ=$(OBJECTFILES)/shader_util.cc
 
 BIN1=$(BINDIR1)/01_triangle
 SRCS1=$(SRCDIR1)/01_triangle.cpp $(SRCDIR1)/gl_framework.cpp $(SHADERCPP)
