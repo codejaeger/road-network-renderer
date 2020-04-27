@@ -22,7 +22,7 @@ SRCS1=$(SRCDIR1)/01_triangle.cpp $(SRCDIR1)/gl_framework.cpp
 all: $(BIN1)
 
 $(BIN1): $(SRCS1) $(SHADEROBJ)
-	g++ $(INCLUDES) $(SRCS1) -o $(BIN1) $(LDFLAGS) $(LIBS) #For linux
+	g++ $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ) $(LDFLAGS) $(LIBS) #For linux
 # 	g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ) # for mac os
 
 $(SHADEROBJ): $(SHADERCPP)
@@ -30,5 +30,5 @@ $(SHADEROBJ): $(SHADERCPP)
 # 	g++ $(INCLUDES) -c $(SHADERCPP) $(FRAMEWORKS) -o $(SHADEROBJ) #For mac
 
 clean:
-	rm -f *~ $(BINDIR1)/* $(OBJECTFILES)/*.cc
+	rm -f *~ $(BINDIR1)/* $(OBJECTFILES)/*.o
 
