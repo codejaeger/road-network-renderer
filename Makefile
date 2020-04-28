@@ -10,7 +10,7 @@ INCLUDES=$(CPPFLAGS) -I./include
 OBJECTFILES=./obj
 
 BINDIR1=./bin
-SRCDIR1=./src
+SRCDIR1=./src/Road-Model
 
 SHADERCPP=./src/shader_util.cpp
 SHADEROBJ=$(OBJECTFILES)/shader_util.o

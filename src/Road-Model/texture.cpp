@@ -1,7 +1,7 @@
-#include <road-network-renderer/gl_framework.hpp>
+#include <Road-Model/gl_framework.hpp>
 #include <fstream>
 #include <cstdlib>
-#include <road-network-renderer/texture.hpp>
+#include <Road-Model/texture.hpp>
 
 GLuint LoadTexture( const char * filename, int width, int height )
 {

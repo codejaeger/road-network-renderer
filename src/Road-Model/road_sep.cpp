@@ -6,7 +6,7 @@
 //  Copyright © 2020 Aman Yadav. All rights reserved.
 //
 
-#include <road-network-renderer/road_sep.hpp>
+#include <Road-Model/road_sep.hpp>
 #include <iostream>
 double PI=3.14159265;
 extern std::vector<glm::mat4> matrixStack;
@@ -19,8 +19,8 @@ namespace soc{
         num_vertices_handle2=0;
         num_vertices_handle3=0;
 
-         std::string vertex_shader_file("./src/vertex-shaders/v_roadsep.glsl");
-         std::string fragment_shader_file("./src/fragment-shaders/f_roadsep.glsl");
+         std::string vertex_shader_file("./src/Road-Model/vertex-shaders/v_roadsep.glsl");
+         std::string fragment_shader_file("./src/Road-Model/fragment-shaders/f_roadsep.glsl");
 
          std::vector<GLuint> shaderList;
          shaderList.push_back(csX75::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));

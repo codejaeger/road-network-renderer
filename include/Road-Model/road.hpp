@@ -22,7 +22,7 @@
 
 #include "texture.hpp"
 #include "gl_framework.hpp"
-#include "shader_util.hpp"
+#include "../shader_util.hpp"
 namespace soc{
     class Road {
         GLfloat tx, ty, tz, rx, ry, rz;

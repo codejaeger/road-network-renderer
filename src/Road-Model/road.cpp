@@ -6,7 +6,7 @@
 //  Copyright © 2020 Aman Yadav. All rights reserved.
 //
 
-#include <road-network-renderer/road.hpp>
+#include <Road-Model/road.hpp>
 #include <iostream>
 extern std::vector<glm::mat4> matrixStack;
 extern double PI;
@@ -23,8 +23,8 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
         num_cylinders=0;
         change_parameters(0, 0, 0, 0, 0, 0);
             //Eight vertices in homogenous coordinates
-         std::string vertex_shader_file("./src/vertex-shaders/v_road.glsl");
-         std::string fragment_shader_file("./src/fragment-shaders/f_road.glsl");
+         std::string vertex_shader_file("./src/Road-Model/vertex-shaders/v_road.glsl");
+         std::string fragment_shader_file("./src/Road-Model/fragment-shaders/f_road.glsl");
 
          std::vector<GLuint> shaderList;
          shaderList.push_back(csX75::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
@@ -103,8 +103,8 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
     border(p2, k2, k3, p3, -d/2);
     border(p2, k2, k3, p3, 5*d/4);
     cylinders(1.0f);
-     std::string vertex_shader_file1("./src/vertex-shaders/v_roadsep.glsl");
-     std::string fragment_shader_file1("./src/fragment-shaders/f_roadsep.glsl");
+     std::string vertex_shader_file1("./src/Road-Model/vertex-shaders/v_roadsep.glsl");
+     std::string fragment_shader_file1("./src/Road-Model/fragment-shaders/f_roadsep.glsl");
 
      std::vector<GLuint> shaderList1;
      shaderList1.push_back(csX75::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file1));

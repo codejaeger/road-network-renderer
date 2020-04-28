@@ -1,4 +1,4 @@
-#include <road-network-renderer/shader_util.hpp>
+#include <shader_util.hpp>
 
 namespace csX75
 {
