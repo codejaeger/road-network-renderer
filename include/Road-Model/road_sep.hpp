@@ -45,7 +45,7 @@ namespace soc{
          void quad(int a, int b, int c, int d, glm::vec4 *positions);
          void build_handle();
         public:
-         RoadSep(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat s);
+         RoadSep(glm::vec3 v, GLfloat s);
          void render();
          void change_parameters(GLfloat tx, GLfloat ty, GLfloat tz, GLfloat rx, GLfloat ry, GLfloat rz);
         

@@ -11,9 +11,9 @@
 double PI=3.14159265;
 extern std::vector<glm::mat4> matrixStack;
 namespace soc{
-    RoadSep::RoadSep(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat size){
+    RoadSep::RoadSep(glm::vec3 v, GLfloat size){
     
-         x = x1; y = y1; z= z1; s = size;
+         x = v[0]; y = v[1]; z= v[2]; s = size;
             change_parameters(x, y, z, 0, 0, 0);
         num_vertices_handle1=0;
         num_vertices_handle2=0;

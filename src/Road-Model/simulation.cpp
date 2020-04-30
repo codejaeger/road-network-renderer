@@ -7,7 +7,7 @@
 //
 
 #include  <Road-Model/simulation.hpp>
-
+#include  <Bezier-Curve/path.hpp>
 glm::mat4 rotation_matrix;
 glm::mat4 projection_matrix;
 glm::mat4 c_rotation_matrix;
@@ -19,17 +19,15 @@ glm::mat4 view_matrix;
 
 glm::mat4 modelview_matrix;
 
-soc::Road *r;
-soc::RoadSep *rs;
+soc::Path *p;
 
 void initBuffersGL(void)
 {
 
-  r = new soc::Road(glm::vec2(-5, -2), glm::vec2(-4, 1), glm::vec2(2, 2), glm::vec2(3, -1), 1.0, 0.5, 0.5);
-  rs = new soc::RoadSep(0, 0, 0.5, 0.25);
+  p = new soc::Path();
 }
 
-void renderGL(void)
+void renderGL(GLFWwindow *window)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -56,8 +54,8 @@ void renderGL(void)
 
   matrixStack.push_back(view_matrix);
 
-    r->render();
-    rs->render();
+    p->getPoints(window);
+    p->renderLine();
 
 }
 
@@ -126,7 +124,7 @@ int main(int argc, char** argv)
       // Render here
      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-      renderGL();
+      renderGL(window);
       // Swap front and back buffers
       glfwSwapBuffers(window);
       
