@@ -6,8 +6,8 @@
 //  Copyright © 2020 Aman Yadav. All rights reserved.
 //
 
-#include  <Road-Model/simulation.hpp>
-#include  <Bezier-Curve/path.hpp>
+#include  "road_network/Road-Model/simulation.hpp"
+#include  "road_network/Bezier-Curve/path.hpp"
 glm::mat4 rotation_matrix;
 glm::mat4 projection_matrix;
 glm::mat4 c_rotation_matrix;

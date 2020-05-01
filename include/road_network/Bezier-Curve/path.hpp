@@ -8,9 +8,9 @@
 #include <math.h>
 #include <glm/vec2.hpp>
 
-#include <Road-Model/road.hpp>
-#include <Road-Model/road_sep.hpp>
-#include <shader_util.hpp>
+#include "road_network/Road-Model/road.hpp"
+#include "road_network/Road-Model/road_sep.hpp"
+#include "road_network/shader_util.hpp"
 #ifdef _WIN32
 #include <Windows.h>
 #else

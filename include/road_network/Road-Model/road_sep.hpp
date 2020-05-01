@@ -19,7 +19,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "gl_framework.hpp"
-#include "../shader_util.hpp"
+#include "road_network/shader_util.hpp"
 #include "road.hpp"
 
 namespace soc{
