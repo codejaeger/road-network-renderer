@@ -9,7 +9,7 @@ FRAMEWORKS=-framework CoreVideo -framework OpenGL -framework IOKit -framework Co
 INCLUDES=$(CPPFLAGS) -I./include
 OBJECTFILES=./obj
 
-BINDIR1=./bin
+BINDIR1=./bin/Road-Model
 SRCDIR1=./src/Road-Model
 SRCDIR2=./src/Bezier-Curve
 
@@ -17,7 +17,7 @@ SHADERCPP=./src/shader_util.cpp
 SHADEROBJ=$(OBJECTFILES)/shader_util.o
 PATHOBJ=$(OBJECTFILES)/path.o
 
-BIN1=$(BINDIR1)/Road-Model/road-network-renderer
+BIN1=$(BINDIR1)/road-network-renderer
 SRCS1=$(SRCDIR1)/road.cpp $(SRCDIR1)/gl_framework.cpp $(SRCDIR1)/road_sep.cpp $(SRCDIR1)/texture.cpp $(SRCDIR1)/simulation.cpp
 SRCS2=$(SRCDIR2)/path.cpp
 
