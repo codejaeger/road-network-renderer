@@ -1,5 +1,5 @@
-#include <road-network-renderer/sample/gl_framework.hpp>
-
+#include "road_network/Road-Model/gl_framework.hpp"
+extern GLfloat c_xrot,c_yrot,c_zrot;
 namespace csX75
 {
   //! Initialize GL State
@@ -13,8 +13,6 @@ namespace csX75
     glDepthFunc(GL_LESS);
     //Enable depth testing
     glEnable(GL_DEPTH_TEST); 
-    //Enable Gourard shading
-    glShadeModel(GL_SMOOTH);
   }
   
   //!GLFW Error Callback
@@ -36,6 +34,18 @@ namespace csX75
     //!Close the window if the ESC key was pressed
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
       glfwSetWindowShouldClose(window, GL_TRUE);
+    else if (key == GLFW_KEY_A  )
+      c_yrot -= 1.0;
+    else if (key == GLFW_KEY_D  )
+      c_yrot += 1.0;
+    else if (key == GLFW_KEY_W  )
+      c_xrot -= 1.0;
+    else if (key == GLFW_KEY_S  )
+      c_xrot += 1.0;
+    else if (key == GLFW_KEY_Q  )
+      c_zrot -= 1.0;
+    else if (key == GLFW_KEY_E  )
+      c_zrot += 1.0;
   }
 };  
   

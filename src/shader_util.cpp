@@ -1,5 +1,4 @@
-#include <GL/glew.h>
-#include <road-network-renderer/shader_util.hpp>
+#include "road_network/shader_util.hpp"
 
 namespace csX75
 {
