@@ -11,6 +11,8 @@ Path::Path() {
     bezier_curve_positions[i] = glm::vec2(0, 0);
   }
 
+  input_status = true;
+
   std::string vertex_shader_file(
       "./src/Bezier-Curve/vertex-shaders/v_bezier.glsl");
   std::string fragment_shader_file(
@@ -55,45 +57,40 @@ std::vector<glm::vec2> Path::bezier_curve_point(std::vector<glm::vec2> pos,
 }
 
 void Path::getPoints(GLFWwindow *window) {
-  int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
-  /* Is true whenever left button is clicked */
-  if (state == GLFW_PRESS) {
-    /* Get the postition of the mouse-click w.r.t the top-left corner */
-    double x, y;
-    glfwGetCursorPos(window, &x, &y);
-    // display size
-    int width, height;
-    glfwGetWindowSize(window, &width, &height);
+  /* Get the postition of the mouse-click w.r.t the top-left corner */
+  double x, y;
+  glfwGetCursorPos(window, &x, &y);
+  // display size
+  int width, height;
+  glfwGetWindowSize(window, &width, &height);
 
-    /* Converting mouse coordinates to normalized floats */
-    float xpos = -1.0f + 2 * x / width;
-    float ypos = +1.0f - 2 * y / height;
-    std::cout << xpos << "~~" << ypos << "\n";
+  /* Converting mouse coordinates to normalized floats */
+  float xpos = -1.0f + 2 * x / width;
+  float ypos = +1.0f - 2 * y / height;
+  std::cout << xpos << "~~" << ypos << "\n";
 
-    positions.push_back(glm::vec2(xpos, ypos));
+  positions.push_back(glm::vec2(xpos, ypos));
 
-    /* Need this as a click lasts few milliseconds */
-    usleep(200000);
+  /* Need this as a click lasts few milliseconds */
+  usleep(200000);
 
-    /* Prints all the control points given by user */
-    for (int i = 0; i < positions.size(); i++) {
-      std::cout << positions[i][0] << ", " << positions[i][1] << std::endl;
-    }
-
-    /* Stores the newly processed Bezier Curve interplotaed points */
-    float n = BZC;
-    for (float i = 0; i <= n; i++) {
-      std::vector<glm::vec2> pos = bezier_curve_point(positions, (i / n));
-      // std::cout << pos[0][0] << "\\\n";
-      bezier_curve_positions[int(i)] = pos[0];
-    }
-
-    for (int i = 0; i < BZC + 1; i++) {
-      std::cout << bezier_curve_positions[int(i)][0] << "\\" << bezier_curve_positions[int(i)][1] << std::endl;
-    }
-    std::cout <<"\n\n";
-
+  /* Prints all the control points given by user */
+  for (int i = 0; i < positions.size(); i++) {
+    std::cout << positions[i][0] << ", " << positions[i][1] << std::endl;
   }
+
+  /* Stores the newly processed Bezier Curve interplotaed points */
+  float n = BZC;
+  for (float i = 0; i <= n; i++) {
+    std::vector<glm::vec2> pos = bezier_curve_point(positions, (i / n));
+    // std::cout << pos[0][0] << "\\\n";
+    bezier_curve_positions[int(i)] = pos[0];
+  }
+
+  for (int i = 0; i < BZC + 1; i++) {
+    std::cout << bezier_curve_positions[int(i)][0] << "\\" << bezier_curve_positions[int(i)][1] << std::endl;
+  }
+  std::cout <<"\n\n";
 }
 
 void Path::renderLine() {
@@ -116,9 +113,31 @@ void Path::save() {
   std::cout << vb << "\n";
   std::cout << "save\n";
   std::fstream fp;
-  fp.open("save.raw", std::ios::binary | std::ios::out);
+  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
   fp.write((char*)&bezier_curve_positions, sizeof(glm::vec2[BZC+1]));
   fp.close();
+}
+
+void Path::load() {
+  std::cout << vb << "\n";
+  std::cout << "load\n";
+  std::fstream fp;
+  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::in);
+  fp.read((char*)&bezier_curve_positions, sizeof(glm::vec2[BZC+1]));
+  fp.close();
+  input_status = false;
+}
+
+void Path::stop() {
+  input_status = false;
+}
+
+void Path::restart() {
+  input_status = true;
+}
+
+bool Path::return_input_status() {
+  return input_status;
 }
 
 } // End namespace soc

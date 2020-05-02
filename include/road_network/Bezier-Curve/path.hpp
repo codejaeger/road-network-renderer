@@ -27,6 +27,7 @@ class Path {
 private:
   std::vector<glm::vec2> positions;
   glm::vec2 bezier_curve_positions[BZC + 1];
+  bool input_status;
   GLuint vb, vao;
   GLuint shaderProgram;
   GLuint v_position, uModelViewMatrix;
@@ -38,6 +39,10 @@ public:
   void getPoints(GLFWwindow *window);
   void renderLine();
   void save();
+  void load();
+  void restart();
+  void stop();
+  bool return_input_status();
 };
 
 } // End namespace soc
