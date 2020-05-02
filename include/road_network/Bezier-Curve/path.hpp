@@ -4,9 +4,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <glm/vec2.hpp>
 #include <math.h>
 #include <vector>
+
+#include <glm/vec2.hpp>
 
 #include "road_network/Road-Model/road.hpp"
 #include "road_network/Road-Model/road_sep.hpp"
@@ -22,6 +23,7 @@
 namespace soc {
 
 class Path {
+
 private:
   std::vector<glm::vec2> positions;
   glm::vec2 beizer_curve_positions[BZC + 1];

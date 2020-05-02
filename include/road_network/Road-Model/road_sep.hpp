@@ -4,13 +4,14 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+#include <vector>
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-#include <iostream>
-#include <vector>
 
 #include "road_network/Road-Model/gl_framework.hpp"
 #include "road_network/Road-Model/road.hpp"
@@ -19,6 +20,7 @@
 namespace soc {
 
 class RoadSep {
+
 private:
   GLfloat x, y, z, s;
   GLfloat tx, ty, tz, rx, ry, rz;
