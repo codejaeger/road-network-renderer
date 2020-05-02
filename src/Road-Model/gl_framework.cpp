@@ -51,6 +51,22 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
   else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
     p->save();
   }
+  else if (key == GLFW_KEY_L && action == GLFW_PRESS) {
+    p->load();
+  }
+  else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+    p->restart();
+  }
+}
+
+//! GLFW mouse button callback
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+  if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+    if (p->return_input_status()) p->getPoints(window);
+  }
+  else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+    p->stop();
+  }
 }
 
 } // End namespace soc

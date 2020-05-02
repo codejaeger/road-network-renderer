@@ -19,7 +19,9 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 //! GLFW keyboard callback
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods);
-
+//! GLFW mouse button callback
+void mouse_button_callback(GLFWwindow* window, int button, int action,
+                  int mods);
 } // End namespace soc
 
 #endif /* gl_framework_hpp */

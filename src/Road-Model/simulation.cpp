@@ -46,7 +46,7 @@ void renderGL(GLFWwindow *window) {
 
   matrixStack.push_back(view_matrix);
 
-  p->getPoints(window);
+  // p->getPoints(window);
   p->renderLine();
 }
 
@@ -97,11 +97,14 @@ int main(int argc, char **argv) {
 
   // Keyboard Callback
   glfwSetKeyCallback(window, soc::key_callback);
+  // Mouse Button Callback
+  glfwSetMouseButtonCallback(window, soc::mouse_button_callback);
   // Framebuffer resize callback
   glfwSetFramebufferSizeCallback(window, soc::framebuffer_size_callback);
-
-  // Ensure we can capture the escape key being pressed below
+  // To ensure we can capture key being pressed
   glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+  // To ensure we can capture mouse button being pressed
+  glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GL_TRUE);
 
   // Initialize GL state
   soc::initGL();
