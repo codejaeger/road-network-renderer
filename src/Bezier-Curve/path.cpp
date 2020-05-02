@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "road_network/Bezier-Curve/path.hpp"
 
 extern std::vector<glm::mat4> matrixStack;
@@ -6,7 +8,7 @@ namespace soc {
 
 Path::Path() {
   for (int i = 0; i < (BZC + 1); i++) {
-    beizer_curve_positions[i] = glm::vec2(0, 0);
+    bezier_curve_positions[i] = glm::vec2(0, 0);
   }
 
   std::string vertex_shader_file(
@@ -26,10 +28,10 @@ Path::Path() {
   glGenBuffers(1, &vb);
   std::cout << vb << "~~\n";
   glBindBuffer(GL_ARRAY_BUFFER, vb);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(beizer_curve_positions), NULL,
+  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_curve_positions), NULL,
                GL_DYNAMIC_DRAW);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(beizer_curve_positions),
-                  beizer_curve_positions);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_curve_positions),
+                  bezier_curve_positions);
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
   glEnableVertexAttribArray(v_position);
@@ -82,8 +84,15 @@ void Path::getPoints(GLFWwindow *window) {
     float n = BZC;
     for (float i = 0; i <= n; i++) {
       std::vector<glm::vec2> pos = bezier_curve_point(positions, (i / n));
-      beizer_curve_positions[int(i)] = pos[0];
+      // std::cout << pos[0][0] << "\\\n";
+      bezier_curve_positions[int(i)] = pos[0];
     }
+
+    for (int i = 0; i < BZC + 1; i++) {
+      std::cout << bezier_curve_positions[int(i)][0] << "\\" << bezier_curve_positions[int(i)][1] << std::endl;
+    }
+    std::cout <<"\n\n";
+
   }
 }
 
@@ -92,10 +101,10 @@ void Path::renderLine() {
   glm::mat4 *ms_mult = multiply_stack(matrixStack);
   glUniformMatrix4fv(uModelViewMatrix, 1, GL_FALSE, glm::value_ptr(*ms_mult));
   glBindVertexArray(vao);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(beizer_curve_positions), NULL,
+  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_curve_positions), NULL,
                GL_DYNAMIC_DRAW);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(beizer_curve_positions),
-                  beizer_curve_positions);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_curve_positions),
+                  bezier_curve_positions);
 
   /* Joins all the interpolated points, thus creating the approx Bezier Curve */
   for (int i = 0; i < BZC; i++) {
@@ -106,6 +115,10 @@ void Path::renderLine() {
 void Path::save() {
   std::cout << vb << "\n";
   std::cout << "save\n";
+  std::fstream fp;
+  fp.open("save.raw", std::ios::binary | std::ios::out);
+  fp.write((char*)&bezier_curve_positions, sizeof(glm::vec2[BZC+1]));
+  fp.close();
 }
 
 } // End namespace soc

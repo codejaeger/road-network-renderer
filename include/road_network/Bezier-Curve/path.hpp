@@ -26,7 +26,7 @@ class Path {
 
 private:
   std::vector<glm::vec2> positions;
-  glm::vec2 beizer_curve_positions[BZC + 1];
+  glm::vec2 bezier_curve_positions[BZC + 1];
   GLuint vb, vao;
   GLuint shaderProgram;
   GLuint v_position, uModelViewMatrix;
