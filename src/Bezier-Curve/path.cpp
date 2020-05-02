@@ -28,7 +28,6 @@ Path::Path() {
   uModelViewMatrix = glGetUniformLocation(shaderProgram, "uModelViewMatrix");
   v_position = glGetAttribLocation(shaderProgram, "vPosition");
   glGenBuffers(1, &vb);
-  std::cout << vb << "~~\n";
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_curve_positions), NULL,
                GL_DYNAMIC_DRAW);
@@ -42,6 +41,8 @@ Path::Path() {
 
 std::vector<glm::vec2> Path::bezier_curve_point(std::vector<glm::vec2> pos,
                                                 float ratio) {
+  // For logic goto
+  //   https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Higher-order_curves
   if (pos.size() == 1)
     return pos;
 
@@ -57,44 +58,46 @@ std::vector<glm::vec2> Path::bezier_curve_point(std::vector<glm::vec2> pos,
 }
 
 void Path::getPoints(GLFWwindow *window) {
-  /* Get the postition of the mouse-click w.r.t the top-left corner */
+  // Get the postition of the mouse-click w.r.t the top-left corner
   double x, y;
   glfwGetCursorPos(window, &x, &y);
-  // display size
+
+  // Display size
   int width, height;
   glfwGetWindowSize(window, &width, &height);
 
-  /* Converting mouse coordinates to normalized floats */
+  // Converting mouse coordinates to normalized floats
   float xpos = -1.0f + 2 * x / width;
   float ypos = +1.0f - 2 * y / height;
   std::cout << xpos << "~~" << ypos << "\n";
 
   positions.push_back(glm::vec2(xpos, ypos));
 
-  /* Need this as a click lasts few milliseconds */
+  // Need this as a click lasts few milliseconds
   usleep(200000);
 
   positionsToCurve();
 }
 
 void Path::positionsToCurve() {
-  /* Prints all the control points given by user */
-  for (int i = 0; i < positions.size(); i++) {
-    std::cout << positions[i][0] << ", " << positions[i][1] << std::endl;
-  }
+  // Prints all the control points given by user
+  // for (int i = 0; i < positions.size(); i++) {
+  //   std::cout << positions[i][0] << ", " << positions[i][1] << std::endl;
+  // }
 
-  /* Stores the newly processed Bezier Curve interplotaed points */
+  // Stores the newly processed Bezier Curve interpolated points
   float n = BZC;
   for (float i = 0; i <= n; i++) {
     std::vector<glm::vec2> pos = bezier_curve_point(positions, (i / n));
-    // std::cout << pos[0][0] << "\\\n";
     bezier_curve_positions[int(i)] = pos[0];
   }
 
-  for (int i = 0; i < BZC + 1; i++) {
-    std::cout << bezier_curve_positions[int(i)][0] << "\\" << bezier_curve_positions[int(i)][1] << std::endl;
-  }
-  std::cout <<"\n\n";
+  // Prints all the interpolated points
+  // for (int i = 0; i < BZC + 1; i++) {
+  //   std::cout << bezier_curve_positions[int(i)][0] << "\\"
+  //             << bezier_curve_positions[int(i)][1] << std::endl;
+  // }
+  // std::cout <<"\n\n";
 }
 
 void Path::renderLine() {
@@ -107,58 +110,73 @@ void Path::renderLine() {
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_curve_positions),
                   bezier_curve_positions);
 
-  /* Joins all the interpolated points, thus creating the approx Bezier Curve */
+  // Joins all the interpolated points, thus creating the approx Bezier Curve
   for (int i = 0; i < BZC; i++) {
     glDrawArrays(GL_LINE_STRIP, i, 2);
   }
 }
 
 void Path::save() {
-  std::cout << vb << "\n";
-  std::cout << "save\n";
+  std::cout << "Saving\n";
+
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
+
+  // First saves the number of elements present in the vector.
   int n = positions.size();
   glm::vec2 store[n + 1];
   store[0] = glm::vec2(n, 0);
+
+  // Then stores the vector as array and write.
   for (int i = 0; i < n; i++) {
-    store[i+1] = positions[i];
+    store[i + 1] = positions[i];
   }
-  fp.write((char*)&store, sizeof(store));
+  fp.write((char *)&store, sizeof(store));
+
   fp.close();
 }
 
 void Path::load() {
-  std::cout << vb << "\n";
-  std::cout << "load\n";
+  std::cout << "Loading\n";
+
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::in);
 
+  // First gets the number of elements of vector stored.
   glm::vec2 num;
-  fp.read((char*)&num, sizeof(glm::vec2));
-  std::cout << num[0] <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+  fp.read((char *)&num, sizeof(glm::vec2));
+
+  // Then creates a array to extract the elements.
   glm::vec2 load[int(num[0])];
-  std::cout << fp.tellg() <<"\n";
-  fp.read((char*)&load, sizeof(load));
+  fp.read((char *)&load, sizeof(load));
+
+  // Then replaces the vector by the array data.
   positions.clear();
   for (int i = 0; i < num[0]; i++) {
     positions.push_back(load[i]);
   }
+
   fp.close();
 
+  // Converts the control points to interpolated points.
   positionsToCurve();
-  input_status = false;
+
+  // Stops further input of control points.
+  stop();
 }
 
 void Path::stop() {
+  // Stops further input of control points.
   input_status = false;
 }
 
 void Path::restart() {
+  // Restarts input of control points if stopped.
   input_status = true;
 }
 
 bool Path::return_input_status() {
+  // Returns input_status (As it is a private variable)
   return input_status;
 }
 
