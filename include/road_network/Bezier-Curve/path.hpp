@@ -18,8 +18,6 @@
 #endif
 #define BZC 50
 
-
-
 namespace soc{
 	class Path{
 		std::vector<glm::vec2> positions;
@@ -32,6 +30,7 @@ namespace soc{
 	  	Path();
 	  	void getPoints(GLFWwindow *window);
 	  	void renderLine();
+			void save();
 	};
 }
 

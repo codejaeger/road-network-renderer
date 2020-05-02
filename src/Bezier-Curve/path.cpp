@@ -21,6 +21,7 @@ namespace soc{
   		uModelViewMatrix = glGetUniformLocation( shaderProgram, "uModelViewMatrix");
   		v_position = glGetAttribLocation(shaderProgram, "vPosition");
 		glGenBuffers(1, &vb);
+		std::cout << vb << "~~\n";
   		glBindBuffer(GL_ARRAY_BUFFER, vb);
 		glBufferData (GL_ARRAY_BUFFER, sizeof (beizer_curve_positions), NULL, GL_DYNAMIC_DRAW);
         glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(beizer_curve_positions), beizer_curve_positions );
@@ -104,5 +105,10 @@ namespace soc{
 	    {
 	      glDrawArrays(GL_LINE_STRIP, i, 2);
 	    }
+	}
+
+	void Path::save() {
+		std::cout << vb << "\n";
+		std::cout << "save\n";
 	}
 }

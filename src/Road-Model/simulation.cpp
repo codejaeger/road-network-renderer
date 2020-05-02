@@ -86,7 +86,7 @@ int main(int argc, char** argv)
       glfwTerminate();
       return -1;
     }
-  
+
   //! Make the window's context current
   glfwMakeContextCurrent(window);
 
@@ -120,18 +120,18 @@ int main(int argc, char** argv)
   // Loop until the user closes the window
   while (glfwWindowShouldClose(window) == 0)
     {
-       
+
       // Render here
      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       renderGL(window);
       // Swap front and back buffers
       glfwSwapBuffers(window);
-      
+
       // Poll for and process events
       glfwPollEvents();
     }
-  
+
   glfwTerminate();
   return 0;
 }
