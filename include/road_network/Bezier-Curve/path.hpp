@@ -41,7 +41,7 @@ public:
   void renderLine();
   void save();
   void load();
-  void restart();
+  void resume();
   void stop();
   bool return_input_status();
 };

@@ -170,8 +170,8 @@ void Path::stop() {
   input_status = false;
 }
 
-void Path::restart() {
-  // Restarts input of control points if stopped.
+void Path::resume() {
+  // Resumes input of control points if stopped.
   input_status = true;
 }
 
