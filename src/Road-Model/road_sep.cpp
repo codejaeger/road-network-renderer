@@ -23,8 +23,7 @@ RoadSep::RoadSep(glm::vec3 v, GLfloat size) {
       "./src/Road-Model/fragment-shaders/f_roadsep.glsl");
 
   std::vector<GLuint> shaderList;
-  shaderList.push_back(
-      soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
+  shaderList.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
   shaderList.push_back(
       soc::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file));
 

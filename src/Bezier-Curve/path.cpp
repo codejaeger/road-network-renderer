@@ -14,8 +14,7 @@ Path::Path() {
       "./src/Bezier-Curve/fragment-shaders/f_bezier.glsl");
 
   std::vector<GLuint> shaderList;
-  shaderList.push_back(
-      soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
+  shaderList.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
   shaderList.push_back(
       soc::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file));
 
