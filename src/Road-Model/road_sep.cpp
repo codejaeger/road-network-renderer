@@ -24,11 +24,11 @@ RoadSep::RoadSep(glm::vec3 v, GLfloat size) {
 
   std::vector<GLuint> shaderList;
   shaderList.push_back(
-      csX75::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
+      soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
   shaderList.push_back(
-      csX75::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file));
+      soc::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file));
 
-  shaderProgram = csX75::CreateProgramGL(shaderList);
+  shaderProgram = soc::CreateProgramGL(shaderList);
   glUseProgram(shaderProgram);
 
   // getting the attributes from the shader program

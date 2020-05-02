@@ -40,4 +40,4 @@ public:
 
 } // End namespace soc
 
-#endif
+#endif /* path_hpp */

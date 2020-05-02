@@ -4,7 +4,7 @@
 extern GLfloat c_xrot, c_yrot, c_zrot;
 extern soc::Path *p;
 
-namespace csX75 {
+namespace soc {
 //! Initialize GL State
 void initGL(void) {
   // Set framebuffer clear color
@@ -53,4 +53,4 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
   }
 }
 
-} // End namespace csX75
+} // End namespace soc

@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
   GLFWwindow *window;
 
   //! Setting up the GLFW Error callback
-  glfwSetErrorCallback(csX75::error_callback);
+  glfwSetErrorCallback(soc::error_callback);
 
   //! Initialize GLFW
   if (!glfwInit())
@@ -96,15 +96,15 @@ int main(int argc, char **argv) {
             << std::endl;
 
   // Keyboard Callback
-  glfwSetKeyCallback(window, csX75::key_callback);
+  glfwSetKeyCallback(window, soc::key_callback);
   // Framebuffer resize callback
-  glfwSetFramebufferSizeCallback(window, csX75::framebuffer_size_callback);
+  glfwSetFramebufferSizeCallback(window, soc::framebuffer_size_callback);
 
   // Ensure we can capture the escape key being pressed below
   glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
   // Initialize GL state
-  csX75::initGL();
+  soc::initGL();
   initBuffersGL();
   // Loop until the user closes the window
   while (glfwWindowShouldClose(window) == 0) {

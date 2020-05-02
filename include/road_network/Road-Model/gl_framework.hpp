@@ -8,11 +8,11 @@
 #include <iostream>
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
-namespace csX75
+namespace soc
 {
   //! Initialize GL State
   void initGL(void);
- 
+
   //!GLFW Error Callback
   void error_callback(int error, const char* description);
   //!GLFW framebuffer resize callback

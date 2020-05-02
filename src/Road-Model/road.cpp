@@ -27,10 +27,10 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
          std::string fragment_shader_file("./src/Road-Model/fragment-shaders/f_road.glsl");
 
          std::vector<GLuint> shaderList;
-         shaderList.push_back(csX75::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
-         shaderList.push_back(csX75::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file));
+         shaderList.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
+         shaderList.push_back(soc::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file));
 
-         shaderProgram = csX75::CreateProgramGL(shaderList);
+         shaderProgram = soc::CreateProgramGL(shaderList);
          glUseProgram( shaderProgram );
 
         // getting the attributes from the shader program
@@ -59,10 +59,10 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
           glm::vec2( 1.0, 0.0),
           glm::vec2( 1.0, 1.0)
         };
-        
+
 
         tri_idx=0;
-        
+
         // Load Textures
         tex1=LoadTexture("./data/btex.bmp",526, 512);
         tex2=LoadTexture("./data/rtex.bmp", 600, 340);
@@ -73,7 +73,7 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
 
         //Set 0 as the current array to be used by binding it
         glBindVertexArray (vao);
-        
+
         glBindBuffer (GL_ARRAY_BUFFER, vbo);
 
         road(positions, t_coords);
@@ -88,7 +88,7 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
         //Textures
         glEnableVertexAttribArray( texCoord );
         glVertexAttribPointer( texCoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(v_positions)) );
-        
+
         //Road border
             tri_idx = 0;
     int bw = d;
@@ -97,7 +97,7 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
     dist2 = calc_dist(x3, y3, x4, y4);
     k1=calc_point(x2, y2, dist1, x1, y1, bw); k2 = calc_point(x1, y1, dist1, x2, y2, bw); k3 = calc_point(x4, y4, dist2, x3, y3, bw);
     k4 = calc_point(x3, y3, dist2, x4, y4, bw);
-    
+
     border(k1, p1, p4, k4, -d/2);
     border(k1, p1, p4, k4, 5*d/4);
     border(p2, k2, k3, p3, -d/2);
@@ -107,10 +107,10 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
      std::string fragment_shader_file1("./src/Road-Model/fragment-shaders/f_roadsep.glsl");
 
      std::vector<GLuint> shaderList1;
-     shaderList1.push_back(csX75::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file1));
-     shaderList1.push_back(csX75::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file1));
+     shaderList1.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file1));
+     shaderList1.push_back(soc::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file1));
 
-     shaderProgram1 = csX75::CreateProgramGL(shaderList1);
+     shaderProgram1 = soc::CreateProgramGL(shaderList1);
      glUseProgram( shaderProgram1 );
 
     // getting the attributes from the shader program
@@ -123,7 +123,7 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
 
     //Set 0 as the current array to be used by binding it
     glBindVertexArray (vao_border);
-    
+
     glBindBuffer (GL_ARRAY_BUFFER, vbo_border);
 
     glBufferData (GL_ARRAY_BUFFER, sizeof (v_positions_border) + sizeof(v_colors_border), NULL, GL_STATIC_DRAW);
@@ -172,7 +172,7 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
         glDrawArrays(GL_TRIANGLES, 0, 30);
         glBindTexture(GL_TEXTURE_2D, tex1);
         glDrawArrays(GL_TRIANGLES, 30, 30);;
-        
+
         //draw border
         glUseProgram(shaderProgram1);
         glUniformMatrix4fv(uModelViewMatrix1, 1, GL_FALSE, glm::value_ptr(*ms_mult));
@@ -251,7 +251,7 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat d, fl
       v_colors_border[tri_idx] = glm::vec4(1.0, 1.0, 1.0, 1.0); v_positions_border[tri_idx] = positions[c]; tri_idx++;
       v_colors_border[tri_idx] = glm::vec4(1.0, 1.0, 1.0, 1.0); v_positions_border[tri_idx] = positions[d]; tri_idx++;
       num_vertices_border_count+=6;
-                                                        
+
      }
 void Road::cylinders(float d){
         float r = 0.1f;
@@ -320,7 +320,7 @@ void Road::cylinders(float d){
         b = (1 + r) * yb - r * ya;
         return glm::vec2(a, b);
     }
-    
+
     glm::vec2 Road::int_div(float xa, float ya, float xb, float yb, float r){
         float a, b;
         a = (r * xb + xa)/(1 + r);
@@ -330,12 +330,12 @@ void Road::cylinders(float d){
     glm::mat4* multiply_stack(std::vector<glm::mat4> matStack){
         glm::mat4* mult;
         mult = new glm::mat4(1.0f);
-    
+
         for(int i=0;i<matStack.size();i++){
             *mult = (*mult) * matStack[i];
         }
 
         return mult;
     }
-    
+
 }

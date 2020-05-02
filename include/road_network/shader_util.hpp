@@ -11,7 +11,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace csX75
+namespace soc
 {
   GLuint LoadShaderGL(GLenum eShaderType, const std::string &strFilename);
   GLuint CreateShaderGL(GLenum eShaderType, const std::string &strShaderFile);
