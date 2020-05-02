@@ -74,6 +74,10 @@ void Path::getPoints(GLFWwindow *window) {
   /* Need this as a click lasts few milliseconds */
   usleep(200000);
 
+  positionsToCurve();
+}
+
+void Path::positionsToCurve() {
   /* Prints all the control points given by user */
   for (int i = 0; i < positions.size(); i++) {
     std::cout << positions[i][0] << ", " << positions[i][1] << std::endl;
@@ -114,7 +118,13 @@ void Path::save() {
   std::cout << "save\n";
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
-  fp.write((char*)&bezier_curve_positions, sizeof(glm::vec2[BZC+1]));
+  int n = positions.size();
+  glm::vec2 store[n + 1];
+  store[0] = glm::vec2(n, 0);
+  for (int i = 0; i < n; i++) {
+    store[i+1] = positions[i];
+  }
+  fp.write((char*)&store, sizeof(store));
   fp.close();
 }
 
@@ -123,8 +133,20 @@ void Path::load() {
   std::cout << "load\n";
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::in);
-  fp.read((char*)&bezier_curve_positions, sizeof(glm::vec2[BZC+1]));
+
+  glm::vec2 num;
+  fp.read((char*)&num, sizeof(glm::vec2));
+  std::cout << num[0] <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+  glm::vec2 load[int(num[0])];
+  std::cout << fp.tellg() <<"\n";
+  fp.read((char*)&load, sizeof(load));
+  positions.clear();
+  for (int i = 0; i < num[0]; i++) {
+    positions.push_back(load[i]);
+  }
   fp.close();
+
+  positionsToCurve();
   input_status = false;
 }
 

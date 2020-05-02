@@ -37,6 +37,7 @@ private:
 public:
   Path();
   void getPoints(GLFWwindow *window);
+  void positionsToCurve();
   void renderLine();
   void save();
   void load();
