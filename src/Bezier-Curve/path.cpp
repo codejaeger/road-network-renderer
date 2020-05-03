@@ -101,6 +101,7 @@ void Path::positionsToCurve() {
 }
 
 void Path::renderLine() {
+  glBindBuffer(GL_ARRAY_BUFFER, vb);
   glUseProgram(shaderProgram);
   glm::mat4 *ms_mult = multiply_stack(matrixStack);
   glUniformMatrix4fv(uModelViewMatrix, 1, GL_FALSE, glm::value_ptr(*ms_mult));
@@ -120,10 +121,7 @@ void Path::save() {
   std::cout << "Saving\n";
 
   std::fstream fp;
-  std::string input_file;
-  std::cin >> input_file;
-  input_file = "./models/Bezier-Model/" + input_file;
-  fp.open(input_file.c_str(), std::ios::binary | std::ios::out);
+  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
 
   // First saves the number of elements present in the vector.
   int n = positions.size();
@@ -137,18 +135,13 @@ void Path::save() {
   fp.write((char *)&store, sizeof(store));
 
   fp.close();
-
-  stop();
 }
 
 void Path::load() {
   std::cout << "Loading\n";
 
   std::fstream fp;
-  std::string output_file;
-  std::cin >> output_file;
-  output_file = "./models/Bezier-Model/" + output_file;
-  fp.open(output_file.c_str(), std::ios::binary | std::ios::in);
+  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::in);
 
   // First gets the number of elements of vector stored.
   glm::vec2 num;
