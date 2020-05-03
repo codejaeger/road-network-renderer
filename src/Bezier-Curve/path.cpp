@@ -117,10 +117,14 @@ void Path::renderLine() {
 }
 
 void Path::save() {
+  stop();
   std::cout << "Saving\n";
 
   std::fstream fp;
-  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
+  std::string input_file;
+  std::cin >> input_file;
+  input_file = "./models/Bezier-Model/" + input_file;
+  fp.open(input_file.c_str(), std::ios::binary | std::ios::out);
 
   // First saves the number of elements present in the vector.
   int n = positions.size();
@@ -134,6 +138,8 @@ void Path::save() {
   fp.write((char *)&store, sizeof(store));
 
   fp.close();
+
+  resume();
 }
 
 void Path::load() {
