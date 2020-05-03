@@ -117,7 +117,6 @@ void Path::renderLine() {
 }
 
 void Path::save() {
-  stop();
   std::cout << "Saving\n";
 
   std::fstream fp;
@@ -139,14 +138,17 @@ void Path::save() {
 
   fp.close();
 
-  resume();
+  stop();
 }
 
 void Path::load() {
   std::cout << "Loading\n";
 
   std::fstream fp;
-  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::in);
+  std::string output_file;
+  std::cin >> output_file;
+  output_file = "./models/Bezier-Model/" + output_file;
+  fp.open(output_file.c_str(), std::ios::binary | std::ios::in);
 
   // First gets the number of elements of vector stored.
   glm::vec2 num;
