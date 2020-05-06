@@ -181,4 +181,15 @@ bool Path::return_input_status() {
   return input_status;
 }
 
+glm::mat4 *multiply_stack(std::vector<glm::mat4> matStack) {
+  glm::mat4 *mult;
+  mult = new glm::mat4(1.0f);
+
+  for (int i = 0; i < matStack.size(); i++) {
+    *mult = (*mult) * matStack[i];
+  }
+
+  return mult;
+}
+
 } // End namespace soc

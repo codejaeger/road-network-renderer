@@ -7,10 +7,11 @@
 #include <math.h>
 #include <vector>
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 
-#include "road_network/Road-Model/road.hpp"
-#include "road_network/Road-Model/road_sep.hpp"
 #include "road_network/shader_util.hpp"
 
 #ifdef _WIN32
@@ -45,6 +46,8 @@ public:
   void stop();
   bool return_input_status();
 };
+
+glm::mat4 *multiply_stack(std::vector<glm::mat4>);
 
 } // End namespace soc
 
