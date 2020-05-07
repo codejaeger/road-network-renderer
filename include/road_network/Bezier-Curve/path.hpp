@@ -31,7 +31,7 @@ private:
   bool input_status;
   GLuint vb, vao;
   GLuint shaderProgram;
-  GLuint v_position, uModelViewMatrix;
+  GLuint v_position;
   std::vector<glm::vec2> bezier_curve_point(std::vector<glm::vec2> pos,
                                             float ratio);
 
@@ -46,8 +46,6 @@ public:
   void stop();
   bool return_input_status();
 };
-
-glm::mat4 *multiply_stack(std::vector<glm::mat4>);
 
 } // End namespace soc
 

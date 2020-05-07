@@ -2,8 +2,6 @@
 
 #include "road_network/Bezier-Curve/path.hpp"
 
-extern std::vector<glm::mat4> matrixStack;
-
 namespace soc {
 
 Path::Path() {
@@ -25,7 +23,6 @@ Path::Path() {
 
   shaderProgram = soc::CreateProgramGL(shaderList);
   glUseProgram(shaderProgram);
-  uModelViewMatrix = glGetUniformLocation(shaderProgram, "uModelViewMatrix");
   v_position = glGetAttribLocation(shaderProgram, "vPosition");
   glGenBuffers(1, &vb);
   glBindBuffer(GL_ARRAY_BUFFER, vb);
@@ -103,8 +100,6 @@ void Path::positionsToCurve() {
 void Path::renderLine() {
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glUseProgram(shaderProgram);
-  glm::mat4 *ms_mult = multiply_stack(matrixStack);
-  glUniformMatrix4fv(uModelViewMatrix, 1, GL_FALSE, glm::value_ptr(*ms_mult));
   glBindVertexArray(vao);
   glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_curve_positions), NULL,
                GL_DYNAMIC_DRAW);
@@ -179,17 +174,6 @@ void Path::resume() {
 bool Path::return_input_status() {
   // Returns input_status (As it is a private variable)
   return input_status;
-}
-
-glm::mat4 *multiply_stack(std::vector<glm::mat4> matStack) {
-  glm::mat4 *mult;
-  mult = new glm::mat4(1.0f);
-
-  for (int i = 0; i < matStack.size(); i++) {
-    *mult = (*mult) * matStack[i];
-  }
-
-  return mult;
 }
 
 } // End namespace soc
