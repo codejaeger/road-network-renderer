@@ -1,21 +1,23 @@
-#ifndef _SHADER_UTIL_HPP_
-#define _SHADER_UTIL_HPP_
+#ifndef shader_util_hpp
+#define shader_util_hpp
 
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace csX75
-{
-  GLuint LoadShaderGL(GLenum eShaderType, const std::string &strFilename);
-  GLuint CreateShaderGL(GLenum eShaderType, const std::string &strShaderFile);
-  GLuint CreateProgramGL(const std::vector<GLuint> &shaderList);
-};
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
-#endif
+namespace soc {
+
+GLuint LoadShaderGL(GLenum eShaderType, const std::string &strFilename);
+GLuint CreateShaderGL(GLenum eShaderType, const std::string &strShaderFile);
+GLuint CreateProgramGL(const std::vector<GLuint> &shaderList);
+
+} // End namespace soc
+
+#endif /* shader_util_hpp */
