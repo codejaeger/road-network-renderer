@@ -57,7 +57,7 @@ float Paths::distance(glm::vec2 &a, glm::vec2 &b) {
 int Paths::interpolate_count() {
   float tot_dis = 0.0;
   for (int i = 0; i < int(positions[path_number].size()) - 1; i++) {
-    tot_dis = distance(positions[path_number][i], positions[path_number][i+1]);
+    tot_dis += distance(positions[path_number][i], positions[path_number][i+1]);
   }
   return int(5 * tot_dis);
 }
