@@ -16,7 +16,7 @@ Paths::Paths() {
     bezier_curve_positions[path_number][i] = glm::vec2(0, 0);
   }
 
-  positions.push_back(current_cp);
+  positions.push_back(*(new std::vector<glm::vec2>));
   input_status = true;
 
   std::string vertex_shader_file(
@@ -119,7 +119,28 @@ void Paths::renderLine() {
 }
 
 void Paths::next() {
-  positions[path_number] = current_cp;
+  if (positions.size() - 1 > path_number) {
+    path_number++;
+
+    for (int i = 0; i < (BZC + 1); i++) {
+      current_bzc[i] = bezier_curve_positions[path_number][i];
+    }
+
+    for (int i = 0; i < BZC + 1; i++) {
+      std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
+                << bezier_curve_positions[path_number][int(i)][1] << std::endl;
+    }
+
+    for (int i = 0; i < positions[path_number].size(); i++) {
+      std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+    }
+
+    std::cout << "10\n" << path_number << "\n";
+
+    stop();
+
+    return ;
+  }
 
   for (int i = 0; i < (BZC + 1); i++) {
     current_bzc[i] = glm::vec2(0, 0);
