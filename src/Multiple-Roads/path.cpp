@@ -50,6 +50,43 @@ std::vector<glm::vec2> Paths::bezier_curve_point(std::vector<glm::vec2> pos,
   return bezier_curve_point(new_pos, ratio);
 }
 
+float Paths::distance(glm::vec2 &a, glm::vec2 &b) {
+  return sqrt(((a[0] - b[0]) * (a[0] - b[0])) + ((a[1] - b[1]) * (a[1] - b[1])));
+}
+
+int Paths::interpolate_count() {
+  float tot_dis = 0.0;
+  for (int i = 0; i < int(positions[path_number].size()) - 1; i++) {
+    tot_dis = distance(positions[path_number][i], positions[path_number][i+1]);
+  }
+  return int(5 * tot_dis);
+}
+
+void Paths::positionsToCurve() {
+  // Prints all the control points given by user
+  for (int i = 0; i < positions[path_number].size(); i++) {
+    std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+  }
+
+  // Stores the newly processed Bezier Curve interpolated points
+  current.clear();
+  float n = interpolate_count() + 1;
+  if (!positions[path_number].empty()) {
+    std::cout << n << "AAA\n";
+    for (float i = 0; i <= n; i++) {
+      std::vector<glm::vec2> pos = bezier_curve_point(positions[path_number], (i / n));
+      current.push_back(pos[0]);
+    }
+  }
+
+  // // Prints all the interpolated points
+  for (int i = 0; i < current.size(); i++) {
+    std::cout << current[int(i)][0] << "\\"
+              << current[int(i)][1] << std::endl;
+  }
+  std::cout <<"\n\n";
+}
+
 void Paths::getPoints(GLFWwindow *window) {
   // Get the postition of the mouse-click w.r.t the top-left corner
   double x, y;
@@ -70,30 +107,6 @@ void Paths::getPoints(GLFWwindow *window) {
   usleep(200000);
 
   positionsToCurve();
-}
-
-void Paths::positionsToCurve() {
-  // Prints all the control points given by user
-  for (int i = 0; i < positions[path_number].size(); i++) {
-    std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
-  }
-
-  // Stores the newly processed Bezier Curve interpolated points
-  current.clear();
-  float n = 50;
-  if (!positions[path_number].empty()) {
-    for (float i = 0; i <= n; i++) {
-      std::vector<glm::vec2> pos = bezier_curve_point(positions[path_number], (i / n));
-      current.push_back(pos[0]);
-    }
-  }
-
-  // // Prints all the interpolated points
-  for (int i = 0; i < current.size(); i++) {
-    std::cout << current[int(i)][0] << "\\"
-              << current[int(i)][1] << std::endl;
-  }
-  std::cout <<"\n\n";
 }
 
 void Paths::renderLine() {
