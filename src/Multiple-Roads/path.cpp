@@ -6,9 +6,13 @@ namespace soc {
 
 Paths::Paths() {
   for (int i = 0; i < (BZC + 1); i++) {
-    bezier_curve_positions[i] = glm::vec2(0, 0);
+    current_bzc[i] = glm::vec2(0, 0);
   }
 
+  path_number = 0;
+  bezier_curve_positions.push_back(&current_bzc);
+
+  positions.push_back(current_cp);
   input_status = true;
 
   std::string vertex_shader_file(
@@ -24,12 +28,11 @@ Paths::Paths() {
   shaderProgram = soc::CreateProgramGL(shaderList);
   glUseProgram(shaderProgram);
   v_position = glGetAttribLocation(shaderProgram, "vPosition");
+
   glGenBuffers(1, &vb);
   glBindBuffer(GL_ARRAY_BUFFER, vb);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_curve_positions), NULL,
-               GL_DYNAMIC_DRAW);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_curve_positions),
-                  bezier_curve_positions);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(current_bzc), NULL, GL_DYNAMIC_DRAW);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(current_bzc), current_bzc);
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
   glEnableVertexAttribArray(v_position);
