@@ -81,23 +81,23 @@ void Paths::getPoints(GLFWwindow *window) {
 
 void Paths::positionsToCurve() {
   // Prints all the control points given by user
-  // for (int i = 0; i < positions.size(); i++) {
-  //   std::cout << positions[i][0] << ", " << positions[i][1] << std::endl;
-  // }
+  for (int i = 0; i < positions[path_number].size(); i++) {
+    std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+  }
 
   // Stores the newly processed Bezier Curve interpolated points
   float n = BZC;
   for (float i = 0; i <= n; i++) {
-    std::vector<glm::vec2> pos = bezier_curve_point(positions, (i / n));
-    bezier_curve_positions[int(i)] = pos[0];
+    std::vector<glm::vec2> pos = bezier_curve_point(positions[path_number], (i / n));
+    (*bezier_curve_positions[path_number])[int(i)] = pos[0];
   }
 
-  // Prints all the interpolated points
-  // for (int i = 0; i < BZC + 1; i++) {
-  //   std::cout << bezier_curve_positions[int(i)][0] << "\\"
-  //             << bezier_curve_positions[int(i)][1] << std::endl;
-  // }
-  // std::cout <<"\n\n";
+  // // Prints all the interpolated points
+  for (int i = 0; i < BZC + 1; i++) {
+    std::cout << (*bezier_curve_positions[path_number])[int(i)][0] << "\\"
+              << (*bezier_curve_positions[path_number])[int(i)][1] << std::endl;
+  }
+  std::cout <<"\n\n";
 }
 
 void Paths::renderLine() {
