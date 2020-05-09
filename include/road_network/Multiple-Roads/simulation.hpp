@@ -13,7 +13,11 @@
 #include <glm/vec4.hpp>
 
 #include "road_network/Multiple-Roads/gl_framework.hpp"
+#include "road_network/Multiple-Roads/path.hpp"
 #include "road_network/shader_util.hpp"
+
+#define HEIGHT 900
+#define WIDTH 1440
 
 // Running variable to toggle culling on/off
 bool enable_culling = true;
