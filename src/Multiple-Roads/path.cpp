@@ -113,54 +113,54 @@ void Paths::renderLine() {
   }
 }
 
-void Paths::save() {
-  std::cout << "Saving\n";
-
-  std::fstream fp;
-  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
-
-  // First saves the number of elements present in the vector.
-  int n = positions.size();
-  glm::vec2 store[n + 1];
-  store[0] = glm::vec2(n, 0);
-
-  // Then stores the vector as array and write.
-  for (int i = 0; i < n; i++) {
-    store[i + 1] = positions[i];
-  }
-  fp.write((char *)&store, sizeof(store));
-
-  fp.close();
-}
-
-void Paths::load() {
-  std::cout << "Loading\n";
-
-  std::fstream fp;
-  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::in);
-
-  // First gets the number of elements of vector stored.
-  glm::vec2 num;
-  fp.read((char *)&num, sizeof(glm::vec2));
-
-  // Then creates a array to extract the elements.
-  glm::vec2 load[int(num[0])];
-  fp.read((char *)&load, sizeof(load));
-
-  // Then replaces the vector by the array data.
-  positions.clear();
-  for (int i = 0; i < num[0]; i++) {
-    positions.push_back(load[i]);
-  }
-
-  fp.close();
-
-  // Converts the control points to interpolated points.
-  positionsToCurve();
-
-  // Stops further input of control points.
-  stop();
-}
+// void Paths::save() {
+//   std::cout << "Saving\n";
+//
+//   std::fstream fp;
+//   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
+//
+//   // First saves the number of elements present in the vector.
+//   int n = positions.size();
+//   glm::vec2 store[n + 1];
+//   store[0] = glm::vec2(n, 0);
+//
+//   // Then stores the vector as array and write.
+//   for (int i = 0; i < n; i++) {
+//     store[i + 1] = positions[i];
+//   }
+//   fp.write((char *)&store, sizeof(store));
+//
+//   fp.close();
+// }
+//
+// void Paths::load() {
+//   std::cout << "Loading\n";
+//
+//   std::fstream fp;
+//   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::in);
+//
+//   // First gets the number of elements of vector stored.
+//   glm::vec2 num;
+//   fp.read((char *)&num, sizeof(glm::vec2));
+//
+//   // Then creates a array to extract the elements.
+//   glm::vec2 load[int(num[0])];
+//   fp.read((char *)&load, sizeof(load));
+//
+//   // Then replaces the vector by the array data.
+//   positions.clear();
+//   for (int i = 0; i < num[0]; i++) {
+//     positions.push_back(load[i]);
+//   }
+//
+//   fp.close();
+//
+//   // Converts the control points to interpolated points.
+//   positionsToCurve();
+//
+//   // Stops further input of control points.
+//   stop();
+// }
 
 void Paths::stop() {
   // Stops further input of control points.
