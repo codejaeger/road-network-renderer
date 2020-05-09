@@ -59,7 +59,7 @@ int Paths::interpolate_count() {
   for (int i = 0; i < int(positions[path_number].size()) - 1; i++) {
     tot_dis += distance(positions[path_number][i], positions[path_number][i+1]);
   }
-  return int(5 * tot_dis);
+  return int(tot_dis / AIPD);
 }
 
 void Paths::positionsToCurve() {

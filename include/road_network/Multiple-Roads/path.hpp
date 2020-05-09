@@ -20,6 +20,9 @@
 #include <unistd.h>
 #endif
 
+#define AIPD (1.0 / 72.0)
+// Average Interpolation Distance
+
 namespace soc {
 
 class Paths {
