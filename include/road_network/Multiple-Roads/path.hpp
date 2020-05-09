@@ -27,7 +27,7 @@ class Paths {
 
 private:
   std::vector< std::vector<glm::vec2> > positions; // stores all the control points
-  glm::vec2 current_bzc[BZC + 1]; // for rendering
+  std::vector<glm::vec2> current; // for rendering current path
   bool input_status;
   int path_number;
   GLuint vb, vao;

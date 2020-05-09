@@ -5,10 +5,6 @@
 namespace soc {
 
 Paths::Paths() {
-  for (int i = 0; i < (BZC + 1); i++) {
-    current_bzc[i] = glm::vec2(0, 0);
-  }
-
   path_number = 0;
 
   positions.push_back(*(new std::vector<glm::vec2>));
@@ -30,8 +26,6 @@ Paths::Paths() {
 
   glGenBuffers(1, &vb);
   glBindBuffer(GL_ARRAY_BUFFER, vb);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(current_bzc), NULL, GL_DYNAMIC_DRAW);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(current_bzc), current_bzc);
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
   glEnableVertexAttribArray(v_position);
@@ -85,16 +79,17 @@ void Paths::positionsToCurve() {
   }
 
   // Stores the newly processed Bezier Curve interpolated points
+  current.clear();
   float n = BZC;
   for (float i = 0; i <= n; i++) {
     std::vector<glm::vec2> pos = bezier_curve_point(positions[path_number], (i / n));
-    current_bzc[int(i)] = pos[0];
+    current.push_back(pos[0]);
   }
 
   // // Prints all the interpolated points
-  for (int i = 0; i < BZC + 1; i++) {
-    std::cout << current_bzc[int(i)][0] << "\\"
-              << current_bzc[int(i)][1] << std::endl;
+  for (int i = 0; i < current.size(); i++) {
+    std::cout << current[int(i)][0] << "\\"
+              << current[int(i)][1] << std::endl;
   }
   std::cout <<"\n\n";
 }
@@ -103,11 +98,15 @@ void Paths::renderLine() {
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glUseProgram(shaderProgram);
   glBindVertexArray(vao);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(current_bzc), NULL, GL_DYNAMIC_DRAW);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(current_bzc), current_bzc);
+  glm::vec2 cur_[current.size()];
+  for (int i = 0; i < current.size(); i++) {
+    cur_[i] = current[i];
+  }
+  glBufferData(GL_ARRAY_BUFFER, sizeof(cur_), NULL, GL_DYNAMIC_DRAW);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cur_), cur_);
 
   // Joins all the interpolated points, thus creating the approx Bezier Curve
-  for (int i = 0; i < BZC; i++) {
+  for (int i = 0; i < int(current.size()) - 1; i++) {
     glDrawArrays(GL_LINE_STRIP, i, 2);
   }
 }
@@ -129,15 +128,12 @@ void Paths::next() {
     return ;
   }
 
-  for (int i = 0; i < (BZC + 1); i++) {
-    current_bzc[i] = glm::vec2(0, 0);
-  }
-
   for (int i = 0; i < positions[path_number].size(); i++) {
     std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
   }
 
   positions.push_back(*(new std::vector<glm::vec2>));
+  current.clear();
 
   path_number++;
 
