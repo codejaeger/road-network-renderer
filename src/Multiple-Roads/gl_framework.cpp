@@ -48,9 +48,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     p->delete_last();
   }
   // Saves the control points in a raw file if the S key was pressed.
-  // else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
-  //   p->save();
-  // }
+  else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+    p->save();
+  }
   // // Loads the control points from a raw file if the L key was pressed.
   // else if (key == GLFW_KEY_L && action == GLFW_PRESS) {
   //   p->load();
