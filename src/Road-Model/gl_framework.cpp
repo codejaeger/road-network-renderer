@@ -1,9 +1,8 @@
-#include "road_network/Road-Model/gl_framework.hpp"
-#include "road_network/Bezier-Curve/path.hpp"
+
+#include "road_network/Road-Model/road_collection.hpp"
 
 extern GLfloat c_xrot, c_yrot, c_zrot;
-extern soc::Path *p;
-
+extern soc::RoadNetwork *rn;
 namespace soc {
 // Initialize GL State
 void initGL(void) {
@@ -36,32 +35,32 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     std::cout << "Escaped\n";
     glfwSetWindowShouldClose(window, GL_TRUE);
   }
-  // Saves the control points in a raw file if the S key was pressed.
-  else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
-    p->save();
-  }
-  // Loads the control points from a raw file if the L key was pressed.
-  else if (key == GLFW_KEY_L && action == GLFW_PRESS) {
-    p->load();
-  }
-  // Resumes the input of control points if the R key was pressed.
+
   else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-    p->resume();
+    //initialize the road network from the file which contains the points along the roads
+    std::cout<<"Enter the name of the raw file to draw the road-network"<<std::endl;
+    std::string s;
+    std::cin>>s;
+    rn->initRoadNetwork("./models/Bezier-Model/"+s);
   }
+  //press these keys to rotate the model
+  else if (key == GLFW_KEY_A  )
+      c_yrot -= 1.0;
+    else if (key == GLFW_KEY_D  )
+      c_yrot += 1.0;
+    else if (key == GLFW_KEY_W  )
+      c_xrot -= 1.0;
+    else if (key == GLFW_KEY_S  )
+      c_xrot += 1.0;
+    else if (key == GLFW_KEY_Q  )
+      c_zrot -= 1.0;
+    else if (key == GLFW_KEY_E  )
+      c_zrot += 1.0;
 }
 
 // GLFW mouse button callback
 void mouse_button_callback(GLFWwindow *window, int button, int action,
                            int mods) {
-  // Takes the location of left click as the input of control points.
-  if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-    if (p->return_input_status())
-      p->getPoints(window);
-  }
-  // Stops the input of control points if the right mouse button was pressed.
-  else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
-    p->stop();
-  }
 }
 
 } // End namespace soc
