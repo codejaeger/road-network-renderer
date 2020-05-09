@@ -127,7 +127,7 @@ void Paths::renderLine() {
 }
 
 void Paths::next() {
-  if (positions.size() - 1 > path_number) {
+  if (int(positions.size()) - 1 > path_number) {
     path_number++;
 
     for (int i = 0; i < positions[path_number].size(); i++) {
@@ -197,9 +197,13 @@ void Paths::save() {
   }
 
   std::cout << tsize << "BBB\n";
-  glm::vec2 store[tsize];
+  glm::vec2 store[tsize+1];
 
   int count = 0;
+
+  store[count] = glm::vec2(int(positions.size()), 0);
+  count++;
+
   for (int i = 0; i < positions.size(); i++) {
     store[count] = glm::vec2(int(positions[i].size()), 0);
     count++;
@@ -214,34 +218,37 @@ void Paths::save() {
   fp.close();
 }
 
-// void Paths::load() {
-//   std::cout << "Loading\n";
-//
-//   std::fstream fp;
-//   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::in);
-//
-//   // First gets the number of elements of vector stored.
-//   glm::vec2 num;
-//   fp.read((char *)&num, sizeof(glm::vec2));
-//
-//   // Then creates a array to extract the elements.
-//   glm::vec2 load[int(num[0])];
-//   fp.read((char *)&load, sizeof(load));
-//
-//   // Then replaces the vector by the array data.
-//   positions.clear();
-//   for (int i = 0; i < num[0]; i++) {
-//     positions.push_back(load[i]);
-//   }
-//
-//   fp.close();
-//
-//   // Converts the control points to interpolated points.
-//   positionsToCurve();
-//
-//   // Stops further input of control points.
-//   stop();
-// }
+void Paths::load() {
+  std::cout << "Loading\n";
+
+  std::fstream fp;
+  fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::in);
+
+  positions.clear();
+
+  glm::vec2 total_paths;
+  fp.read((char *)&total_paths, sizeof(total_paths));
+  for (int i = 0; i < int(total_paths[0]); i++) {
+    positions.push_back(*(new std::vector<glm::vec2>));
+    glm::vec2 num;
+    fp.read((char *)&num, sizeof(num));
+    glm::vec2 cp[int(num[0])];
+    fp.read((char *)&cp, sizeof(cp));
+    for (int j = 0; j < int(num[0]); j++) {
+      positions[i].push_back(cp[j]);
+    }
+  }
+
+  fp.close();
+
+  path_number = 0;
+
+  // Converts the control points to interpolated points.
+  positionsToCurve();
+
+  // Stops further input of control points.
+  stop();
+}
 
 void Paths::stop() {
   // Stops further input of control points.
