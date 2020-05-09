@@ -19,7 +19,6 @@
 #else
 #include <unistd.h>
 #endif
-#define BZC 50
 
 namespace soc {
 

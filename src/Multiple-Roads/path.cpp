@@ -80,7 +80,7 @@ void Paths::positionsToCurve() {
 
   // Stores the newly processed Bezier Curve interpolated points
   current.clear();
-  float n = BZC;
+  float n = 50;
   if (!positions[path_number].empty()) {
     for (float i = 0; i <= n; i++) {
       std::vector<glm::vec2> pos = bezier_curve_point(positions[path_number], (i / n));
