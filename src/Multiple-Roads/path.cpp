@@ -71,7 +71,7 @@ void Paths::getPoints(GLFWwindow *window) {
   float ypos = +1.0f - 2 * y / height;
   std::cout << xpos << "~~" << ypos << "\n";
 
-  positions.push_back(glm::vec2(xpos, ypos));
+  positions[path_number].push_back(glm::vec2(xpos, ypos));
 
   // Need this as a click lasts few milliseconds
   usleep(200000);
