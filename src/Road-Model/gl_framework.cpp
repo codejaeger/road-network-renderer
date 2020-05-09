@@ -1,8 +1,8 @@
-
 #include "road_network/Road-Model/road_collection.hpp"
 
 extern GLfloat c_xrot, c_yrot, c_zrot;
 extern soc::RoadNetwork *rn;
+
 namespace soc {
 // Initialize GL State
 void initGL(void) {
@@ -37,30 +37,32 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
   }
 
   else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-    //initialize the road network from the file which contains the points along the roads
-    std::cout<<"Enter the name of the raw file to draw the road-network"<<std::endl;
+    // initialize the road network from the file
+    // which contains the points along the roads
+    std::cout << "Enter the name of the raw file to draw the road-network"
+              << std::endl;
     std::string s;
-    std::cin>>s;
-    rn->initRoadNetwork("./models/Bezier-Model/"+s);
+    std::cin >> s;
+    rn->initRoadNetwork("./models/Bezier-Model/" + s);
   }
-  //press these keys to rotate the model
-  else if (key == GLFW_KEY_A  )
-      c_yrot -= 1.0;
-    else if (key == GLFW_KEY_D  )
-      c_yrot += 1.0;
-    else if (key == GLFW_KEY_W  )
-      c_xrot -= 1.0;
-    else if (key == GLFW_KEY_S  )
-      c_xrot += 1.0;
-    else if (key == GLFW_KEY_Q  )
-      c_zrot -= 1.0;
-    else if (key == GLFW_KEY_E  )
-      c_zrot += 1.0;
+
+  // press these keys to rotate the model
+  else if (key == GLFW_KEY_A)
+    c_yrot -= 1.0;
+  else if (key == GLFW_KEY_D)
+    c_yrot += 1.0;
+  else if (key == GLFW_KEY_W)
+    c_xrot -= 1.0;
+  else if (key == GLFW_KEY_S)
+    c_xrot += 1.0;
+  else if (key == GLFW_KEY_Q)
+    c_zrot -= 1.0;
+  else if (key == GLFW_KEY_E)
+    c_zrot += 1.0;
 }
 
 // GLFW mouse button callback
 void mouse_button_callback(GLFWwindow *window, int button, int action,
-                           int mods) {
-}
+                           int mods) {}
 
 } // End namespace soc

@@ -10,11 +10,10 @@ glm::mat4 view_matrix;
 
 glm::mat4 modelview_matrix;
 
-//pointer to RoadNetwork object
+// pointer to RoadNetwork object
 soc::RoadNetwork *rn;
-void initBuffersGL(void)
-{
-  rn = new soc::RoadNetwork(0.2, 0.3);   //road-depth=0.2, road-width=0.6
+void initBuffersGL(void) {
+  rn = new soc::RoadNetwork(0.2, 0.3); // road-depth=0.2, road-width=0.6
 }
 
 void renderGL(GLFWwindow *window) {
@@ -33,7 +32,8 @@ void renderGL(GLFWwindow *window) {
   glm::vec4 c_pos = glm::vec4(c_xpos, c_ypos, c_zpos, 1.0) * c_rotation_matrix;
   glm::vec4 c_up = glm::vec4(c_up_x, c_up_y, c_up_z, 1.0) * c_rotation_matrix;
   // Creating the lookat matrix
-  lookat_matrix = glm::lookAt(glm::vec3(c_pos), glm::vec3(0.0), glm::vec3(c_up));
+  lookat_matrix =
+      glm::lookAt(glm::vec3(c_pos), glm::vec3(0.0), glm::vec3(c_up));
 
   // Creating the projection matrix
   if (enable_perspective) {
@@ -47,20 +47,20 @@ void renderGL(GLFWwindow *window) {
 
   matrixStack.push_back(view_matrix);
 
-  //render the roads in the RoadNetwork
+  // render the roads in the RoadNetwork
   rn->renderRoads();
-  //render the RoadSeps in the RoadNetwork
+  // render the RoadSeps in the RoadNetwork
   rn->renderRoadSeps();
 }
 
 int main(int argc, char **argv) {
-  //! The pointer to the GLFW window
+  // The pointer to the GLFW window
   GLFWwindow *window;
 
-  //! Setting up the GLFW Error callback
+  // Setting up the GLFW Error callback
   glfwSetErrorCallback(soc::error_callback);
 
-  //! Initialize GLFW
+  // Initialize GLFW
   if (!glfwInit())
     return -1;
 
@@ -72,14 +72,14 @@ int main(int argc, char **argv) {
   // We don't want the old OpenGL
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  //! Create a windowed mode window and its OpenGL context
+  // Create a windowed mode window and its OpenGL context
   window = glfwCreateWindow(1440, 900, "Simulation", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;
   }
 
-  //! Make the window's context current
+  // Make the window's context current
   glfwMakeContextCurrent(window);
 
   // Initialize GLEW
