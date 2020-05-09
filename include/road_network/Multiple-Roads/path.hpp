@@ -43,6 +43,8 @@ public:
   void getPoints(GLFWwindow *window);
   void positionsToCurve();
   void renderLine();
+  void next();
+  void previous();
   void save();
   void load();
   void resume();
