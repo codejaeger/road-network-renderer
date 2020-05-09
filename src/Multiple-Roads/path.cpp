@@ -186,35 +186,72 @@ void Paths::delete_last() {
 }
 
 void Paths::save() {
-  std::cout << "Saving\n";
+  std::cout << "Saving CP\n";
 
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::out);
 
-  int tsize = 0;
+  int cpsize = 0;
   for (int i = 0; i < positions.size(); i++) {
-    tsize += (positions[i].size() + 1);
+    cpsize += (positions[i].size() + 1);
   }
 
-  std::cout << tsize << "BBB\n";
-  glm::vec2 store[tsize+1];
+  std::cout << cpsize << "BBB\n";
+  glm::vec2 storecp[cpsize+1];
 
-  int count = 0;
+  int countcp = 0;
 
-  store[count] = glm::vec2(int(positions.size()), 0);
-  count++;
+  storecp[countcp] = glm::vec2(int(positions.size()), 0);
+  countcp++;
 
   for (int i = 0; i < positions.size(); i++) {
-    store[count] = glm::vec2(int(positions[i].size()), 0);
-    count++;
+    storecp[countcp] = glm::vec2(int(positions[i].size()), 0);
+    countcp++;
     for (int j = 0; j < positions[i].size(); j++) {
-      store[count] = positions[i][j];
-      count++;
+      storecp[countcp] = positions[i][j];
+      countcp++;
     }
   }
 
-  fp.write((char *)&store, sizeof(store));
+  fp.write((char *)&storecp, sizeof(storecp));
+  fp.close();
 
+  std::cout << "Saving IP\n";
+
+  fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
+
+  int save_pn = path_number;
+
+  int ipsize = 0;
+  std::cout << positions.size() << "SSS\n";
+  for (int i = 0; i < positions.size(); i++) {
+    std::cout << i << "@@";
+    path_number = i;
+    positionsToCurve();
+    ipsize += (current.size() + 1);
+  }
+
+  std::cout << "\n" << ipsize << "CCC\n";
+  glm::vec2 storeip[ipsize+1];
+
+  int countip = 0;
+  storeip[countip] = glm::vec2(int(positions.size()), 0);
+  countip++;
+
+  for (int i = 0; i < positions.size(); i++) {
+    path_number = i;
+    positionsToCurve();
+    storeip[countip] = glm::vec2(int(current.size()), 0);
+    countip++;
+    for (int j = 0; j < current.size(); j++) {
+      storeip[countip] = current[j];
+      countip++;
+    }
+  }
+
+  path_number = save_pn;
+
+  fp.write((char *)&storeip, sizeof(storeip));
   fp.close();
 }
 
