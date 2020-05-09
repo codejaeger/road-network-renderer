@@ -64,9 +64,9 @@ int Paths::interpolate_count() {
 
 void Paths::positionsToCurve() {
   // Prints all the control points given by user
-  for (int i = 0; i < positions[path_number].size(); i++) {
-    std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
-  }
+  // for (int i = 0; i < positions[path_number].size(); i++) {
+  //   std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+  // }
 
   // Stores the newly processed Bezier Curve interpolated points
   current.clear();
@@ -79,11 +79,11 @@ void Paths::positionsToCurve() {
     }
   }
 
-  // // Prints all the interpolated points
-  for (int i = 0; i < current.size(); i++) {
-    std::cout << current[int(i)][0] << "\\"
-              << current[int(i)][1] << std::endl;
-  }
+  // Prints all the interpolated points
+  // for (int i = 0; i < current.size(); i++) {
+  //   std::cout << current[int(i)][0] << "\\"
+  //             << current[int(i)][1] << std::endl;
+  // }
   std::cout <<"\n\n";
 }
 
