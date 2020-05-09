@@ -29,7 +29,6 @@ private:
   std::vector< std::vector<glm::vec2> > positions;
   std::vector<glm::vec2 ( * )> bezier_curve_positions;
   glm::vec2 current_bzc[BZC + 1];
-  std::vector<glm::vec2> current_cp;
   bool input_status;
   int path_number;
   GLuint vb, vao;
