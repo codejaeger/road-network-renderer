@@ -162,6 +162,8 @@ void Paths::next() {
   path_number++;
 
   std::cout << "11\n" << path_number << "\n";
+
+  resume();
 }
 
 void Paths::previous() {
