@@ -176,6 +176,15 @@ void Paths::previous() {
   stop();
 }
 
+void Paths::delete_last() {
+  if (positions[path_number].size() > 0) {
+    positions[path_number].pop_back();
+    positionsToCurve();
+  }
+
+  return ;
+}
+
 // void Paths::save() {
 //   std::cout << "Saving\n";
 //

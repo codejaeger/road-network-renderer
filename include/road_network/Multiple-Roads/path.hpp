@@ -51,6 +51,7 @@ public:
   void load();
   void resume();
   void stop();
+  void delete_last();
   bool return_input_status();
 };
 

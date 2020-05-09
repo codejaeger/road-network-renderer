@@ -44,6 +44,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
   else if (key == GLFW_KEY_P && action == GLFW_PRESS) {
     p->previous();
   }
+  else if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+    p->delete_last();
+  }
   // Saves the control points in a raw file if the S key was pressed.
   // else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
   //   p->save();
@@ -64,7 +67,7 @@ void mouse_button_callback(GLFWwindow *window, int button, int action,
     if (p->return_input_status())
       p->getPoints(window);
   }
-  // // Stops the input of control points if the right mouse button was pressed.
+  // Stops the input of control points if the right mouse button was pressed.
   else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
     p->stop();
   }
