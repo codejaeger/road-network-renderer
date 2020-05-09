@@ -35,6 +35,12 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     std::cout << "Escaped\n";
     glfwSetWindowShouldClose(window, GL_TRUE);
   }
+  else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+    p->resume();
+  }
+  else if (key == GLFW_KEY_N && action == GLFW_PRESS) {
+    p->next();
+  }
   // Saves the control points in a raw file if the S key was pressed.
   // else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
   //   p->save();
@@ -44,9 +50,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
   //   p->load();
   // }
   // Resumes the input of control points if the R key was pressed.
-  else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-    p->resume();
-  }
+
 }
 
 // GLFW mouse button callback
