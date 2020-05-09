@@ -185,26 +185,35 @@ void Paths::delete_last() {
   return ;
 }
 
-// void Paths::save() {
-//   std::cout << "Saving\n";
-//
-//   std::fstream fp;
-//   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
-//
-//   // First saves the number of elements present in the vector.
-//   int n = positions.size();
-//   glm::vec2 store[n + 1];
-//   store[0] = glm::vec2(n, 0);
-//
-//   // Then stores the vector as array and write.
-//   for (int i = 0; i < n; i++) {
-//     store[i + 1] = positions[i];
-//   }
-//   fp.write((char *)&store, sizeof(store));
-//
-//   fp.close();
-// }
-//
+void Paths::save() {
+  std::cout << "Saving\n";
+
+  std::fstream fp;
+  fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::out);
+
+  int tsize = 0;
+  for (int i = 0; i < positions.size(); i++) {
+    tsize += (positions[i].size() + 1);
+  }
+
+  std::cout << tsize << "BBB\n";
+  glm::vec2 store[tsize];
+
+  int count = 0;
+  for (int i = 0; i < positions.size(); i++) {
+    store[count] = glm::vec2(int(positions[i].size()), 0);
+    count++;
+    for (int j = 0; j < positions[i].size(); j++) {
+      store[count] = positions[i][j];
+      count++;
+    }
+  }
+
+  fp.write((char *)&store, sizeof(store));
+
+  fp.close();
+}
+
 // void Paths::load() {
 //   std::cout << "Loading\n";
 //
