@@ -118,6 +118,28 @@ void Paths::renderLine() {
   }
 }
 
+void Paths::next() {
+  positions[path_number] = current_cp;
+
+  for (int i = 0; i < (BZC + 1); i++) {
+    current_bzc[i] = glm::vec2(0, 0);
+  }
+
+  for (int i = 0; i < BZC + 1; i++) {
+    std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
+              << bezier_curve_positions[path_number][int(i)][1] << std::endl;
+  }
+
+  std::cout <<"11\n\n";
+
+  bezier_curve_positions.push_back(new glm::vec2[BZC + 1]);
+
+  current_cp.clear();
+  positions.push_back(current_cp);
+
+  path_number++;
+}
+
 // void Paths::save() {
 //   std::cout << "Saving\n";
 //
