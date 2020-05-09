@@ -29,4 +29,4 @@ bool enable_perspective = false;
 // Shader program attribs
 std::vector<glm::mat4> matrixStack;
 
-#endif /* simulation_hpp */
+#endif /* road_main_hpp */

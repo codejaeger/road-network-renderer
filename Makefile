@@ -26,15 +26,11 @@ all: $(SHADEROBJ) $(BIN1) $(BIN2)
 
 $(BIN1): $(SRCS1) $(SHADEROBJ)
 	g++ $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ) $(LDFLAGS) $(LIBS) #For linux
-	# g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ) $(PATHOBJ) # for mac os
+	# g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ) # for mac os
 
 $(BIN2): $(SHADEROBJ)
 	g++ $(INCLUDES) $(SRCS2) -o $(BIN2) $(SHADEROBJ) $(LDFLAGS) $(LIBS) #For linux
-
-# check later why $(SHADEROBJ) file not needed for pathobj linking
-# $(PATHOBJ): $(SRCS2)
-# 	g++ $(INCLUDES) -c $(SRCS2) -o $(PATHOBJ) $(LDFLAGS) $(LIBS) #For linux
-	# g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) -c $(SRCS2) -o $(PATHOBJ) # for mac os
+	# g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS2) -o $(BIN2) $(SHADEROBJ) # for mac os
 
 $(SHADEROBJ): $(SHADERCPP)
 	g++ $(INCLUDES) -c $(SHADERCPP) -o $(SHADEROBJ) $(LDFLAGS) $(LIBS) #For linux
