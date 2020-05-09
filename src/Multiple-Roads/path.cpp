@@ -187,6 +187,7 @@ void Paths::previous() {
 
   std::cout << "12\n" << path_number << "\n";
 
+  stop();
 }
 
 // void Paths::save() {
