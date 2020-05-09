@@ -9,7 +9,7 @@ void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // p->getPoints(window);
-  p->renderLine();
+  // p->renderLine();
 }
 
 int main(int argc, char **argv) {
