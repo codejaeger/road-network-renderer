@@ -164,6 +164,31 @@ void Paths::next() {
   std::cout << "11\n" << path_number << "\n";
 }
 
+void Paths::previous() {
+  if (path_number == 0) {
+    stop();
+    return ;
+  }
+
+  path_number--;
+
+  for (int i = 0; i < (BZC + 1); i++) {
+    current_bzc[i] = bezier_curve_positions[path_number][i];
+  }
+
+  for (int i = 0; i < BZC + 1; i++) {
+    std::cout << current_bzc[int(i)][0] << "\\"
+              << current_bzc[int(i)][1] << std::endl;
+  }
+
+  for (int i = 0; i < positions[path_number].size(); i++) {
+    std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+  }
+
+  std::cout << "12\n" << path_number << "\n";
+
+}
+
 // void Paths::save() {
 //   std::cout << "Saving\n";
 //
