@@ -1,5 +1,5 @@
-#include "road_network/Bezier-Curve/simulation.hpp"
-#include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/Multiple-Roads/simulation.hpp"
+#include "road_network/Multiple-Roads/path.hpp"
 
 glm::mat4 rotation_matrix;
 glm::mat4 projection_matrix;

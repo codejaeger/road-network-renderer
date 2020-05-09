@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/Multiple-Roads/path.hpp"
 
 namespace soc {
 
@@ -12,9 +12,9 @@ Path::Path() {
   input_status = true;
 
   std::string vertex_shader_file(
-      "./src/Bezier-Curve/vertex-shaders/v_bezier.glsl");
+      "./src/Multiple-Roads/vertex-shaders/v_bezier.glsl");
   std::string fragment_shader_file(
-      "./src/Bezier-Curve/fragment-shaders/f_bezier.glsl");
+      "./src/Multiple-Roads/fragment-shaders/f_bezier.glsl");
 
   std::vector<GLuint> shaderList;
   shaderList.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));

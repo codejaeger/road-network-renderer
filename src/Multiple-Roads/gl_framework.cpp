@@ -1,5 +1,5 @@
-#include "road_network/Bezier-Curve/gl_framework.hpp"
-#include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/Multiple-Roads/gl_framework.hpp"
+#include "road_network/Multiple-Roads/path.hpp"
 
 extern GLfloat c_xrot, c_yrot, c_zrot;
 extern soc::Path *p;
