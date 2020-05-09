@@ -10,11 +10,6 @@ Paths::Paths() {
   }
 
   path_number = 0;
-  bezier_curve_positions.push_back(new glm::vec2[BZC + 1]);
-
-  for (int i = 0; i < (BZC + 1); i++) {
-    bezier_curve_positions[path_number][i] = glm::vec2(0, 0);
-  }
 
   positions.push_back(*(new std::vector<glm::vec2>));
   input_status = true;
@@ -93,16 +88,15 @@ void Paths::positionsToCurve() {
   float n = BZC;
   for (float i = 0; i <= n; i++) {
     std::vector<glm::vec2> pos = bezier_curve_point(positions[path_number], (i / n));
-    bezier_curve_positions[path_number][int(i)] = pos[0];
     current_bzc[int(i)] = pos[0];
   }
 
   // // Prints all the interpolated points
-  // for (int i = 0; i < BZC + 1; i++) {
-  //   std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
-  //             << bezier_curve_positions[path_number][int(i)][1] << std::endl;
-  // }
-  // std::cout <<"\n\n";
+  for (int i = 0; i < BZC + 1; i++) {
+    std::cout << current_bzc[int(i)][0] << "\\"
+              << current_bzc[int(i)][1] << std::endl;
+  }
+  std::cout <<"\n\n";
 }
 
 void Paths::renderLine() {
@@ -122,18 +116,11 @@ void Paths::next() {
   if (positions.size() - 1 > path_number) {
     path_number++;
 
-    for (int i = 0; i < (BZC + 1); i++) {
-      current_bzc[i] = bezier_curve_positions[path_number][i];
-    }
-
-    // for (int i = 0; i < BZC + 1; i++) {
-    //   std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
-    //             << bezier_curve_positions[path_number][int(i)][1] << std::endl;
-    // }
-
     for (int i = 0; i < positions[path_number].size(); i++) {
       std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
     }
+
+    positionsToCurve();
 
     std::cout << "10\n" << path_number << "\n";
 
@@ -146,16 +133,9 @@ void Paths::next() {
     current_bzc[i] = glm::vec2(0, 0);
   }
 
-  // for (int i = 0; i < BZC + 1; i++) {
-  //   std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
-  //             << bezier_curve_positions[path_number][int(i)][1] << std::endl;
-  // }
-
   for (int i = 0; i < positions[path_number].size(); i++) {
     std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
   }
-
-  bezier_curve_positions.push_back(new glm::vec2[BZC + 1]);
 
   positions.push_back(*(new std::vector<glm::vec2>));
 
@@ -174,18 +154,11 @@ void Paths::previous() {
 
   path_number--;
 
-  for (int i = 0; i < (BZC + 1); i++) {
-    current_bzc[i] = bezier_curve_positions[path_number][i];
-  }
-
-  // for (int i = 0; i < BZC + 1; i++) {
-  //   std::cout << current_bzc[int(i)][0] << "\\"
-  //             << current_bzc[int(i)][1] << std::endl;
-  // }
-
   for (int i = 0; i < positions[path_number].size(); i++) {
     std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
   }
+
+  positionsToCurve();
 
   std::cout << "12\n" << path_number << "\n";
 

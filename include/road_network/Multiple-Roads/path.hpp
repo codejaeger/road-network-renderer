@@ -26,9 +26,8 @@ namespace soc {
 class Paths {
 
 private:
-  std::vector< std::vector<glm::vec2> > positions;
-  std::vector<glm::vec2 ( * )> bezier_curve_positions;
-  glm::vec2 current_bzc[BZC + 1];
+  std::vector< std::vector<glm::vec2> > positions; // stores all the control points
+  glm::vec2 current_bzc[BZC + 1]; // for rendering
   bool input_status;
   int path_number;
   GLuint vb, vao;
