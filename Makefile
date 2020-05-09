@@ -15,7 +15,6 @@ SRCDIR2=./src/Bezier-Curve
 
 SHADERCPP=./src/shader_util.cpp
 SHADEROBJ=$(OBJECTFILES)/shader_util.o
-PATHOBJ=$(OBJECTFILES)/path.o
 
 BIN1=$(BINDIR1)/road-network-renderer
 BIN2=$(BINDIR1)/road_io
