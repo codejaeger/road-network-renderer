@@ -1,19 +1,9 @@
 #include "road_network/Multiple-Roads/simulation.hpp"
 #include "road_network/Multiple-Roads/path.hpp"
 
-glm::mat4 rotation_matrix;
-glm::mat4 projection_matrix;
-glm::mat4 c_rotation_matrix;
-glm::mat4 lookat_matrix;
+soc::Paths *p;
 
-glm::mat4 model_matrix;
-glm::mat4 view_matrix;
-
-glm::mat4 modelview_matrix;
-
-soc::Path *p;
-
-void initBuffersGL(void) { p = new soc::Path(); }
+void initBuffersGL(void) { p = new soc::Paths(); }
 
 void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

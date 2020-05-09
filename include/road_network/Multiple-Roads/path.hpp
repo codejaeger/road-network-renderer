@@ -23,7 +23,7 @@
 
 namespace soc {
 
-class Path {
+class Paths {
 
 private:
   std::vector<glm::vec2> positions;
@@ -36,7 +36,7 @@ private:
                                             float ratio);
 
 public:
-  Path();
+  Paths();
   void getPoints(GLFWwindow *window);
   void positionsToCurve();
   void renderLine();

@@ -2,7 +2,7 @@
 #include "road_network/Multiple-Roads/path.hpp"
 
 extern GLfloat c_xrot, c_yrot, c_zrot;
-extern soc::Path *p;
+extern soc::Paths *p;
 
 namespace soc {
 // Initialize GL State

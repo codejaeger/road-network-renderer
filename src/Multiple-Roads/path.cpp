@@ -4,7 +4,7 @@
 
 namespace soc {
 
-Path::Path() {
+Paths::Paths() {
   for (int i = 0; i < (BZC + 1); i++) {
     bezier_curve_positions[i] = glm::vec2(0, 0);
   }
@@ -36,7 +36,7 @@ Path::Path() {
   glVertexAttribPointer(v_position, 2, GL_FLOAT, GL_FALSE, 0, (void *)(0));
 }
 
-std::vector<glm::vec2> Path::bezier_curve_point(std::vector<glm::vec2> pos,
+std::vector<glm::vec2> Paths::bezier_curve_point(std::vector<glm::vec2> pos,
                                                 float ratio) {
   // For logic goto
   //   https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Higher-order_curves
@@ -54,7 +54,7 @@ std::vector<glm::vec2> Path::bezier_curve_point(std::vector<glm::vec2> pos,
   return bezier_curve_point(new_pos, ratio);
 }
 
-void Path::getPoints(GLFWwindow *window) {
+void Paths::getPoints(GLFWwindow *window) {
   // Get the postition of the mouse-click w.r.t the top-left corner
   double x, y;
   glfwGetCursorPos(window, &x, &y);
@@ -76,7 +76,7 @@ void Path::getPoints(GLFWwindow *window) {
   positionsToCurve();
 }
 
-void Path::positionsToCurve() {
+void Paths::positionsToCurve() {
   // Prints all the control points given by user
   // for (int i = 0; i < positions.size(); i++) {
   //   std::cout << positions[i][0] << ", " << positions[i][1] << std::endl;
@@ -97,7 +97,7 @@ void Path::positionsToCurve() {
   // std::cout <<"\n\n";
 }
 
-void Path::renderLine() {
+void Paths::renderLine() {
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glUseProgram(shaderProgram);
   glBindVertexArray(vao);
@@ -112,7 +112,7 @@ void Path::renderLine() {
   }
 }
 
-void Path::save() {
+void Paths::save() {
   std::cout << "Saving\n";
 
   std::fstream fp;
@@ -132,7 +132,7 @@ void Path::save() {
   fp.close();
 }
 
-void Path::load() {
+void Paths::load() {
   std::cout << "Loading\n";
 
   std::fstream fp;
@@ -161,17 +161,17 @@ void Path::load() {
   stop();
 }
 
-void Path::stop() {
+void Paths::stop() {
   // Stops further input of control points.
   input_status = false;
 }
 
-void Path::resume() {
+void Paths::resume() {
   // Resumes input of control points if stopped.
   input_status = true;
 }
 
-bool Path::return_input_status() {
+bool Paths::return_input_status() {
   // Returns input_status (As it is a private variable)
   return input_status;
 }
