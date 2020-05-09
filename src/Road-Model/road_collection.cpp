@@ -1,3 +1,5 @@
+#include <string>
+
 #include "road_network/Road-Model/road_collection.hpp"
 extern double PI;
 namespace soc
@@ -17,14 +19,14 @@ namespace soc
 		tangent_directions.clear();
 		road_corners.clear();
 
-		std::ifstream myData(s);   
+		std::ifstream myData(s.c_str());
 		if(!myData.good()){
 			std::cerr<<"Can't read the raw file"<<std::cout;
-		}                                        
+		}
 		int i = 0, j =0;
 		char buf[sizeof(glm::vec2)];
 		while (myData.read(buf,sizeof(buf)))
-		{ 
+		{
 			bezier_positions.resize(j+1);
 			glm::vec2 v;
 	    	memcpy(&v, buf, sizeof(glm::vec2));
@@ -33,7 +35,7 @@ namespace soc
 	    	j=i/51;
 		}
 		num_road_networks=j+1;
-		//initialize the Road and RoadSep object vectors using the values stores in bezier-curve positions 
+		//initialize the Road and RoadSep object vectors using the values stores in bezier-curve positions
 		fill_tangent_directions();
 		fill_road_corners();
 		initRoads();
@@ -51,7 +53,7 @@ namespace soc
 					tangent_directions[i].push_back(normalize(bezier_positions[i][j+1] - bezier_positions[i][j]));
 				else if(j == (bezier_positions[i].size()-1))
 					tangent_directions[i].push_back(normalize(bezier_positions[i][j] - bezier_positions[i][j-1]));
-				else 
+				else
 					tangent_directions[i].push_back(normalize(bezier_positions[i][j+1] - bezier_positions[i][j-1]));
 			}
 		}
@@ -101,7 +103,7 @@ namespace soc
 			{
 				RoadSep rs_temp(glm::vec3(0, 0, 0), 0.02);
 				rs_temp.change_parameters(bezier_positions[i][j][0], bezier_positions[i][j][1], road_depth/2, 0, 0, 180/PI * atan(tangent_directions[i][j][1]/tangent_directions[i][j][0]));
-				rs[i].push_back(rs_temp);			
+				rs[i].push_back(rs_temp);
 			}
 		}
 	}
@@ -137,6 +139,6 @@ namespace soc
 		}
 	}
 	RoadNetwork::~RoadNetwork(){
-		
+
 	}
 }
