@@ -104,10 +104,8 @@ void Paths::renderLine() {
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glUseProgram(shaderProgram);
   glBindVertexArray(vao);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_curve_positions), NULL,
-               GL_DYNAMIC_DRAW);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_curve_positions),
-                  bezier_curve_positions);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(current_bzc), NULL, GL_DYNAMIC_DRAW);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(current_bzc), current_bzc);
 
   // Joins all the interpolated points, thus creating the approx Bezier Curve
   for (int i = 0; i < BZC; i++) {
