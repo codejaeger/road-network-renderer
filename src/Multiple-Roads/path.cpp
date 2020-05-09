@@ -151,14 +151,17 @@ void Paths::next() {
               << bezier_curve_positions[path_number][int(i)][1] << std::endl;
   }
 
-  std::cout <<"11\n\n";
+  for (int i = 0; i < positions[path_number].size(); i++) {
+    std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+  }
 
   bezier_curve_positions.push_back(new glm::vec2[BZC + 1]);
 
-  current_cp.clear();
-  positions.push_back(current_cp);
+  positions.push_back(*(new std::vector<glm::vec2>));
 
   path_number++;
+
+  std::cout << "11\n" << path_number << "\n";
 }
 
 // void Paths::save() {
