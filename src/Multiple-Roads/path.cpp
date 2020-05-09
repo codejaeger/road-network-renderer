@@ -98,11 +98,11 @@ void Paths::positionsToCurve() {
   }
 
   // // Prints all the interpolated points
-  for (int i = 0; i < BZC + 1; i++) {
-    std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
-              << bezier_curve_positions[path_number][int(i)][1] << std::endl;
-  }
-  std::cout <<"\n\n";
+  // for (int i = 0; i < BZC + 1; i++) {
+  //   std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
+  //             << bezier_curve_positions[path_number][int(i)][1] << std::endl;
+  // }
+  // std::cout <<"\n\n";
 }
 
 void Paths::renderLine() {
@@ -126,10 +126,10 @@ void Paths::next() {
       current_bzc[i] = bezier_curve_positions[path_number][i];
     }
 
-    for (int i = 0; i < BZC + 1; i++) {
-      std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
-                << bezier_curve_positions[path_number][int(i)][1] << std::endl;
-    }
+    // for (int i = 0; i < BZC + 1; i++) {
+    //   std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
+    //             << bezier_curve_positions[path_number][int(i)][1] << std::endl;
+    // }
 
     for (int i = 0; i < positions[path_number].size(); i++) {
       std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
@@ -146,10 +146,10 @@ void Paths::next() {
     current_bzc[i] = glm::vec2(0, 0);
   }
 
-  for (int i = 0; i < BZC + 1; i++) {
-    std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
-              << bezier_curve_positions[path_number][int(i)][1] << std::endl;
-  }
+  // for (int i = 0; i < BZC + 1; i++) {
+  //   std::cout << bezier_curve_positions[path_number][int(i)][0] << "\\"
+  //             << bezier_curve_positions[path_number][int(i)][1] << std::endl;
+  // }
 
   for (int i = 0; i < positions[path_number].size(); i++) {
     std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
@@ -176,10 +176,10 @@ void Paths::previous() {
     current_bzc[i] = bezier_curve_positions[path_number][i];
   }
 
-  for (int i = 0; i < BZC + 1; i++) {
-    std::cout << current_bzc[int(i)][0] << "\\"
-              << current_bzc[int(i)][1] << std::endl;
-  }
+  // for (int i = 0; i < BZC + 1; i++) {
+  //   std::cout << current_bzc[int(i)][0] << "\\"
+  //             << current_bzc[int(i)][1] << std::endl;
+  // }
 
   for (int i = 0; i < positions[path_number].size(); i++) {
     std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
