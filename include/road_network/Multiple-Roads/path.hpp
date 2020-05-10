@@ -31,7 +31,7 @@ private:
   // stores all the control points
   std::vector< std::vector<glm::vec2> > positions;
   // for rendering current path
-  std::vector<glm::vec2> current;
+  std::vector<glm::vec2> current_bzc;
   bool input_status;
   int path_number;
   GLuint vb, vao;

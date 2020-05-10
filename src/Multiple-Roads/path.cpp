@@ -81,20 +81,20 @@ void Paths::positionsToCurve() {
   // }
 
   // Stores the newly processed Bezier Curve interpolated points
-  current.clear();
+  current_bzc.clear();
   float n = interpolate_count() + 1; // +1 is to avoid unexpected things
   if (!positions[path_number].empty()) {
     for (float i = 0; i <= n; i++) {
       std::vector<glm::vec2> pos =
           bezier_curve_point(positions[path_number], (i / n));
-      current.push_back(pos[0]);
+      current_bzc.push_back(pos[0]);
     }
   }
 
   // Prints all the interpolated points for the current path
-  // for (int i = 0; i < current.size(); i++) {
-  //   std::cout << current[int(i)][0] << "\\"
-  //             << current[int(i)][1] << std::endl;
+  // for (int i = 0; i < current_bzc.size(); i++) {
+  //   std::cout << current_bzc[int(i)][0] << "\\"
+  //             << current_bzc[int(i)][1] << std::endl;
   // }
   // std::cout <<"\n\n";
 }
@@ -129,18 +129,18 @@ void Paths::renderLine() {
   glBindVertexArray(vao);
 
   // Convert the vector storing interpolated points to array
-  glm::vec2 cur_[current.size()];
-  for (int i = 0; i < current.size(); i++) {
-    cur_[i] = current[i];
+  glm::vec2 cur[current_bzc.size()];
+  for (int i = 0; i < current_bzc.size(); i++) {
+    cur[i] = current_bzc[i];
   }
 
   // Buffering the array to GPU
-  glBufferData(GL_ARRAY_BUFFER, sizeof(cur_), NULL, GL_DYNAMIC_DRAW);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cur_), cur_);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(cur), NULL, GL_DYNAMIC_DRAW);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cur), cur);
 
   // Joins consecutive interpolated points
   // Creates the approx Bezier Curve
-  for (int i = 0; i < int(current.size()) - 1; i++) {
+  for (int i = 0; i < int(current_bzc.size()) - 1; i++) {
     glDrawArrays(GL_LINE_STRIP, i, 2);
   }
 }
@@ -243,7 +243,7 @@ void Paths::save() {
   for (int i = 0; i < positions.size(); i++) {
     path_number = i;
     positionsToCurve();
-    ipsize += (current.size() + 1);
+    ipsize += (current_bzc.size() + 1);
   }
 
   // Generate an array of that size
@@ -260,10 +260,10 @@ void Paths::save() {
   for (int i = 0; i < positions.size(); i++) {
     path_number = i;
     positionsToCurve();
-    storeip[countip] = glm::vec2(int(current.size()), 0);
+    storeip[countip] = glm::vec2(int(current_bzc.size()), 0);
     countip++;
-    for (int j = 0; j < current.size(); j++) {
-      storeip[countip] = current[j];
+    for (int j = 0; j < current_bzc.size(); j++) {
+      storeip[countip] = current_bzc[j];
       countip++;
     }
   }
