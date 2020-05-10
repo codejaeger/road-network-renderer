@@ -298,7 +298,7 @@ void Road::fill_border(int a, int b, int c, int d, glm::vec4 *positions) {
 
 // draw the cylinders in between the cuboidal slabs of the border
 void Road::cylinders(float d) {
-  float r = calc_dist(x1, y1, x2, y2) / 200;
+  float r = calc_dist(x1, y1, x2, y2) / 50;
   float div = depth / 5;
   float sec = PI / 5;
 

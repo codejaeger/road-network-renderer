@@ -110,7 +110,7 @@ void RoadNetwork::initRoads() {
 void RoadNetwork::initRoadSeps() {
   rs.resize(bezier_positions.size());
   for (int i = 0; i < bezier_positions.size(); i++) {
-    for (int j = 5; j < bezier_positions[i].size() - 5; j += 20) {
+    for (int j = 5; j < bezier_positions[i].size() - 5; j += 15) {
       RoadSep rs_temp(glm::vec3(0, 0, 0), 0.02);
       rs_temp.change_parameters(bezier_positions[i][j][0],
                                 bezier_positions[i][j][1], road_depth / 2, 0, 0,

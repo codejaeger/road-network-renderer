@@ -21,7 +21,7 @@
 #endif
 
 // Average Interpolation Distance
-#define AIPD (1.0 / 72.0)
+#define AIPD (1.0 / 30.0)
 
 namespace soc {
 
