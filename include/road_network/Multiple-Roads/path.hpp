@@ -49,11 +49,11 @@ public:
   void renderLine();
   void next();
   void previous();
+  void delete_last();
   void save();
   void load();
-  void resume();
   void stop();
-  void delete_last();
+  void resume();
   bool return_input_status();
 };
 

@@ -5,11 +5,16 @@
 namespace soc {
 
 Paths::Paths() {
+  // Path number initialized
   path_number = 0;
 
+  // First path initialized
   positions.push_back(std::vector<glm::vec2>(0));
+
+  // Input of control point starts
   input_status = true;
 
+  // Shaders
   std::string vertex_shader_file(
       "./src/Multiple-Roads/vertex-shaders/v_bezier.glsl");
   std::string fragment_shader_file(
@@ -24,6 +29,7 @@ Paths::Paths() {
   glUseProgram(shaderProgram);
   v_position = glGetAttribLocation(shaderProgram, "vPosition");
 
+  // Create buffer which is used to render paths
   glGenBuffers(1, &vb);
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glGenVertexArrays(1, &vao);
@@ -51,11 +57,14 @@ std::vector<glm::vec2> Paths::bezier_curve_point(std::vector<glm::vec2> pos,
 }
 
 float Paths::distance(glm::vec2 &a, glm::vec2 &b) {
+  // Basic distance formula
   return sqrt(((a[0] - b[0]) * (a[0] - b[0])) +
               ((a[1] - b[1]) * (a[1] - b[1])));
 }
 
 int Paths::interpolate_count() {
+  // Calculating interpolation counts
+  // It controls the distance between interpolation points
   float tot_dis = 0.0;
   for (int i = 0; i < int(positions[path_number].size()) - 1; i++) {
     tot_dis +=
@@ -65,7 +74,7 @@ int Paths::interpolate_count() {
 }
 
 void Paths::positionsToCurve() {
-  // Prints all the control points given by user
+  // Prints all the control points given by user for the current path
   // for (int i = 0; i < positions[path_number].size(); i++) {
   //   std::cout << positions[path_number][i][0] << ", "
   //             << positions[path_number][i][1] << std::endl;
@@ -73,9 +82,8 @@ void Paths::positionsToCurve() {
 
   // Stores the newly processed Bezier Curve interpolated points
   current.clear();
-  float n = interpolate_count() + 1;
+  float n = interpolate_count() + 1; // +1 is to avoid unexpected things
   if (!positions[path_number].empty()) {
-    // std::cout << n << "AAA\n";
     for (float i = 0; i <= n; i++) {
       std::vector<glm::vec2> pos =
           bezier_curve_point(positions[path_number], (i / n));
@@ -83,7 +91,7 @@ void Paths::positionsToCurve() {
     }
   }
 
-  // Prints all the interpolated points
+  // Prints all the interpolated points for the current path
   // for (int i = 0; i < current.size(); i++) {
   //   std::cout << current[int(i)][0] << "\\"
   //             << current[int(i)][1] << std::endl;
@@ -110,112 +118,100 @@ void Paths::getPoints(GLFWwindow *window) {
   // Need this as a click lasts few milliseconds
   usleep(200000);
 
+  // Converts the control points to interpolated points.
   positionsToCurve();
 }
 
 void Paths::renderLine() {
+  // Bind the buffer for rendering path
   glBindBuffer(GL_ARRAY_BUFFER, vb);
   glUseProgram(shaderProgram);
   glBindVertexArray(vao);
+
+  // Convert the vector storing interpolated points to array
   glm::vec2 cur_[current.size()];
   for (int i = 0; i < current.size(); i++) {
     cur_[i] = current[i];
   }
+
+  // Buffering the array to GPU
   glBufferData(GL_ARRAY_BUFFER, sizeof(cur_), NULL, GL_DYNAMIC_DRAW);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cur_), cur_);
 
-  // Joins all the interpolated points, thus creating the approx Bezier Curve
+  // Joins consecutive interpolated points
+  // Creates the approx Bezier Curve
   for (int i = 0; i < int(current.size()) - 1; i++) {
     glDrawArrays(GL_LINE_STRIP, i, 2);
   }
 }
 
 void Paths::next() {
+  // If the next path already exists
   if (int(positions.size()) - 1 > path_number) {
-    path_number++;
-
-    // for (int i = 0; i < positions[path_number].size(); i++) {
-    //   std::cout << positions[path_number][i][0] << ", "
-    //             << positions[path_number][i][1] << std::endl;
-    // }
-
-    positionsToCurve();
-
-    // std::cout << "10\n" << path_number << "\n";
-
     stop();
-
-    return;
+  }
+  // If the next path doesn't exist then create it and
+  else {
+    positions.push_back(std::vector<glm::vec2>(0));
+    resume();
   }
 
-  // for (int i = 0; i < positions[path_number].size(); i++) {
-  //   std::cout << positions[path_number][i][0] << ", "
-  //             << positions[path_number][i][1] << std::endl;
-  // }
-
-  positions.push_back(std::vector<glm::vec2>(0));
-  current.clear();
-
+  // Move to next path number
   path_number++;
 
-  // std::cout << "11\n" << path_number << "\n";
-
-  resume();
+  // Update the vector storing path's interpolated points
+  positionsToCurve();
 }
 
 void Paths::previous() {
-  if (path_number == 0) {
-    stop();
-    return;
+  // If you are not at path 1
+  if (path_number != 0) {
+    path_number--;
+    // Converts the control points to interpolated points.
+    positionsToCurve();
   }
-
-  path_number--;
-
-  // for (int i = 0; i < positions[path_number].size(); i++) {
-  //   std::cout << positions[path_number][i][0] << ", "
-  //             << positions[path_number][i][1] << std::endl;
-  // }
-
-  positionsToCurve();
-
-  // std::cout << "12\n" << path_number << "\n";
-
   stop();
 }
 
 void Paths::delete_last() {
+  // If there is a contol point in this path, then deleter the last one.
   if (positions[path_number].size() > 0) {
     positions[path_number].pop_back();
+    // Converts the control points to interpolated points.
     positionsToCurve();
   }
-
-  return;
 }
 
 void Paths::save() {
-  std::cout << "Saving CP\n";
-
   std::fstream fp;
+
+  // Open .min.raw file
+  std::cout << "Saving CP\n";
   fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::out);
 
+  // Check file's condition
   if (!fp.good()) {
     std::cout << "could not read from the min raw file" << std::endl;
     return;
   }
 
+  // Find the size of array of "values to store"
   int cpsize = 0;
   for (int i = 0; i < positions.size(); i++) {
     cpsize += (positions[i].size() + 1);
   }
 
-  // std::cout << cpsize << "BBB\n";
+  // Generate an array of that size
   glm::vec2 storecp[cpsize + 1];
 
+  // Start the counter
   int countcp = 0;
 
+  // First, store the number of paths
   storecp[countcp] = glm::vec2(int(positions.size()), 0);
   countcp++;
 
+  // Recursively store the number of points then the points
   for (int i = 0; i < positions.size(); i++) {
     storecp[countcp] = glm::vec2(int(positions[i].size()), 0);
     countcp++;
@@ -225,31 +221,42 @@ void Paths::save() {
     }
   }
 
+  // Write to the file, then close it
   fp.write((char *)&storecp, sizeof(storecp));
   fp.close();
 
+  // Open .raw file
   std::cout << "Saving IP\n";
-
   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
 
+  // Check file's condition
+  if (!fp.good()) {
+    std::cout << "could not read from the min raw file" << std::endl;
+    return;
+  }
+
+  // Save the current path number
   int save_pn = path_number;
 
+  // Find the size of array of "values to store"
   int ipsize = 0;
-  // std::cout << positions.size() << "SSS\n";
   for (int i = 0; i < positions.size(); i++) {
-    // std::cout << i << "@@";
     path_number = i;
     positionsToCurve();
     ipsize += (current.size() + 1);
   }
 
-  // std::cout << "\n" << ipsize << "CCC\n";
+  // Generate an array of that size
   glm::vec2 storeip[ipsize + 1];
 
+  // Start the counter
   int countip = 0;
+
+  // First, store the number of paths
   storeip[countip] = glm::vec2(int(positions.size()), 0);
   countip++;
 
+  // Recursively store the number of points then the points
   for (int i = 0; i < positions.size(); i++) {
     path_number = i;
     positionsToCurve();
@@ -261,27 +268,37 @@ void Paths::save() {
     }
   }
 
+  // Reload the path where 'S' was pressed
   path_number = save_pn;
+  // Converts the control points to interpolated points.
+  positionsToCurve();
 
+  // Write to the file, then close it
   fp.write((char *)&storeip, sizeof(storeip));
   fp.close();
 }
 
 void Paths::load() {
-  std::cout << "Loading\n";
-
   std::fstream fp;
+
+  // Open .min.raw file
+  std::cout << "Loading\n";
   fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::in);
 
+  // Check file's condition
   if (!fp.good()) {
     std::cout << "could not read from the min raw file" << std::endl;
     return;
   }
 
+  // Clear the vector storing control points
   positions.clear();
 
+  // Find the number of paths
   glm::vec2 total_paths;
   fp.read((char *)&total_paths, sizeof(total_paths));
+
+  // Recursively find the number of points then store the points
   for (int i = 0; i < int(total_paths[0]); i++) {
     positions.resize(i + 1);
     glm::vec2 num;
@@ -293,6 +310,7 @@ void Paths::load() {
     }
   }
 
+  // Close the file
   fp.close();
 
   path_number = 0;

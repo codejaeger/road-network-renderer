@@ -7,7 +7,6 @@ void initBuffersGL(void) { p = new soc::Paths(); }
 
 void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   p->renderLine();
 }
 
@@ -72,6 +71,7 @@ int main(int argc, char **argv) {
   // Initialize GL state
   soc::initGL();
   initBuffersGL();
+
   // Loop until the user closes the window
   while (glfwWindowShouldClose(window) == 0) {
     // Render here
@@ -84,7 +84,11 @@ int main(int argc, char **argv) {
     // Poll for and process events
     glfwPollEvents();
   }
+
+  // Deallocate memory
   deleteBuffersGL();
+
+  // Close the window
   glfwTerminate();
 
   return 0;
