@@ -38,13 +38,13 @@ class RoadNetwork {
   glm::vec2 normalize(glm::vec2 v);
   void initRoads();
   void initRoadSeps();
+
 public:
   RoadNetwork(float rd, float half_width, std::string file_name);
   ~RoadNetwork();
   void initRoadNetwork();
   void renderRoads();
   void renderRoadSeps();
-
 };
 
 } // End namespace soc

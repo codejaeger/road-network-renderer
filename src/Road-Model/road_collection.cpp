@@ -22,15 +22,15 @@ void RoadNetwork::initRoadNetwork() {
 
   std::fstream fp;
   fp.open(file_name.c_str(), std::ios::binary | std::ios::in);
-  if(!fp.good()){
-    std::cout<<"could not read from the raw file"<<std::endl;
+  if (!fp.good()) {
+    std::cout << "could not read from the raw file" << std::endl;
     return;
   }
   glm::vec2 total_paths;
   fp.read((char *)&total_paths, sizeof(total_paths));
-  num_road_networks=total_paths[0];
+  num_road_networks = total_paths[0];
   for (int i = 0; i < int(total_paths[0]); i++) {
-    bezier_positions.resize(i+1);
+    bezier_positions.resize(i + 1);
     glm::vec2 num;
     fp.read((char *)&num, sizeof(num));
     glm::vec2 ip[int(num[0])];

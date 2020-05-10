@@ -198,8 +198,8 @@ void Paths::save() {
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::out);
 
-  if(!fp.good()){
-    std::cout<<"could not read from the min raw file"<<std::endl;
+  if (!fp.good()) {
+    std::cout << "could not read from the min raw file" << std::endl;
     return;
   }
 
@@ -273,8 +273,8 @@ void Paths::load() {
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::in);
 
-  if(!fp.good()){
-    std::cout<<"could not read from the min raw file"<<std::endl;
+  if (!fp.good()) {
+    std::cout << "could not read from the min raw file" << std::endl;
     return;
   }
 
@@ -283,7 +283,7 @@ void Paths::load() {
   glm::vec2 total_paths;
   fp.read((char *)&total_paths, sizeof(total_paths));
   for (int i = 0; i < int(total_paths[0]); i++) {
-    positions.resize(i+1);
+    positions.resize(i + 1);
     glm::vec2 num;
     fp.read((char *)&num, sizeof(num));
     glm::vec2 cp[int(num[0])];

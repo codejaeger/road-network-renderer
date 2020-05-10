@@ -55,9 +55,7 @@ void renderGL(GLFWwindow *window) {
   rn->renderRoadSeps();
 }
 
-void deleteBuffersGL() {
-  delete rn;
-}
+void deleteBuffersGL() { delete rn; }
 
 int main(int argc, char **argv) {
   // The pointer to the GLFW window

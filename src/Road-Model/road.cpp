@@ -334,7 +334,6 @@ void Road::cylinders(float d) {
 
   end_spacing_b = distance - dist;
 
-
   // cylinders for the upper part of the road
   mpx1 = (x2 + k2[0]) / 2;
   mpy1 = (y2 + k2[1]) / 2;

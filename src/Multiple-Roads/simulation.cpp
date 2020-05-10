@@ -10,9 +10,8 @@ void renderGL(GLFWwindow *window) {
 
   p->renderLine();
 }
-void deleteBuffersGL(){
-  delete p;
-}
+
+void deleteBuffersGL() { delete p; }
 
 int main(int argc, char **argv) {
   //! The pointer to the GLFW window
