@@ -19,21 +19,27 @@ void RoadNetwork::initRoadNetwork(std::string s) {
   tangent_directions.clear();
   road_corners.clear();
 
-  std::ifstream myData(s.c_str());
-  if (!myData.good()) {
-    std::cerr << "Can't read the raw file" << std::cout;
+  std::fstream fp;
+  fp.open(s, std::ios::binary | std::ios::in);
+  if(!fp.good()){
+    std::cout<<"could not read from the raw file"<<std::endl;
+    return;
   }
-  int i = 0, j = 0;
-  char buf[sizeof(glm::vec2)];
-  while (myData.read(buf, sizeof(buf))) {
-    bezier_positions.resize(j + 1);
-    glm::vec2 v;
-    memcpy(&v, buf, sizeof(glm::vec2));
-    bezier_positions[j].push_back(v);
-    i++;
-    j = i / 51;
+  glm::vec2 total_paths;
+  fp.read((char *)&total_paths, sizeof(total_paths));
+  num_road_networks=total_paths[0];
+  for (int i = 0; i < int(total_paths[0]); i++) {
+    bezier_positions.resize(i+1);
+    glm::vec2 num;
+    fp.read((char *)&num, sizeof(num));
+    glm::vec2 ip[int(num[0])];
+    fp.read((char *)&ip, sizeof(ip));
+    for (int j = 0; j < int(num[0]); j++) {
+      bezier_positions[i].push_back(ip[j]);
+    }
   }
-  num_road_networks = j + 1;
+  fp.close();
+
   // initialize the Road and RoadSep object vectors
   // using the values stores in bezier-curve positions
   fill_tangent_directions();
@@ -104,7 +110,7 @@ void RoadNetwork::initRoads() {
 void RoadNetwork::initRoadSeps() {
   rs.resize(bezier_positions.size());
   for (int i = 0; i < bezier_positions.size(); i++) {
-    for (int j = 5; j < bezier_positions[i].size() - 5; j += 8) {
+    for (int j = 5; j < bezier_positions[i].size() - 5; j += 20) {
       RoadSep rs_temp(glm::vec3(0, 0, 0), 0.02);
       rs_temp.change_parameters(bezier_positions[i][j][0],
                                 bezier_positions[i][j][1], road_depth / 2, 0, 0,

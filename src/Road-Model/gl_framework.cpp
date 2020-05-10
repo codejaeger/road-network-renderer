@@ -2,7 +2,7 @@
 
 extern GLfloat c_xrot, c_yrot, c_zrot;
 extern soc::RoadNetwork *rn;
-
+extern bool enable_perspective;
 namespace soc {
 // Initialize GL State
 void initGL(void) {
@@ -46,6 +46,8 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     rn->initRoadNetwork("./models/Bezier-Model/" + s);
   }
 
+  else if (key == GLFW_KEY_P && action == GLFW_PRESS)
+    enable_perspective = !enable_perspective;
   // press these keys to rotate the model
   else if (key == GLFW_KEY_A)
     c_yrot -= 1.0;

@@ -107,7 +107,7 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, float d,
   border(p2, k2, k3, p3, -d / 2);
   border(p2, k2, k3, p3, 5 * d / 4);
   // generate the cylindrical bars with mutual spacing between centers as 0.08
-  cylinders(0.08f);
+  cylinders(2.0f);
   // creating the shader program using the vertex and fragment shaders
   std::string vertex_shader_file1(
       "./src/Road-Model/vertex-shaders/v_roadsep.glsl");
@@ -298,7 +298,7 @@ void Road::fill_border(int a, int b, int c, int d, glm::vec4 *positions) {
 
 // draw the cylinders in between the cuboidal slabs of the border
 void Road::cylinders(float d) {
-  float r = calc_dist(x1, y1, x2, y2) / 24;
+  float r = calc_dist(x1, y1, x2, y2) / 200;
   float div = depth / 5;
   float sec = PI / 5;
 
@@ -331,7 +331,9 @@ void Road::cylinders(float d) {
     }
     num_cylinders++;
   }
+
   end_spacing_b = distance - dist;
+
 
   // cylinders for the upper part of the road
   mpx1 = (x2 + k2[0]) / 2;

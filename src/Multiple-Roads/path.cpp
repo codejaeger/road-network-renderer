@@ -7,7 +7,7 @@ namespace soc {
 Paths::Paths() {
   path_number = 0;
 
-  positions.push_back(*(new std::vector<glm::vec2>));
+  positions.push_back(std::vector<glm::vec2>(0));
   input_status = true;
 
   std::string vertex_shader_file(
@@ -153,7 +153,7 @@ void Paths::next() {
   //             << positions[path_number][i][1] << std::endl;
   // }
 
-  positions.push_back(*(new std::vector<glm::vec2>));
+  positions.push_back(std::vector<glm::vec2>(0));
   current.clear();
 
   path_number++;
@@ -197,6 +197,11 @@ void Paths::save() {
 
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::out);
+
+  if(!fp.good()){
+    std::cout<<"could not read from the min raw file"<<std::endl;
+    return;
+  }
 
   int cpsize = 0;
   for (int i = 0; i < positions.size(); i++) {
@@ -268,12 +273,17 @@ void Paths::load() {
   std::fstream fp;
   fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::in);
 
+  if(!fp.good()){
+    std::cout<<"could not read from the min raw file"<<std::endl;
+    return;
+  }
+
   positions.clear();
 
   glm::vec2 total_paths;
   fp.read((char *)&total_paths, sizeof(total_paths));
   for (int i = 0; i < int(total_paths[0]); i++) {
-    positions.push_back(*(new std::vector<glm::vec2>));
+    positions.resize(i+1);
     glm::vec2 num;
     fp.read((char *)&num, sizeof(num));
     glm::vec2 cp[int(num[0])];

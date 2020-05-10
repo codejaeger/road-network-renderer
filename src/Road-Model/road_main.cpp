@@ -37,10 +37,10 @@ void renderGL(GLFWwindow *window) {
 
   // Creating the projection matrix
   if (enable_perspective) {
-    projection_matrix = glm::frustum(-7.0, 7.0, -7.0, 7.0, 1.0, 7.0);
+    projection_matrix = glm::frustum(-1.0, 1.0, -1.0, 1.0, 1.0, 7.0);
     // projection_matrix = glm::perspective(glm::radians(90.0),1.0,0.1,5.0);
   } else {
-    projection_matrix = glm::ortho(-2.0, 2.0, -2.0, 2.0, -2.0, 6.0);
+    projection_matrix = glm::ortho(-1.5, 1.5, -1.5, 1.5, -2.0, 5.0);
   }
 
   view_matrix = projection_matrix * lookat_matrix;
@@ -51,6 +51,10 @@ void renderGL(GLFWwindow *window) {
   rn->renderRoads();
   // render the RoadSeps in the RoadNetwork
   rn->renderRoadSeps();
+}
+
+void deleteBuffersGL() {
+  delete rn;
 }
 
 int main(int argc, char **argv) {
@@ -117,7 +121,7 @@ int main(int argc, char **argv) {
     // Poll for and process events
     glfwPollEvents();
   }
-
+  deleteBuffersGL();
   glfwTerminate();
   return 0;
 }
