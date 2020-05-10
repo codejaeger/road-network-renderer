@@ -5,14 +5,15 @@ extern double PI;
 namespace soc {
 
 // initialize the road-depth and road-width vaiable
-RoadNetwork::RoadNetwork(float rd, float half_width) {
+RoadNetwork::RoadNetwork(float rd, float half_width, std::string file) {
   road_depth = rd;
   d = half_width;
   num_road_networks = 0;
+  file_name = "./models/Bezier-Model/" + file;
 }
 
 // fills the bezier_positions after reading from external raw file
-void RoadNetwork::initRoadNetwork(std::string s) {
+void RoadNetwork::initRoadNetwork() {
   r.clear();
   rs.clear();
   bezier_positions.clear();
@@ -20,7 +21,7 @@ void RoadNetwork::initRoadNetwork(std::string s) {
   road_corners.clear();
 
   std::fstream fp;
-  fp.open(s, std::ios::binary | std::ios::in);
+  fp.open(file_name.c_str(), std::ios::binary | std::ios::in);
   if(!fp.good()){
     std::cout<<"could not read from the raw file"<<std::endl;
     return;

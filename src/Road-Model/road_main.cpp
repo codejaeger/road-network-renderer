@@ -12,8 +12,10 @@ glm::mat4 modelview_matrix;
 
 // pointer to RoadNetwork object
 soc::RoadNetwork *rn;
-void initBuffersGL(void) {
-  rn = new soc::RoadNetwork(0.2, 0.3); // road-depth=0.2, road-width=0.6
+
+void initBuffersGL(std::string file) {
+  rn = new soc::RoadNetwork(0.2, 0.3, file); // road-depth=0.2, road-width=0.6
+  rn->initRoadNetwork();
 }
 
 void renderGL(GLFWwindow *window) {
@@ -106,9 +108,15 @@ int main(int argc, char **argv) {
   // To ensure we can capture mouse button being pressed
   glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GL_TRUE);
 
+  std::string file_name;
+  file_name = "1.raw";
+  if (argc > 1) {
+    file_name = argv[1];
+  }
+
   // Initialize GL state
   soc::initGL();
-  initBuffersGL();
+  initBuffersGL(file_name);
   // Loop until the user closes the window
   while (glfwWindowShouldClose(window) == 0) {
     // Render here

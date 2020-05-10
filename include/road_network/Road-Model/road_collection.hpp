@@ -31,6 +31,7 @@ class RoadNetwork {
   // bezier_positions stores the interpolated points after reading from raw file
   std::vector< std::vector<glm::vec2> > tangent_directions;
   std::vector< std::vector<glm::vec2> > road_corners;
+  std::string file_name;
 
   void fill_road_corners();
   void fill_tangent_directions();
@@ -38,9 +39,9 @@ class RoadNetwork {
   void initRoads();
   void initRoadSeps();
 public:
-  RoadNetwork(float rd, float half_width);
+  RoadNetwork(float rd, float half_width, std::string file_name);
   ~RoadNetwork();
-  void initRoadNetwork(std::string s);
+  void initRoadNetwork();
   void renderRoads();
   void renderRoadSeps();
 

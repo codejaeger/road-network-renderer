@@ -3,6 +3,7 @@
 extern GLfloat c_xrot, c_yrot, c_zrot;
 extern soc::RoadNetwork *rn;
 extern bool enable_perspective;
+
 namespace soc {
 // Initialize GL State
 void initGL(void) {
@@ -34,16 +35,6 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
     std::cout << "Escaped\n";
     glfwSetWindowShouldClose(window, GL_TRUE);
-  }
-
-  else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-    // initialize the road network from the file
-    // which contains the points along the roads
-    std::cout << "Enter the name of the raw file to draw the road-network"
-              << std::endl;
-    std::string s;
-    std::cin >> s;
-    rn->initRoadNetwork("./models/Bezier-Model/" + s);
   }
 
   else if (key == GLFW_KEY_P && action == GLFW_PRESS)
