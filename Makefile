@@ -1,3 +1,5 @@
+UNAME_S := $(shell uname -s)
+
 OPENGLLIB= -lGL
 GLEWLIB= -lGLEW
 GLFWLIB = -lglfw
@@ -27,20 +29,36 @@ SRCS3=$(SRCDIR3)/path.cpp $(SRCDIR3)/gl_framework.cpp $(SRCDIR3)/simulation.cpp
 all: $(SHADEROBJ) $(BIN1) $(BIN2) $(BIN3)
 
 $(BIN1): $(SRCS1) $(SHADEROBJ)
-	g++ $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ) $(LDFLAGS) $(LIBS) #For linux
-	# g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ) # for mac os
+	@if [ $(UNAME_S) = "Linux" ]; then\
+		g++ $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
+  fi
+	@if [ $(UNAME_S) = "Darwin" ]; then\
+		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) -o $(BIN1) $(SHADEROBJ);\
+  fi
 
 $(BIN2): $(SHADEROBJ)
-	g++ $(INCLUDES) $(SRCS2) -o $(BIN2) $(SHADEROBJ) $(LDFLAGS) $(LIBS) #For linux
-	# g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS2) -o $(BIN2) $(SHADEROBJ) # for mac os
+	@if [ $(UNAME_S) = "Linux" ]; then\
+		g++ $(INCLUDES) $(SRCS2) -o $(BIN2) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
+  fi
+	@if [ $(UNAME_S) = "Darwin" ]; then\
+		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS2) -o $(BIN2) $(SHADEROBJ);\
+  fi
 
 $(BIN3): $(SHADEROBJ)
-	g++ $(INCLUDES) $(SRCS3) -o $(BIN3) $(SHADEROBJ) $(LDFLAGS) $(LIBS) #For linux
-	# g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS3) -o $(BIN3) $(SHADEROBJ) # for mac os
+	@if [ $(UNAME_S) = "Linux" ]; then\
+		g++ $(INCLUDES) $(SRCS3) -o $(BIN3) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
+  fi
+	@if [ $(UNAME_S) = "Darwin" ]; then\
+		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS3) -o $(BIN3) $(SHADEROBJ);\
+  fi
 
 $(SHADEROBJ): $(SHADERCPP)
-	g++ $(INCLUDES) -c $(SHADERCPP) -o $(SHADEROBJ) $(LDFLAGS) $(LIBS) #For linux
-	# g++ $(INCLUDES) -c $(SHADERCPP) $(FRAMEWORKS) -o $(SHADEROBJ) #For mac
+	@if [ $(UNAME_S) = "Linux" ]; then\
+		g++ $(INCLUDES) -c $(SHADERCPP) -o $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
+  fi
+	@if [ $(UNAME_S) = "Darwin" ]; then\
+		g++ $(INCLUDES) -c $(SHADERCPP) $(FRAMEWORKS) -o $(SHADEROBJ);\
+  fi
 
 clean:
 	rm -f *~ $(BINDIR1)/* $(OBJECTFILES)/*.o
