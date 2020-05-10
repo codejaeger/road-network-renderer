@@ -13,8 +13,8 @@
 #include <glm/vec4.hpp>
 
 #include "road_network/Road-Model/gl_framework.hpp"
-#include "road_network/shader_util.hpp"
 #include "road_network/Road-Model/road_collection.hpp"
+#include "road_network/shader_util.hpp"
 
 GLfloat c_xpos = 0.0, c_ypos = 0.0, c_zpos = 2.0;
 GLfloat c_up_x = 0.0, c_up_y = 1.0, c_up_z = 0.0;

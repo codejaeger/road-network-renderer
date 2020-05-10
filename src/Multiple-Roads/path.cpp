@@ -33,7 +33,7 @@ Paths::Paths() {
 }
 
 std::vector<glm::vec2> Paths::bezier_curve_point(std::vector<glm::vec2> pos,
-                                                float ratio) {
+                                                 float ratio) {
   // For logic goto
   //   https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Higher-order_curves
   if (pos.size() == 1)
@@ -51,13 +51,15 @@ std::vector<glm::vec2> Paths::bezier_curve_point(std::vector<glm::vec2> pos,
 }
 
 float Paths::distance(glm::vec2 &a, glm::vec2 &b) {
-  return sqrt(((a[0] - b[0]) * (a[0] - b[0])) + ((a[1] - b[1]) * (a[1] - b[1])));
+  return sqrt(((a[0] - b[0]) * (a[0] - b[0])) +
+              ((a[1] - b[1]) * (a[1] - b[1])));
 }
 
 int Paths::interpolate_count() {
   float tot_dis = 0.0;
   for (int i = 0; i < int(positions[path_number].size()) - 1; i++) {
-    tot_dis += distance(positions[path_number][i], positions[path_number][i+1]);
+    tot_dis +=
+        distance(positions[path_number][i], positions[path_number][i + 1]);
   }
   return int(tot_dis / AIPD);
 }
@@ -65,7 +67,8 @@ int Paths::interpolate_count() {
 void Paths::positionsToCurve() {
   // Prints all the control points given by user
   // for (int i = 0; i < positions[path_number].size(); i++) {
-  //   std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+  //   std::cout << positions[path_number][i][0] << ", "
+  //             << positions[path_number][i][1] << std::endl;
   // }
 
   // Stores the newly processed Bezier Curve interpolated points
@@ -74,7 +77,8 @@ void Paths::positionsToCurve() {
   if (!positions[path_number].empty()) {
     // std::cout << n << "AAA\n";
     for (float i = 0; i <= n; i++) {
-      std::vector<glm::vec2> pos = bezier_curve_point(positions[path_number], (i / n));
+      std::vector<glm::vec2> pos =
+          bezier_curve_point(positions[path_number], (i / n));
       current.push_back(pos[0]);
     }
   }
@@ -131,7 +135,8 @@ void Paths::next() {
     path_number++;
 
     // for (int i = 0; i < positions[path_number].size(); i++) {
-    //   std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+    //   std::cout << positions[path_number][i][0] << ", "
+    //             << positions[path_number][i][1] << std::endl;
     // }
 
     positionsToCurve();
@@ -140,11 +145,12 @@ void Paths::next() {
 
     stop();
 
-    return ;
+    return;
   }
 
   // for (int i = 0; i < positions[path_number].size(); i++) {
-  //   std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+  //   std::cout << positions[path_number][i][0] << ", "
+  //             << positions[path_number][i][1] << std::endl;
   // }
 
   positions.push_back(*(new std::vector<glm::vec2>));
@@ -160,13 +166,14 @@ void Paths::next() {
 void Paths::previous() {
   if (path_number == 0) {
     stop();
-    return ;
+    return;
   }
 
   path_number--;
 
   // for (int i = 0; i < positions[path_number].size(); i++) {
-  //   std::cout << positions[path_number][i][0] << ", " << positions[path_number][i][1] << std::endl;
+  //   std::cout << positions[path_number][i][0] << ", "
+  //             << positions[path_number][i][1] << std::endl;
   // }
 
   positionsToCurve();
@@ -182,7 +189,7 @@ void Paths::delete_last() {
     positionsToCurve();
   }
 
-  return ;
+  return;
 }
 
 void Paths::save() {
@@ -197,7 +204,7 @@ void Paths::save() {
   }
 
   // std::cout << cpsize << "BBB\n";
-  glm::vec2 storecp[cpsize+1];
+  glm::vec2 storecp[cpsize + 1];
 
   int countcp = 0;
 
@@ -232,7 +239,7 @@ void Paths::save() {
   }
 
   // std::cout << "\n" << ipsize << "CCC\n";
-  glm::vec2 storeip[ipsize+1];
+  glm::vec2 storeip[ipsize + 1];
 
   int countip = 0;
   storeip[countip] = glm::vec2(int(positions.size()), 0);

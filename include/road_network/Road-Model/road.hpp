@@ -22,12 +22,19 @@ namespace soc {
 class Road {
 
 private:
-  GLfloat tx, ty, tz, rx, ry, rz;  //rotation and translation parameters
-  GLfloat depth;     //depth of the road
-  GLfloat x1, y1, x2, y2, x3, y3, x4, y4;    //coordinates of the four corners of the road projected on x-y plane
-  glm::vec2 k1, k2, k3, k4;     //points where road-border ends
-  GLuint tex1, tex2;     //store the road and brick textures
-  float start_spacing_b, start_spacing_a;   //distance from which cylindrical bars are supposed to start from one end of the road
+  // rotation and translation parameters
+  GLfloat tx, ty, tz, rx, ry, rz;
+  // depth of the road
+  GLfloat depth;
+  // coordinates of the four corners of the road projected on x-y plane
+  GLfloat x1, y1, x2, y2, x3, y3, x4, y4;
+  // points where road-border ends
+  glm::vec2 k1, k2, k3, k4;
+  // store the road and brick textures
+  GLuint tex1, tex2;
+  // distance from one end of the road
+  // where the cylindrical bars are supposed to start from
+  float start_spacing_b, start_spacing_a;
   GLuint num_vertices;
   GLuint vao, vbo;
   GLuint vao_border, vbo_border;

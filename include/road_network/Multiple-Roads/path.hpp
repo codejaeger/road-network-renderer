@@ -20,16 +20,18 @@
 #include <unistd.h>
 #endif
 
-#define AIPD (1.0 / 72.0)
 // Average Interpolation Distance
+#define AIPD (1.0 / 72.0)
 
 namespace soc {
 
 class Paths {
 
 private:
-  std::vector< std::vector<glm::vec2> > positions; // stores all the control points
-  std::vector<glm::vec2> current; // for rendering current path
+  // stores all the control points
+  std::vector< std::vector<glm::vec2> > positions;
+  // for rendering current path
+  std::vector<glm::vec2> current;
   bool input_status;
   int path_number;
   GLuint vb, vao;

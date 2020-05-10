@@ -22,8 +22,10 @@ namespace soc {
 class RoadSep {
 
 private:
-  GLfloat x, y, z, s;               //x, y, z => coordinates of the center of the base, size =>scaling factor
-  GLfloat tx, ty, tz, rx, ry, rz;   //rotation and translation parameters
+  // x, y, z => coordinates of the center of the base, size =>scaling factor
+  GLfloat x, y, z, s;
+  // rotation and translation parameters
+  GLfloat tx, ty, tz, rx, ry, rz;
   GLuint vao[2], vbo[2];
   GLuint shaderProgram, vPosition, vColor, uModelViewMatrix;
   glm::mat4 rotation;
