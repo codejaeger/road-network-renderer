@@ -1,8 +1,7 @@
 #include "road_network/Bezier-Curve/gl_framework.hpp"
 #include "road_network/Bezier-Curve/path.hpp"
 
-extern GLfloat c_xrot, c_yrot, c_zrot;
-extern soc::Path *p;
+extern soc::Paths *p;
 
 namespace soc {
 // Initialize GL State
@@ -36,17 +35,30 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     std::cout << "Escaped\n";
     glfwSetWindowShouldClose(window, GL_TRUE);
   }
+  // Resumes the input of control points if the R key was pressed.
+  else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+    p->resume();
+  }
+  // Moves to next path.
+  else if (key == GLFW_KEY_N && action == GLFW_PRESS) {
+    p->next();
+  }
+  // Moves to previous path.
+  else if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+    p->previous();
+  }
+  // Deletes the last control point in the current path.
+  else if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+    p->delete_last();
+  }
   // Saves the control points in a raw file if the S key was pressed.
+  // Saves the interpolated points in a raw files if the S key is pressed.
   else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
     p->save();
   }
   // Loads the control points from a raw file if the L key was pressed.
   else if (key == GLFW_KEY_L && action == GLFW_PRESS) {
     p->load();
-  }
-  // Resumes the input of control points if the R key was pressed.
-  else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-    p->resume();
   }
 }
 

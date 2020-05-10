@@ -19,31 +19,41 @@
 #else
 #include <unistd.h>
 #endif
-#define BZC 50
+
+// Average Interpolation Distance
+#define AIPD (1.0 / 30.0)
 
 namespace soc {
 
-class Path {
+class Paths {
 
 private:
-  std::vector<glm::vec2> positions;
-  glm::vec2 bezier_curve_positions[BZC + 1];
+  // stores all the control points
+  std::vector< std::vector<glm::vec2> > positions;
+  // for rendering current path
+  std::vector<glm::vec2> current_bzc;
   bool input_status;
+  int path_number;
   GLuint vb, vao;
   GLuint shaderProgram;
   GLuint v_position;
   std::vector<glm::vec2> bezier_curve_point(std::vector<glm::vec2> pos,
                                             float ratio);
+  float distance(glm::vec2 &a, glm::vec2 &b);
+  int interpolate_count();
+  void positionsToCurve();
 
 public:
-  Path();
+  Paths();
   void getPoints(GLFWwindow *window);
-  void positionsToCurve();
   void renderLine();
+  void next();
+  void previous();
+  void delete_last();
   void save();
   void load();
-  void resume();
   void stop();
+  void resume();
   bool return_input_status();
 };
 

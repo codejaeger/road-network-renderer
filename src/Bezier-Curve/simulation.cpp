@@ -1,26 +1,16 @@
 #include "road_network/Bezier-Curve/simulation.hpp"
 #include "road_network/Bezier-Curve/path.hpp"
 
-glm::mat4 rotation_matrix;
-glm::mat4 projection_matrix;
-glm::mat4 c_rotation_matrix;
-glm::mat4 lookat_matrix;
+soc::Paths *p;
 
-glm::mat4 model_matrix;
-glm::mat4 view_matrix;
-
-glm::mat4 modelview_matrix;
-
-soc::Path *p;
-
-void initBuffersGL(void) { p = new soc::Path(); }
+void initBuffersGL(void) { p = new soc::Paths(); }
 
 void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  // p->getPoints(window);
   p->renderLine();
 }
+
+void deleteBuffersGL() { delete p; }
 
 int main(int argc, char **argv) {
   //! The pointer to the GLFW window
@@ -42,7 +32,7 @@ int main(int argc, char **argv) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   //! Create a windowed mode window and its OpenGL context
-  window = glfwCreateWindow(1440, 900, "Simulation", NULL, NULL);
+  window = glfwCreateWindow(WIDTH, HEIGHT, "Simulation", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;
@@ -81,6 +71,7 @@ int main(int argc, char **argv) {
   // Initialize GL state
   soc::initGL();
   initBuffersGL();
+
   // Loop until the user closes the window
   while (glfwWindowShouldClose(window) == 0) {
     // Render here
@@ -94,6 +85,11 @@ int main(int argc, char **argv) {
     glfwPollEvents();
   }
 
+  // Deallocate memory
+  deleteBuffersGL();
+
+  // Close the window
   glfwTerminate();
+
   return 0;
 }
