@@ -18,7 +18,7 @@ void initBuffersGL(std::string file) {
   rn->initRoadNetwork();
 }
 
-void renderGL(GLFWwindow *window) {
+void renderGL() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   matrixStack.clear();
@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
     // Render here
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    renderGL(window);
+    renderGL();
     // Swap front and back buffers
     glfwSwapBuffers(window);
 
