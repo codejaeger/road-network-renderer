@@ -14,7 +14,7 @@ glm::mat4 modelview_matrix;
 soc::RoadNetwork *rn;
 
 void initBuffersGL(std::string file) {
-  rn = new soc::RoadNetwork(0.2, 0.3, file); // road-depth=0.2, road-width=0.6
+  rn = new soc::RoadNetwork(0.02, 0.05, file); // road-depth=0.02, road-width=0.1
   rn->initRoadNetwork();
 }
 
@@ -42,7 +42,7 @@ void renderGL() {
     projection_matrix = glm::frustum(-1.0, 1.0, -1.0, 1.0, 1.0, 7.0);
     // projection_matrix = glm::perspective(glm::radians(90.0),1.0,0.1,5.0);
   } else {
-    projection_matrix = glm::ortho(-1.5, 1.5, -1.5, 1.5, -2.0, 5.0);
+    projection_matrix = glm::ortho(-1.0, 1.0, -1.0, 1.0, -2.0, 5.0);
   }
 
   view_matrix = projection_matrix * lookat_matrix;
@@ -53,6 +53,7 @@ void renderGL() {
   rn->renderRoads();
   // render the RoadSeps in the RoadNetwork
   rn->renderRoadSeps();
+  rn->renderIntersections();
 }
 
 void deleteBuffersGL() { delete rn; }
@@ -77,7 +78,7 @@ int main(int argc, char **argv) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   // Create a windowed mode window and its OpenGL context
-  window = glfwCreateWindow(1440, 900, "Simulation", NULL, NULL);
+  window = glfwCreateWindow(1440, 900, "Road Network", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;

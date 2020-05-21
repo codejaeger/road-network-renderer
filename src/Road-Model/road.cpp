@@ -3,13 +3,17 @@
 
 extern std::vector<glm::mat4> matrixStack;
 extern double PI;
+#define INTER_CYLINDER_DISTANCE 0.027
 
 namespace soc {
 // Constructor that takes coordinates of the four points and depth and dist from
 // where to start laying the cylindrical bars in the border as parameters
+// you can set any value to start_space if you don't want to render that part of the border
 Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, float d,
-           float start_space_b, float start_space_a) {
+           float start_space_b, float start_space_a, bool b, bool a) {
   // set the road corner points and road depth
+  b_border = b;
+  a_border = a;
   x1 = p1[0];
   y1 = p1[1];
   x2 = p2[0];
@@ -25,6 +29,8 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, float d,
   num_vertices_border_count = 0;
   num_vertices_per_cylinder_count = 0;
   num_cylinders = 0;
+  num_cylinders_b = 0;
+  num_cylinders_a = 0;
   change_parameters(0, 0, 0, 0, 0, 0);
 
   // create the shader Program
@@ -106,8 +112,8 @@ Road::Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, float d,
   border(k1, p1, p4, k4, 5 * d / 4);
   border(p2, k2, k3, p3, -d / 2);
   border(p2, k2, k3, p3, 5 * d / 4);
-  // generate the cylindrical bars with mutual spacing between centers as 0.08
-  cylinders(2.0f);
+  // generate the cylindrical bars with mutual spacing between centers as INTER_CYLINDER_DISTANCE
+  cylinders(INTER_CYLINDER_DISTANCE);
   // creating the shader program using the vertex and fragment shaders
   std::string vertex_shader_file1(
       "./src/Road-Model/vertex-shaders/v_roadsep.glsl");
@@ -202,14 +208,34 @@ void Road::render() {
   glUniformMatrix4fv(uModelViewMatrix1, 1, GL_FALSE, glm::value_ptr(*ms_mult));
   glBindBuffer(GL_ARRAY_BUFFER, vbo_border);
   glBindVertexArray(vao_border);
-  glDrawArrays(GL_TRIANGLES, 0, num_vertices_border_count);
+  if(b_border && a_border)
+    glDrawArrays(GL_TRIANGLES, 0, num_vertices_border_count);
+  else if(a_border)
+    glDrawArrays(GL_TRIANGLES, num_vertices_border_count/2, num_vertices_border_count/2);
+  else if(b_border)
+    glDrawArrays(GL_TRIANGLES, 0, num_vertices_border_count/2);
+
 
   // render the cylindrical bars of the border
-  for (int i = 0; i < num_cylinders; i++) {
-    glDrawArrays(GL_TRIANGLE_FAN, num_vertices_border_count +
-                                      i * num_vertices_per_cylinder_count,
-                 num_vertices_per_cylinder_count);
-  }
+  if(b_border && a_border)
+    for (int i = 0; i < num_cylinders; i++) {
+      glDrawArrays(GL_TRIANGLE_FAN, num_vertices_border_count +
+                                        i * num_vertices_per_cylinder_count,
+                   num_vertices_per_cylinder_count);
+    }
+  else if(b_border)
+  	for (int i = 0; i < num_cylinders_b; i++) {
+      glDrawArrays(GL_TRIANGLE_FAN, num_vertices_border_count +
+                                        i * num_vertices_per_cylinder_count,
+                   num_vertices_per_cylinder_count);
+    }
+  else if(a_border)
+  	for (int i = num_cylinders_b; i < num_cylinders; i++) {
+      glDrawArrays(GL_TRIANGLE_FAN, num_vertices_border_count +
+                                        i * num_vertices_per_cylinder_count,
+                   num_vertices_per_cylinder_count);
+    }
+
   matrixStack.pop_back();
   matrixStack.pop_back();
   // for memory
@@ -330,6 +356,7 @@ void Road::cylinders(float d) {
       }
     }
     num_cylinders++;
+    num_cylinders_b++;
   }
 
   end_spacing_b = distance - dist;
@@ -362,6 +389,7 @@ void Road::cylinders(float d) {
     }
 
     num_cylinders++;
+    num_cylinders_a++;
   }
 
   end_spacing_a = distance - dist;

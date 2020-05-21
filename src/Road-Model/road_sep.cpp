@@ -236,7 +236,7 @@ void RoadSep::build_handle() {
     }
   }
 
-  // generate the middle semicrcular disc part
+  // generate the middle semicircular disc part
   for (float i = s; i <= 5 * s; i += div) {
     for (float j = 0; j <= 2 * PI; j += sec) {
       v_positions_handle[tri_idx] =

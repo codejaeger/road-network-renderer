@@ -20,7 +20,7 @@ SHADEROBJ=$(OBJECTFILES)/shader_util.o
 
 BIN1=$(BINDIR1)/road-model
 BIN2=$(BINDIR1)/bezier-curve
-SRCS1=$(SRCDIR1)/road.cpp $(SRCDIR1)/gl_framework.cpp $(SRCDIR1)/road_sep.cpp $(SRCDIR1)/texture.cpp $(SRCDIR1)/road_main.cpp $(SRCDIR1)/road_collection.cpp
+SRCS1=$(SRCDIR1)/road.cpp $(SRCDIR1)/gl_framework.cpp $(SRCDIR1)/road_sep.cpp $(SRCDIR1)/texture.cpp $(SRCDIR1)/road_main.cpp $(SRCDIR1)/road_collection.cpp $(SRCDIR1)/intersection.cpp
 SRCS2=$(SRCDIR2)/path.cpp $(SRCDIR2)/gl_framework.cpp $(SRCDIR2)/simulation.cpp
 
 all: $(SHADEROBJ) $(BIN1) $(BIN2)
