@@ -6,7 +6,7 @@ namespace soc {
 
 glm::vec2 p0;
 // initialize the road-depth, road-width variable and the name of the raw file containing bezier-points
-RoadNetwork::RoadNetwork(float rd, float half_width, std::string file) {
+RoadNetwork::RoadNetwork(float rd, float half_width, std::string file): g(half_width) {
   road_depth = rd;
   d = half_width;
   num_road_networks = 0;
@@ -58,6 +58,7 @@ void RoadNetwork::initRoadNetwork() {
   mergeCloseIntersections();
   //delete the roads and road-seps from the region where intersection was created
   saveIntersections();
+  initGraph();
   deleteRoadsInsideIntersection();
   deleteRoadSepsInsideIntersection();
 }
@@ -167,15 +168,6 @@ void RoadNetwork::findIntersections(int m, int n) {
           or type 2(which have only one end emerging out of intersection).
           Note that type1, type2 and endpoints are passed by reference*/
         fill_endpoints_type(m, n, origin, i, j, type1, type2, endpoints);
-        for(int i=0; i<type1.size(); i++){
-          std::cout<<type1[i]<<"type1\n";
-        }
-        for(int i=0; i<type2.size(); i++){
-          std::cout<<type2[i]<<"type2\n";
-        }
-        for(int i=0; i<endpoints.size(); i++){
-          std::cout<<"("<<endpoints[i][0]<<", "<<endpoints[i][1]<<")\n";
-        }
         temp.initIntersection(2*d, road_depth, origin, type1, type2, endpoints);
         intersection.push_back(temp);
       }
@@ -438,28 +430,10 @@ void RoadNetwork::mergeCloseIntersections() {
             }
           }
         }
-      } 
-      for(int i=0; i<type1.size(); i++){
-          std::cout<<type1[i]<<"type1\n";
-        }
-        for(int i=0; i<type2.size(); i++){
-          std::cout<<type2[i]<<"type2\n";
-        }
-        for(int i=0; i<endpoints.size(); i++){
-          std::cout<<"("<<endpoints[i][0]<<", "<<endpoints[i][1]<<")\n";
-        } 
+      }  
       //sort the endpoints
       sort_pair_endpoints(endpoints, origin);
       sort_endpoints(endpoints);
-      for(int i=0; i<type1.size(); i++){
-          std::cout<<type1[i]<<"type1\n";
-        }
-        for(int i=0; i<type2.size(); i++){
-          std::cout<<type2[i]<<"type2\n";
-        }
-        for(int i=0; i<endpoints.size(); i++){
-          std::cout<<"("<<endpoints[i][0]<<", "<<endpoints[i][1]<<")\n";
-        }
       //initialize the intersection
       common.initIntersection(2*d, road_depth, origin, type1, type2, endpoints);
       //replace the first of the common_intersection with newly created merged intersection
@@ -622,6 +596,71 @@ void RoadNetwork::readIntersections(){
 
   // Close the file
   fp.close();
+}
+
+
+void RoadNetwork::initGraph(){
+  for(int i=0; i<intersection.size(); i++){
+    g.addVertex(intersection[i].origin);
+  }
+  for(int i=0; i<bezier_positions.size(); i++) {
+    bool a=false, b=false;
+    for(int j=0; j<intersection.size(); j++) {
+      if(calc_dist(bezier_positions[i][0], intersection[j].origin)<4*d) {
+        a = true;
+        break;
+      }
+    }
+        
+    for(int j=0; j<intersection.size(); j++) {
+      if(calc_dist(bezier_positions[i][bezier_positions[i].size()-1], intersection[j].origin)<4*d) {
+        b = true;
+        break; 
+      }
+    }
+    if(!a) {
+      g.addVertex(bezier_positions[i][0]);
+    }
+    if(!b) {
+      g.addVertex(bezier_positions[i][bezier_positions[i].size()-1]);
+    }
+  }
+  for(int i=0; i<bezier_positions.size(); i++) {
+    std::vector< std::vector<glm::vec2> > path_points;
+    path_points.resize(1);
+    for(int j=0; j<bezier_positions[i].size(); j++) {
+      bool a = false;
+      int k;
+      for(k=0; k<intersection.size(); k++)
+        if(calc_dist(bezier_positions[i][j], intersection[k].origin)<4*d) {
+          a = true;
+          break;
+        }
+      if(!a) {
+        path_points[path_points.size()-1].push_back(bezier_positions[i][j]);
+      }
+      else if(a && j>0 && calc_dist(bezier_positions[i][j-1], intersection[k].origin)>4*d){
+        path_points[path_points.size()-1].push_back(bezier_positions[i][j]);
+      }
+      else {
+        while((calc_dist(bezier_positions[i][j], intersection[k].origin)<4*d) && j<bezier_positions[i].size())
+          j++;
+        if(j==bezier_positions[i].size())
+          break;
+        else {
+          path_points.resize(path_points.size()+1);
+          path_points[path_points.size()-1].push_back(bezier_positions[i][j-1]);
+        }
+      }
+    }
+    for(int j=0; j<path_points.size(); j++) {
+      g.addEdge(path_points[j]);
+    }
+  }
+}
+
+Graph RoadNetwork::getGraph(){
+  return g;
 }
 
 // render all the intersections on the screen

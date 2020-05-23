@@ -17,6 +17,7 @@
 #include "road_network/Road-Model/road.hpp"
 #include "road_network/Road-Model/road_sep.hpp"
 #include "road_network/Road-Model/intersection.hpp"
+#include "road_network/Road-Graph/graph.hpp"
 
 namespace soc {
 
@@ -31,6 +32,7 @@ class RoadNetwork {
   std::vector< std::vector<glm::vec2> > road_corners; //points on either side of curve at a fixed distance othogonal to it
   std::string file_name;
   std::vector<Intersection> intersection;
+  Graph g;
   void fill_road_corners();
   void fill_tangent_directions();
   glm::vec2 normalize(glm::vec2 v);
@@ -50,6 +52,7 @@ class RoadNetwork {
   void swap(glm::vec2 &v1, glm::vec2 &v2);
   void saveIntersections();
   void readIntersections();
+  void initGraph();
 public:
   RoadNetwork(float rd, float half_width, std::string file_name);
   ~RoadNetwork();
@@ -57,6 +60,7 @@ public:
   void renderRoads();
   void renderRoadSeps();
   void renderIntersections();
+  Graph getGraph();
   float static calc_dist(glm::vec2 v1, glm::vec2 v2);
   int static orientation(glm::vec2 p, glm::vec2 q, glm::vec2 r);
 };
