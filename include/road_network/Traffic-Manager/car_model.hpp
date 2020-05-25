@@ -15,13 +15,13 @@ class Car	{
 public:
   Graph *g;
   std::vector<glm::vec2> path;
-  int current;
+  unsigned int current;
   glm::vec2 tangent;
   glm::vec2 normal;
-  void renderCar();
-  void updateCar();
   Car(Graph* graph, std::vector<int> in);
   ~Car();
+  void renderCar();
+  void updateCar();
 };
 
 }

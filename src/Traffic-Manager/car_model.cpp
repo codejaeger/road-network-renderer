@@ -5,7 +5,7 @@ namespace soc {
 Car::Car(Graph* graph, std::vector<int> in) {
   g = graph;
 
-  for (int i = 0; i < in.size(); i++) {
+  for (unsigned int i = 0; i < in.size(); i++) {
     if (i % 2) {
       std::vector<glm::vec2> temp = g->e[in[i]].path;
       for (int j = 0; j < temp.size(); j++) {
@@ -17,7 +17,7 @@ Car::Car(Graph* graph, std::vector<int> in) {
     }
   }
 
-  for (int i = 0; i < path.size(); i++) {
+  for (unsigned int i = 0; i < path.size(); i++) {
     std::cout << path[i][0] << "``" << path[i][1] << std::endl;
   }
 
