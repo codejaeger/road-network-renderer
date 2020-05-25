@@ -14,6 +14,7 @@
 
 #include "road_network/Road-Model/gl_framework.hpp"
 #include "road_network/Road-Model/road_collection.hpp"
+#include "road_network/Traffic-Manager/car_model.hpp"
 #include "road_network/shader_util.hpp"
 
 GLfloat c_xpos = 0.0, c_ypos = 0.0, c_zpos = 2.0;

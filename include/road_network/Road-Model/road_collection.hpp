@@ -60,7 +60,7 @@ public:
   void renderRoads();
   void renderRoadSeps();
   void renderIntersections();
-  Graph getGraph();
+  Graph* getGraph();
   float static calc_dist(glm::vec2 v1, glm::vec2 v2);
   int static orientation(glm::vec2 p, glm::vec2 q, glm::vec2 r);
 };

@@ -12,10 +12,19 @@ glm::mat4 modelview_matrix;
 
 // pointer to RoadNetwork object
 soc::RoadNetwork *rn;
+soc::Graph *g;
+soc::Car *c;
 
 void initBuffersGL(std::string file) {
   rn = new soc::RoadNetwork(0.02, 0.05, file); // road-depth=0.02, road-width=0.1
   rn->initRoadNetwork();
+  g = rn->getGraph();
+  std::cout << g->v.size() << "!!" << g->e.size();
+  std::vector<int> x;
+  x.push_back(0);
+  x.push_back(0);
+  x.push_back(1);
+  soc::Car(g, x);
 }
 
 void renderGL() {
