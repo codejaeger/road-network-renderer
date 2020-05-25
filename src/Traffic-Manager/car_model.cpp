@@ -28,9 +28,11 @@ Car::Car(Graph* graph, std::vector<int> in) {
   if (check_loc.size())
     check_loc.pop_back();
 
+  std::cout << "creating car\n";
   for (unsigned int i = 0; i < path.size(); i++) {
     std::cout << path[i][0] << "``" << path[i][1] << std::endl;
   }
+  std::cout << path.size() << "Car created\n";
 
   current = 0;
 }
@@ -55,6 +57,13 @@ void Car::renderCar() {
 
 glm::vec2 Car::getLocation() {
   return path[current];
+}
+
+glm::vec2 Car::getNextLocation() {
+  if (path.size() <= current + 1) {
+    return glm::vec2(-50, -50);
+  }
+  return path[current+1];
 }
 
 bool Car::doCheck() {

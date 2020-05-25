@@ -24,6 +24,7 @@ public:
   void renderCar();
   bool updateCar();
   glm::vec2 getLocation();
+  glm::vec2 getNextLocation();
   bool doCheck();
 };
 

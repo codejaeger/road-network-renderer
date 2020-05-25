@@ -143,7 +143,7 @@ int main(int argc, char **argv) {
     // Poll for and process events
     glfwPollEvents();
 
-    sleep(1);
+    // sleep(1);
   }
 
   deleteBuffersGL();

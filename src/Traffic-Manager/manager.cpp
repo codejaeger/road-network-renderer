@@ -15,13 +15,6 @@ Manager::Manager(Graph* graph, int s, int e) {
       std::cout << "Pushed\n";
     }
   }
-
-  // for (unsigned int i = 0; i < lights.size(); i++) {
-  //   for (unsigned int j = 0; j < lights[i]->size; j++) {
-  //     e_no_all.push_back(lights[i]->v.outgoing[j]);
-  //   }
-  // }
-
 }
 
 void Manager::executeManager() {
@@ -38,6 +31,15 @@ void Manager::executeManager() {
   std::vector<Car*> cars_temp;
   for (unsigned int i = 0; i < cars.size(); i++) {
     bool go = true;
+
+    for (unsigned int j = 0; j < cars.size(); j++) {
+      if (j == i)
+        continue;
+      if (cars[j]->getLocation() == cars[i]->getNextLocation()) {
+        go = false;
+      }
+    }
+
     if (cars[i]->doCheck()) {
       std::cout << "\n\nReached intersection";
       go = false;
@@ -61,8 +63,15 @@ void Manager::executeManager() {
   }
   cars = cars_temp;
 
-  // if (!cars.size() || (time % 5 == 0)) {
-  if (!cars.size()) {
+  bool no_new = false;
+  for (unsigned int i = 0; i < cars.size(); i++) {
+    if (cars[i]->current == 0) {
+      no_new = true;
+    }
+  }
+
+  if ((!cars.size() || (time % 5 == 0)) && !no_new) {
+  // if (!cars.size()) {
     cars.push_back(new Car(g, g->getPath(start, end)));
   }
 
