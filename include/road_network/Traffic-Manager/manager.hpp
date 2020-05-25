@@ -20,6 +20,8 @@ public:
   Graph *g;
   std::vector<Car*> cars;
   std::vector<Light*> lights;
+  std::vector<unsigned int> e_no_go;
+  // std::vector<unsigned int> e_no_all;
   unsigned int time;
   int start;
   int end;
@@ -27,6 +29,7 @@ public:
   ~Manager();
   void executeManager();
   void renderManager();
+
 };
 
 

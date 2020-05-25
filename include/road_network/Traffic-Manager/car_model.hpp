@@ -16,12 +16,15 @@ public:
   Graph *g;
   std::vector<glm::vec2> path;
   unsigned int current;
+  std::vector<glm::vec2> check_loc;
   glm::vec2 tangent;
   glm::vec2 normal;
   Car(Graph* graph, std::vector<int> in);
   ~Car();
   void renderCar();
   bool updateCar();
+  glm::vec2 getLocation();
+  bool doCheck();
 };
 
 }

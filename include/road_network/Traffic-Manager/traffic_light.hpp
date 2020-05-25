@@ -20,6 +20,7 @@ public:
   ~Light();
   void updateLight();
   void renderLight();
+  unsigned int returnEdgeNumber();
 };
 
 }

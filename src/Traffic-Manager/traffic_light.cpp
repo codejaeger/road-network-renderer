@@ -20,4 +20,8 @@ void Light::renderLight() {
   std::cout << "renderLight\n";
 }
 
+unsigned int Light::returnEdgeNumber() {
+  return (unsigned int)v.outgoing[flag];
+}
+
 }
