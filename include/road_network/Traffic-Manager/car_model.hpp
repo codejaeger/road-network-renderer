@@ -21,7 +21,7 @@ public:
   Car(Graph* graph, std::vector<int> in);
   ~Car();
   void renderCar();
-  void updateCar();
+  bool updateCar();
 };
 
 }

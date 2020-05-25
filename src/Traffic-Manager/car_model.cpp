@@ -24,16 +24,18 @@ Car::Car(Graph* graph, std::vector<int> in) {
   current = 0;
 }
 
-void Car::updateCar() {
+bool Car::updateCar() {
   current++;
 
   if (path.size() <= current + 1) {
-    this->~Car();
+    return false;
   }
 
   tangent = glm::vec2(path[current+1][0] - path[current][0], path[current+1][1] - path[current][1]);
   normal = glm::vec2(path[current+1][1] - path[current+1][1], path[current+1][0] - path[current][0]);
-  std::cout << "Updated\n";
+  std::cout << "Car Updated\n";
+
+  return true;
 }
 
 void Car::renderCar() {
@@ -41,7 +43,7 @@ void Car::renderCar() {
 }
 
 Car::~Car() {
-  std::cout << "Deleted\n";
+  std::cout << "Car Deleted\n";
 }
 
 }

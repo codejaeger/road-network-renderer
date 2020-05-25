@@ -13,22 +13,16 @@ glm::mat4 modelview_matrix;
 // pointer to RoadNetwork object
 soc::RoadNetwork *rn;
 soc::Graph *g;
-soc::Car *c;
+soc::Manager *m;
 
 void initBuffersGL(std::string file) {
   rn = new soc::RoadNetwork(0.02, 0.05, file); // road-depth=0.02, road-width=0.1
   rn->initRoadNetwork();
   g = rn->getGraph();
-  std::cout << g->v.size() << "!!" << g->e.size();
-  std::vector<int> x;
-  x.push_back(0);
-  x.push_back(0);
-  x.push_back(1);
-  c = new soc::Car(g, x);
-  for (int i = 0; i < c->path.size() - 1; i++) {
-    c->renderCar();
-    c->updateCar();
-  }
+  // for (unsigned int i = 0; i < g->v.size(); i++) {
+  //   std::cout << g->v[i].origin[0] << "pp" << g->v[i].origin[1] << std::endl;
+  // }
+  m = new soc::Manager(g, 0, 3);
 }
 
 void renderGL() {
@@ -67,9 +61,17 @@ void renderGL() {
   // render the RoadSeps in the RoadNetwork
   rn->renderRoadSeps();
   rn->renderIntersections();
+
+  m->executeManager();
+  m->renderManager();
+
 }
 
-void deleteBuffersGL() { delete rn; }
+void deleteBuffersGL() {
+  // delete g;
+  // delete m;
+  delete rn;
+}
 
 int main(int argc, char **argv) {
   // The pointer to the GLFW window
@@ -140,8 +142,12 @@ int main(int argc, char **argv) {
 
     // Poll for and process events
     glfwPollEvents();
+
+    sleep(1);
   }
+
   deleteBuffersGL();
+
   glfwTerminate();
   return 0;
 }
