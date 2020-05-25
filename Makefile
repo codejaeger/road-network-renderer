@@ -25,7 +25,7 @@ BIN2=$(BINDIR1)/bezier-curve
 SRCS1=$(SRCDIR1)/road.cpp $(SRCDIR1)/gl_framework.cpp $(SRCDIR1)/road_sep.cpp $(SRCDIR1)/texture.cpp $(SRCDIR1)/road_main.cpp $(SRCDIR1)/road_collection.cpp $(SRCDIR1)/intersection.cpp
 SRCS2=$(SRCDIR2)/path.cpp $(SRCDIR2)/gl_framework.cpp $(SRCDIR2)/simulation.cpp
 SRCS3=$(SRCDIR3)/graph.cpp
-SRCS4=$(SRCDIR4)/car_model.cpp $(SRCDIR4)/traffic_lights.cpp $(SRCDIR4)/manager.cpp
+SRCS4=$(SRCDIR4)/car_model.cpp $(SRCDIR4)/traffic_light.cpp $(SRCDIR4)/manager.cpp
 
 all: $(SHADEROBJ) $(BIN1) $(BIN2)
 
@@ -34,7 +34,7 @@ $(BIN1): $(SRCS1) $(SHADEROBJ)
 		g++ $(INCLUDES) $(SRCS1) $(SRCS3) $(SRCS4) -o $(BIN1) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
   fi
 	@if [ $(UNAME_S) = "Darwin" ]; then\
-		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) $(SRCS3) $(SRCS4)-o $(BIN1) $(SHADEROBJ);\
+		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) $(SRCS3) $(SRCS4) -o $(BIN1) $(SHADEROBJ);\
   fi
 
 $(BIN2): $(SHADEROBJ)
