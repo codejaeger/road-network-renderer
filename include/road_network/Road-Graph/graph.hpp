@@ -13,7 +13,7 @@ namespace soc {
 	struct Edge{
     std::vector<glm::vec2> path;
     float distance;
-    int from, to;
+    int from, to;  // stores the indices of the from and to vertex of this directed edge
 	};
 
 	struct Vertex{
@@ -25,10 +25,10 @@ namespace soc {
 	{
 	public:
 		const float HALF_WIDTH;
-    std::vector<Vertex> v;
-    std::vector<Edge> e;
-    std::vector< std::vector<int> > vertices;
-	  float calc_dist(glm::vec2 a, glm::vec2 b);
+    std::vector<Vertex> v;   // stores the vertices of the graph
+    std::vector<Edge> e;     // stores the edges of the graph
+    std::vector< std::vector<int> > vertices;   // stores the neighbouring vertices indices of all the vertices
+	  float calc_dist(glm::vec2 a, glm::vec2 b); 
 		Graph(float hw);
     void addVertex(glm::vec2 origin);
     void addEdge(std::vector<glm::vec2> path);

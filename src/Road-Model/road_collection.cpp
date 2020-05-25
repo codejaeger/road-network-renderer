@@ -598,20 +598,23 @@ void RoadNetwork::readIntersections(){
   fp.close();
 }
 
-
+// initialize a roadnetwork graph for finding the shortest path between two points
 void RoadNetwork::initGraph(){
+  // first add all the intersections in the graph vertices
   for(int i=0; i<intersection.size(); i++){
     g.addVertex(intersection[i].origin);
   }
+  // now add all the road endpoints which don't merge into intersections in the vertices
   for(int i=0; i<bezier_positions.size(); i++) {
     bool a=false, b=false;
+    // check if the start point of the path lies near to any of the intersections or not
     for(int j=0; j<intersection.size(); j++) {
       if(calc_dist(bezier_positions[i][0], intersection[j].origin)<4*d) {
         a = true;
         break;
       }
     }
-
+    // check if the end-point of the intersection lies inside any intersection or not
     for(int j=0; j<intersection.size(); j++) {
       if(calc_dist(bezier_positions[i][bezier_positions[i].size()-1], intersection[j].origin)<4*d) {
         b = true;
@@ -625,23 +628,29 @@ void RoadNetwork::initGraph(){
       g.addVertex(bezier_positions[i][bezier_positions[i].size()-1]);
     }
   }
+
+  // traverse each of the roads and split it as we reach an intersection and finally initialize the edges of the graph based on those segments
   for(int i=0; i<bezier_positions.size(); i++) {
     std::vector< std::vector<glm::vec2> > path_points;
     path_points.resize(1);
     for(int j=0; j<bezier_positions[i].size(); j++) {
       bool a = false;
       int k;
+      // check if the point lies inside any intersection or not
       for(k=0; k<intersection.size(); k++)
         if(calc_dist(bezier_positions[i][j], intersection[k].origin)<4*d) {
           a = true;
           break;
         }
+      // if the point does not lie inside intersection then push it to the vector
       if(!a) {
         path_points[path_points.size()-1].push_back(bezier_positions[i][j]);
       }
+      // if the point lies inside intersection but the previous point lies outside then also push it
       else if(a && j>0 && calc_dist(bezier_positions[i][j-1], intersection[k].origin)>4*d){
         path_points[path_points.size()-1].push_back(bezier_positions[i][j]);
       }
+      // when point lies inside intersection and also previous point also lies inside skip those points and increment the length of the outer vector by one
       else {
         while((calc_dist(bezier_positions[i][j], intersection[k].origin)<4*d) && j<bezier_positions[i].size())
           j++;
@@ -653,12 +662,14 @@ void RoadNetwork::initGraph(){
         }
       }
     }
+    // intialize the edges from all the segments obtained form the graph
     for(int j=0; j<path_points.size(); j++) {
       g.addEdge(path_points[j]);
     }
   }
 }
 
+// function to return the road-network graph
 Graph* RoadNetwork::getGraph(){
   return &g;
 }
