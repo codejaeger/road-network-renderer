@@ -24,7 +24,11 @@ void initBuffersGL(std::string file) {
   x.push_back(0);
   x.push_back(0);
   x.push_back(1);
-  soc::Car(g, x);
+  c = new soc::Car(g, x);
+  for (int i = 0; i < c->path.size() - 1; i++) {
+    c->renderCar();
+    c->updateCar();
+  }
 }
 
 void renderGL() {

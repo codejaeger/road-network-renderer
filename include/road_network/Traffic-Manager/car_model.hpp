@@ -12,14 +12,16 @@
 namespace soc {
 
 class Car	{
+public:
   Graph *g;
   std::vector<glm::vec2> path;
-  glm::vec2 current;
+  int current;
   glm::vec2 tangent;
-public:
- void renderCar();
- void updateCar();
- Car(Graph* graph, std::vector<int> in);
+  glm::vec2 normal;
+  void renderCar();
+  void updateCar();
+  Car(Graph* graph, std::vector<int> in);
+  ~Car();
 };
 
 }
