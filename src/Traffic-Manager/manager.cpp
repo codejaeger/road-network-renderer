@@ -70,7 +70,7 @@ void Manager::executeManager() {
     }
   }
 
-  if ((!cars.size() || (time % 19 == 0)) && !no_new) {
+  if ((!cars.size() || (time % 20 == 0)) && !no_new) {
   // if (!cars.size()) {
     cars.push_back(new Car(g, g->getPath(start, end)));
   }
