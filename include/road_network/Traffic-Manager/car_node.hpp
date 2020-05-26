@@ -8,12 +8,16 @@
 #include <math.h>
 
 #include "road_network/Road-Graph/graph.hpp"
+#include "road_network/Models/car_model.hpp"
+
+#define PI 3.14159
 
 namespace soc {
 
 class CarNode	{
 public:
   Graph *g;
+  CarModel *mod;
   std::vector<glm::vec2> path;
   unsigned int current;
   std::vector<glm::vec2> check_loc;

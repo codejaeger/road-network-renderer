@@ -34,7 +34,10 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
   }
   std::cout << path.size() << "CarNode created\n";
 
-  current = 0;
+  current = -1;
+
+  mod = new CarModel(0.025);
+  updateCar();
 }
 
 bool CarNode::updateCar() {
@@ -54,11 +57,17 @@ bool CarNode::updateCar() {
   std::cout << tangent[0] << "," << tangent[1] << "..."
             << normal[0] << "," << normal[1] << " CarNode Updated\n";
 
+
+  float rz = atan(tangent[1]/tangent[0])*180/PI;
+  std::cout << rz << "tangent\n";
+  mod->change_parameters(path[current][0], path[current][1], 0, 0, 0, rz);
+
   return true;
 }
 
 void CarNode::renderCar() {
   std::cout << path[current][0] << "//" << path[current][1] << "\n";
+  mod->render();
 }
 
 glm::vec2 CarNode::getLocation() {

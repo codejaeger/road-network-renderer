@@ -1,4 +1,4 @@
-#include "road_network/Traffic-Light/traffic_light.hpp"
+#include "road_network/Models/traffic_light_model.hpp"
 
 
 extern std::vector<glm::mat4> matrixStack;

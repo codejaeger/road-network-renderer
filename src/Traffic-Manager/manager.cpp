@@ -16,9 +16,9 @@ Manager::Manager(Graph* graph, int s, int e) {
     }
   }
 
-  frame_rate = 1;
-  light_timeout = 5;
-  car_spawnin = 20;
+  frame_rate = 20;
+  light_timeout = 100;
+  car_spawnin = 2000;
 }
 
 void Manager::executeManager() {
