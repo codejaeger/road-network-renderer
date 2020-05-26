@@ -11,13 +11,13 @@
 
 namespace soc {
 
-class Light {
+class IntersectionLights {
 public:
   Vertex v;
   unsigned int size;
   unsigned int flag;
-  Light(Vertex &vertex);
-  ~Light();
+  IntersectionLights(Vertex &vertex);
+  ~IntersectionLights();
   void updateLight();
   void renderLight();
   unsigned int returnEdgeNumber();

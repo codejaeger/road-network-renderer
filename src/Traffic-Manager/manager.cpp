@@ -11,7 +11,7 @@ Manager::Manager(Graph* graph, int s, int e) {
 
   for (unsigned int i = 0; i < g->v.size(); i++) {
     if (g->v[i].outgoing.size() > 1) {
-      lights.push_back(new Light(g->v[i]));
+      lights.push_back(new IntersectionLights(g->v[i]));
       std::cout << "Pushed\n";
     }
   }
@@ -25,7 +25,7 @@ void Manager::executeManager() {
   time++;
 
   if (time % frame_rate == 0) {
-    // Update Light and store the green directions
+    // Update IntersectionLights and store the green directions
     e_no_go.clear();
     if (time % light_timeout == 0) {
       for (unsigned int i = 0; i < lights.size(); i++) {
@@ -35,7 +35,7 @@ void Manager::executeManager() {
     }
 
     // for each car
-    std::vector<Car*> cars_temp;
+    std::vector<CarNode*> cars_temp;
     for (unsigned int i = 0; i < cars.size(); i++) {
       // good to go
       bool go = true;
@@ -61,7 +61,7 @@ void Manager::executeManager() {
         }
       }
 
-      // If good to go, update Car (move forward)
+      // If good to go, update CarNode (move forward)
       if (go) {
         if (cars[i]->updateCar())
           cars_temp.push_back(cars[i]);
@@ -82,9 +82,9 @@ void Manager::executeManager() {
       }
     }
 
-    // Car spawning
+    // CarNode spawning
     if ((!cars.size() || (time % car_spawnin == 0)) && !no_new) {
-      cars.push_back(new Car(g, g->getPath(start, end)));
+      cars.push_back(new CarNode(g, g->getPath(start, end)));
     }
 
     std::cout << "\nCars size : " <<  cars.size() << "\t\tTime: " << time << std::endl;
@@ -99,7 +99,7 @@ void Manager::renderManager() {
   }
 
   for (unsigned int i = 0; i < lights.size(); i++) {
-    std::cout << "Light " << i << std::endl;
+    std::cout << "IntersectionLights " << i << std::endl;
     lights[i]->renderLight();
   }
 }

@@ -9,7 +9,7 @@ glm::vec4 Green(0.0f, 1.0f, 0.0f, 1.0f);
 
 namespace soc {
 
-TrafficLight::TrafficLight(GLfloat size) {
+TrafficLightModel::TrafficLightModel(GLfloat size) {
   s = size;
   // translate it to required coordinates
   change_parameters(0, 0, 0, 0, 0, 0);
@@ -99,7 +99,7 @@ TrafficLight::TrafficLight(GLfloat size) {
                         BUFFER_OFFSET(sizeof(v_positions)));
 }
 
-void TrafficLight::update_matrices() {
+void TrafficLightModel::update_matrices() {
   // set the rotation and translation matrices acc to the current values
   // of the parameters
   rotation = glm::rotate(glm::mat4(1.0f), glm::radians(rx),
@@ -112,7 +112,7 @@ void TrafficLight::update_matrices() {
   translation = glm::translate(glm::mat4(1.0f), glm::vec3(tx, ty, tz));
 }
 
-void TrafficLight::change_parameters(GLfloat atx, GLfloat aty, GLfloat atz,
+void TrafficLightModel::change_parameters(GLfloat atx, GLfloat aty, GLfloat atz,
                                 GLfloat arx, GLfloat ary, GLfloat arz) {
   tx = atx;
   ty = aty;
@@ -124,7 +124,7 @@ void TrafficLight::change_parameters(GLfloat atx, GLfloat aty, GLfloat atz,
   update_matrices();
 }
 
-void TrafficLight::render() {
+void TrafficLightModel::render() {
   glUseProgram(shaderProgram);
   matrixStack.push_back(translation);
   matrixStack.push_back(rotation);
@@ -142,7 +142,7 @@ void TrafficLight::render() {
   delete ms_mult;
 }
 
-void TrafficLight::quad(int a, int b, int c, int d, glm::vec4 *positions, glm::vec4 color) {
+void TrafficLightModel::quad(int a, int b, int c, int d, glm::vec4 *positions, glm::vec4 color) {
   v_positions[tri_idx] = positions[a];
   v_colors[tri_idx] = color;
   tri_idx++;
@@ -164,7 +164,7 @@ void TrafficLight::quad(int a, int b, int c, int d, glm::vec4 *positions, glm::v
 }
 
 
-void TrafficLight::trafficLight(glm::vec4 *positions, glm::vec4 *colors) {
+void TrafficLightModel::trafficLight(glm::vec4 *positions, glm::vec4 *colors) {
   quad(1, 0, 3, 2, positions, colors[0]);
   quad(3, 7, 6, 2, positions, colors[1]);
   quad(2, 6, 5, 1, positions, colors[2]);
@@ -173,7 +173,7 @@ void TrafficLight::trafficLight(glm::vec4 *positions, glm::vec4 *colors) {
   quad(5, 4, 7, 6, positions, colors[5]);
 }
 
-void TrafficLight::turnYellow() {
+void TrafficLightModel::turnYellow() {
   for(tri_idx=72 ; tri_idx<108; tri_idx++) {
     v_colors[tri_idx] = Yellow;
   }
@@ -184,7 +184,7 @@ void TrafficLight::turnYellow() {
   glBufferSubData(GL_ARRAY_BUFFER, sizeof(v_positions), sizeof(v_colors),
                   v_colors);
 }
-void TrafficLight::turnGreen() {
+void TrafficLightModel::turnGreen() {
   for(tri_idx=72 ; tri_idx<108; tri_idx++) {
     v_colors[tri_idx] = Green;
   }
@@ -195,7 +195,7 @@ void TrafficLight::turnGreen() {
   glBufferSubData(GL_ARRAY_BUFFER, sizeof(v_positions), sizeof(v_colors),
                   v_colors);
 }
-void TrafficLight::turnRed() {
+void TrafficLightModel::turnRed() {
   for(tri_idx=72 ; tri_idx<108; tri_idx++) {
     v_colors[tri_idx] = Red;
   }

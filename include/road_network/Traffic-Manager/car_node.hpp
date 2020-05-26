@@ -11,7 +11,7 @@
 
 namespace soc {
 
-class Car	{
+class CarNode	{
 public:
   Graph *g;
   std::vector<glm::vec2> path;
@@ -19,8 +19,8 @@ public:
   std::vector<glm::vec2> check_loc;
   glm::vec2 tangent;
   glm::vec2 normal;
-  Car(Graph* graph, std::vector<int> in);
-  ~Car();
+  CarNode(Graph* graph, std::vector<int> in);
+  ~CarNode();
   void renderCar();
   bool updateCar();
   glm::vec2 getLocation();

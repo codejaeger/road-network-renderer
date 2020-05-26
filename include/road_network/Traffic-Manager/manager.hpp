@@ -8,8 +8,8 @@
 #include <math.h>
 
 #include "road_network/Road-Graph/graph.hpp"
-#include "road_network/Traffic-Manager/car_model.hpp"
-#include "road_network/Traffic-Manager/traffic_light.hpp"
+#include "road_network/Traffic-Manager/car_node.hpp"
+#include "road_network/Traffic-Manager/intersection_lights.hpp"
 
 #define LC 5
 
@@ -18,8 +18,8 @@ namespace soc {
 class Manager {
 public:
   Graph *g;
-  std::vector<Car*> cars;
-  std::vector<Light*> lights;
+  std::vector<CarNode*> cars;
+  std::vector<IntersectionLights*> lights;
   std::vector<unsigned int> e_no_go;
   unsigned int time;
   unsigned int frame_rate;

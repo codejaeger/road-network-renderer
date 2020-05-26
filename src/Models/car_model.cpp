@@ -1,12 +1,12 @@
 #include "road_network/Road-Model/road.hpp"
 #include "road_network/Road-Model/gl_framework.hpp"
-#include "road_network/Traffic-Light/car.hpp"
+#include "road_network/Models/car_model.hpp"
 
 extern std::vector<glm::mat4> matrixStack;
 
 namespace soc {
 
-Car::Car(GLfloat size) {
+CarModel::CarModel(GLfloat size) {
   s = size;
   change_parameters(0, 0, 0, 0, 0, 0);
   // Creating the shader Program from teh vertex and fragment shaders..
@@ -50,7 +50,7 @@ Car::Car(GLfloat size) {
                             glm::vec4(0.45 * s, -0.35 * s, 0.5 * s, 1.0)};
   glm::vec4 color_glass(1.0f, 0.647f, 0.0f, 1.0f);
   glm::vec4 colors2[6] = {color_glass, color_glass, color_glass, color_glass, color_glass, glm::vec4(abs(color_b[0]-0.1), abs(color_b[1]-0.1), abs(color_b[2]-0.1), 1.0f)};
-  
+
   glm::vec4 positions3[8] = {glm::vec4(-0.90 * s, -0.25 * s, 0.25 * s, 1.0),
                             glm::vec4(-0.90 * s, 0.25 * s, 0.25 * s, 1.0),
                             glm::vec4(-0.85 * s, 0.25 * s, 0.25 * s, 1.0),
@@ -117,7 +117,7 @@ Car::Car(GLfloat size) {
                         BUFFER_OFFSET(sizeof(v_positions)));
 }
 
-void Car::update_matrices() {
+void CarModel::update_matrices() {
   // set the rotation and translation matrices acc to the current values
   // of the parameters
   rotation = glm::rotate(glm::mat4(1.0f), glm::radians(rx),
@@ -130,7 +130,7 @@ void Car::update_matrices() {
   translation = glm::translate(glm::mat4(1.0f), glm::vec3(tx, ty, tz));
 }
 
-void Car::change_parameters(GLfloat atx, GLfloat aty, GLfloat atz,
+void CarModel::change_parameters(GLfloat atx, GLfloat aty, GLfloat atz,
                                 GLfloat arx, GLfloat ary, GLfloat arz) {
   tx = atx;
   ty = aty;
@@ -142,7 +142,7 @@ void Car::change_parameters(GLfloat atx, GLfloat aty, GLfloat atz,
   update_matrices();
 }
 
-void Car::render() {
+void CarModel::render() {
   glUseProgram(shaderProgram);
   matrixStack.push_back(translation);
   matrixStack.push_back(rotation);
@@ -160,7 +160,7 @@ void Car::render() {
   delete ms_mult;
 }
 
-void Car::quad(int a, int b, int c, int d, glm::vec4 *positions, glm::vec4 color) {
+void CarModel::quad(int a, int b, int c, int d, glm::vec4 *positions, glm::vec4 color) {
   v_positions[tri_idx] = positions[a];
   v_colors[tri_idx] = color;
   tri_idx++;
@@ -182,7 +182,7 @@ void Car::quad(int a, int b, int c, int d, glm::vec4 *positions, glm::vec4 color
 }
 
 
-void Car::car(glm::vec4 *positions, glm::vec4 *colors) {
+void CarModel::car(glm::vec4 *positions, glm::vec4 *colors) {
   quad(1, 0, 3, 2, positions, colors[0]);
   quad(3, 7, 6, 2, positions, colors[1]);
   quad(2, 6, 5, 1, positions, colors[2]);
