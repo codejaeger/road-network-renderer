@@ -24,7 +24,7 @@ namespace soc {
 class RoadNetwork {
   float road_depth;
   float d;  // half of the width of the road
-  int num_road_networks;  // number of roads in the network
+  unsigned int num_road_networks;  // number of roads in the network
   std::vector< std::vector<Road> > r;    // stores the road objects
   std::vector< std::vector<RoadSep> > rs;  // stores the road sep objects
   std::vector< std::vector<glm::vec2> > bezier_positions; // bezier_positions stores the interpolated points after reading from raw file

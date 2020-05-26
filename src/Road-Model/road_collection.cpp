@@ -32,14 +32,14 @@ void RoadNetwork::initRoadNetwork() {
   }
   glm::vec2 total_paths;
   fp.read((char *)&total_paths, sizeof(total_paths));
-  num_road_networks = total_paths[0];
-  for (int i = 0; i < int(total_paths[0]); i++) {
+  num_road_networks = (unsigned int)(total_paths[0]);
+  for (unsigned int i = 0; i < num_road_networks; i++) {
     bezier_positions.resize(i + 1);
     glm::vec2 num;
     fp.read((char *)&num, sizeof(num));
-    glm::vec2 ip[int(num[0])];
+    glm::vec2 ip[(unsigned int)(num[0])];
     fp.read((char *)&ip, sizeof(ip));
-    for (int j = 0; j < int(num[0]); j++) {
+    for (unsigned int j = 0; j < (unsigned int)(num[0]); j++) {
       bezier_positions[i].push_back(ip[j]);
     }
   }

@@ -209,7 +209,7 @@ void Paths::delete_last() {
 
 void Paths::save() {
   std::fstream fp;
-  int size, count;
+  unsigned int size, count, total_paths;
 
   // Open .min.raw file
   std::cout << "Saving 1.min.raw\n";
@@ -223,8 +223,12 @@ void Paths::save() {
 
   // Find the size of array of "values to store"
   size = 0;
-  for (int i = 0; i < positions.size(); i++) {
-    size += (positions[i].size() + 1);
+  total_paths = 0;
+  for (unsigned int i = 0; i < positions.size(); i++) {
+    if (!positions[i].empty()) {
+      size += (positions[i].size() + 1);
+      total_paths++;
+    }
   }
 
   // Generate an array of that size
@@ -234,16 +238,19 @@ void Paths::save() {
   count = 0;
 
   // First, stores the number of paths
-  storecp[count] = glm::vec2(int(positions.size()), 0);
+  storecp[count] = glm::vec2(int(total_paths), 0);
   count++;
 
   // Recursively stores the number of points then the points
-  for (int i = 0; i < positions.size(); i++) {
-    storecp[count] = glm::vec2(int(positions[i].size()), 0);
-    count++;
-    for (int j = 0; j < positions[i].size(); j++) {
-      storecp[count] = positions[i][j];
+  for (unsigned int i = 0; i < positions.size(); i++) {
+    if (!positions[i].empty()) {
+      storecp[count] = glm::vec2(int(positions[i].size()), 0);
+      std::cout << positions[i].size() << "++\n";
       count++;
+      for (unsigned int j = 0; j < positions[i].size(); j++) {
+        storecp[count] = positions[i][j];
+        count++;
+      }
     }
   }
 
@@ -264,8 +271,12 @@ void Paths::save() {
 
   // Find the size of array of "values to store"
   size = 0;
-  for (int i = 0; i < bzc.size(); i++) {
-    size += (bzc[i].size() + 1);
+  total_paths = 0;
+  for (unsigned int i = 0; i < bzc.size(); i++) {
+    if (!bzc[i].empty()) {
+      size += (bzc[i].size() + 1);
+      total_paths++;
+    }
   }
 
   // Generate an array of that size
@@ -275,17 +286,20 @@ void Paths::save() {
   count = 0;
 
   // First, stores the number of paths
-  storeip[count] = glm::vec2(int(bzc.size()), 0);
+  storeip[count] = glm::vec2(int(total_paths), 0);
   count++;
 
   // Recursively stores the number of points then the points
-  for (int i = 0; i < bzc.size(); i++) {
+  for (unsigned int i = 0; i < bzc.size(); i++) {
     positionsToCurve(i);
-    storeip[count] = glm::vec2(int(bzc[i].size()), 0);
-    count++;
-    for (int j = 0; j < bzc[i].size(); j++) {
-      storeip[count] = bzc[i][j];
+    if (!bzc[i].empty()) {
+      storeip[count] = glm::vec2(int(bzc[i].size()), 0);
       count++;
+      std::cout << i << "//" << bzc[i].size() << "++\n";
+      for (unsigned int j = 0; j < bzc[i].size(); j++) {
+        storeip[count] = bzc[i][j];
+        count++;
+      }
     }
   }
 
@@ -309,30 +323,31 @@ void Paths::load() {
 
   // Clear the vector storing control points
   positions.clear();
+  bzc.clear();
 
   // Find the number of paths
   glm::vec2 total_paths;
   fp.read((char *)&total_paths, sizeof(total_paths));
 
   // Recursively find the number of points then store the points
-  for (int i = 0; i < int(total_paths[0]); i++) {
-    positions.resize(i + 1);
+  for (unsigned int i = 0; i < (unsigned int)(total_paths[0]); i++) {
+    positions.resize(int(i) + 1);
+    bzc.resize(int(i) + 1);
     glm::vec2 num;
     fp.read((char *)&num, sizeof(num));
-    glm::vec2 cp[int(num[0])];
+    glm::vec2 cp[(unsigned int)(num[0])];
     fp.read((char *)&cp, sizeof(cp));
-    for (int j = 0; j < int(num[0]); j++) {
+    std::cout << i << "//" << num[0] << "++\n";
+    for (unsigned int j = 0; j < (unsigned int)(num[0]); j++) {
       positions[i].push_back(cp[j]);
     }
+    positionsToCurve(i);
   }
 
   // Close the file
   fp.close();
 
   path_number = 0;
-
-  // Converts the control points to interpolated points.
-  positionsToCurve(path_number);
 
   // Stops further input of control points.
   stop();
