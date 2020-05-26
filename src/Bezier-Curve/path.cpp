@@ -1,5 +1,3 @@
-#include <fstream>
-
 #include "road_network/Bezier-Curve/path.hpp"
 
 namespace soc {
@@ -79,39 +77,39 @@ float Paths::distance(glm::vec2 &a, glm::vec2 &b) {
               ((a[1] - b[1]) * (a[1] - b[1])));
 }
 
-int Paths::interpolate_count() {
+int Paths::interpolate_count(unsigned int i) {
   // Calculating interpolation counts
   // It controls the distance between interpolation points
   float tot_dis = 0.0;
-  for (int i = 0; i < int(positions[path_number].size()) - 1; i++) {
+  for (unsigned int j = 0; j + 1 < positions[i].size(); j++) {
     tot_dis +=
-        distance(positions[path_number][i], positions[path_number][i + 1]);
+        distance(positions[i][j], positions[i][j + 1]);
   }
   return int(tot_dis / AIPD);
 }
 
-void Paths::positionsToCurve() {
+void Paths::positionsToCurve(unsigned int i) {
   // Prints all the control points given by user for the current path
-  // for (int i = 0; i < positions[path_number].size(); i++) {
-  //   std::cout << positions[path_number][i][0] << ", "
-  //             << positions[path_number][i][1] << std::endl;
+  // for (int i = 0; i < positions[i].size(); i++) {
+  //   std::cout << positions[i][i][0] << ", "
+  //             << positions[i][i][1] << std::endl;
   // }
 
   // Stores the newly processed Bezier Curve interpolated points
-  bzc[path_number].clear();
-  float n = interpolate_count() + 1; // +1 is to avoid unexpected things
-  if (!positions[path_number].empty()) {
-    for (float i = 0; i <= n; i++) {
+  bzc[i].clear();
+  float n = interpolate_count(i) + 1; // +1 is to avoid unexpected things
+  if (!positions[i].empty()) {
+    for (float j = 0; j <= n; j++) {
       std::vector<glm::vec2> pos =
-          bezier_curve_point(positions[path_number], (i / n));
-      bzc[path_number].push_back(pos[0]);
+          bezier_curve_point(positions[i], (j / n));
+      bzc[i].push_back(pos[0]);
     }
   }
 
   // Prints all the interpolated points for the current path
-  // for (int i = 0; i < bzc[path_number].size(); i++) {
-  //   std::cout << bzc[path_number][int(i)][0] << "\\"
-  //             << bzc[path_number][int(i)][1] << std::endl;
+  // for (int i = 0; i < bzc[i].size(); i++) {
+  //   std::cout << bzc[i][int(i)][0] << "\\"
+  //             << bzc[i][int(i)][1] << std::endl;
   // }
   // std::cout <<"\n\n";
 }
@@ -136,7 +134,7 @@ void Paths::getPoints(GLFWwindow *window) {
   usleep(200000);
 
   // Converts the control points to interpolated points.
-  positionsToCurve();
+  positionsToCurve(path_number);
 }
 
 void Paths::renderLine(unsigned int i) {
@@ -158,7 +156,6 @@ void Paths::renderLine(unsigned int i) {
 }
 
 void Paths::renderAllLines() {
-  positionsToCurve();
   for (unsigned int i = 0; i < bzc.size(); i++) {
     // Bind the buffer for rendering path
     if (i == path_number) {
@@ -191,11 +188,11 @@ void Paths::next() {
   path_number++;
 
   // Update the vector storing path's interpolated points
-  positionsToCurve();
+  positionsToCurve(path_number);
 }
 
 void Paths::previous() {
-  // If you are not at path 1
+  // If you are not at path 0
   if (path_number != 0) {
     path_number--;
   }
@@ -207,6 +204,7 @@ void Paths::delete_last() {
   if (positions[path_number].size() > 0) {
     positions[path_number].pop_back();
   }
+  positionsToCurve(path_number);
 }
 
 void Paths::save() {
@@ -282,6 +280,7 @@ void Paths::save() {
 
   // Recursively stores the number of points then the points
   for (int i = 0; i < bzc.size(); i++) {
+    positionsToCurve(i);
     storeip[count] = glm::vec2(int(bzc[i].size()), 0);
     count++;
     for (int j = 0; j < bzc[i].size(); j++) {
@@ -333,7 +332,7 @@ void Paths::load() {
   path_number = 0;
 
   // Converts the control points to interpolated points.
-  positionsToCurve();
+  positionsToCurve(path_number);
 
   // Stops further input of control points.
   stop();
