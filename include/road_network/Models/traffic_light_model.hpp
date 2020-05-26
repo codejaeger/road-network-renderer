@@ -1,5 +1,5 @@
-#ifndef traffic_light_hpp
-#define traffic_light_hpp
+#ifndef traffic_light_model_hpp
+#define traffic_light_model_hpp
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

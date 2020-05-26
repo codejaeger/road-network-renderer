@@ -1,5 +1,5 @@
-#ifndef traffic_light_hpp
-#define traffic_light_hpp
+#ifndef intersection_lights_hpp
+#define intersection_lights_hpp
 
 #include <iostream>
 #include <stdio.h>
@@ -8,19 +8,24 @@
 #include <math.h>
 
 #include "road_network/Road-Graph/graph.hpp"
+#include "road_network/Models/traffic_light_model.hpp"
+
+#define PI 3.14159
 
 namespace soc {
 
 class IntersectionLights {
 public:
-  Vertex v;
+  glm::vec2 center;
+  std::vector<glm::vec2> edge_firsts;
+  std::vector<TrafficLightModel*> mod;
   unsigned int size;
   unsigned int flag;
-  IntersectionLights(Vertex &vertex);
+  IntersectionLights(Graph *graph, unsigned int index);
   ~IntersectionLights();
   void updateLight();
   void renderLight();
-  unsigned int returnEdgeNumber();
+  glm::vec2 returnEdgeNumber();
 };
 
 }

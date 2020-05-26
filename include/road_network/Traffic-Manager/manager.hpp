@@ -20,7 +20,7 @@ public:
   Graph *g;
   std::vector<CarNode*> cars;
   std::vector<IntersectionLights*> lights;
-  std::vector<unsigned int> e_no_go;
+  std::vector<glm::vec2> edge_firsts_go;
   unsigned int time;
   unsigned int frame_rate;
   unsigned int light_timeout;

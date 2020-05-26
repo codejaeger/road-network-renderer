@@ -36,6 +36,9 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
 
   current = -1;
 
+  road_depth = 0.02;
+  lane_width = 0.05;
+
   mod = new CarModel(0.020);
   updateCar();
 }
@@ -52,15 +55,25 @@ bool CarNode::updateCar() {
   float x2 = path[current+1][0];
   float y2 = path[current+1][1];
   float nf = sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)); // normalization_factor
-  tangent = glm::vec2((x2-x1)/nf, (y2-y1)/nf);
-  normal = glm::vec2((y2-y1)/nf, (x1-x2)/nf);
+  glm::vec2 tangent = glm::vec2((x2-x1)/nf, (y2-y1)/nf);
+  glm::vec2 normal = glm::vec2((y2-y1)/nf, (x1-x2)/nf);
   std::cout << tangent[0] << "," << tangent[1] << "..."
             << normal[0] << "," << normal[1] << " CarNode Updated\n";
 
+  glm::vec2 loc = path[current] - normal*(lane_width/2);
 
-  float rz = atan(tangent[1]/tangent[0])*180/PI;
-  std::cout << rz << "tangent\n";
-  mod->change_parameters(path[current][0], path[current][1], 0.020, 0, 0, rz);
+  float rz;
+  if (tangent[0] > 0.0) {
+    rz = atan(tangent[1]/tangent[0])*180.0/PI;
+  }
+  else if (tangent[0] == 0.0) {
+    rz = 90.0;
+  }
+  else {
+    rz = 180.0 + (atan(tangent[1]/tangent[0])*180.0/PI);
+  }
+
+  mod->change_parameters(loc[0], loc[1], road_depth, 0, 0, rz);
 
   return true;
 }
@@ -75,10 +88,10 @@ glm::vec2 CarNode::getLocation() {
 }
 
 glm::vec2 CarNode::getNextLocation() {
-  if (path.size() <= current + 1) {
+  if (path.size() <= current + 2) {
     return glm::vec2(-50, -50);  // Consider it as a dumping ground.
   }
-  return path[current+1];
+  return path[current+2];
 }
 
 bool CarNode::doCheck() {

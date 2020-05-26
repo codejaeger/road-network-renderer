@@ -1,5 +1,5 @@
-#ifndef car_model_hpp
-#define car_model_hpp
+#ifndef car_node_hpp
+#define car_node_hpp
 
 #include <iostream>
 #include <stdio.h>
@@ -21,8 +21,8 @@ public:
   std::vector<glm::vec2> path;
   unsigned int current;
   std::vector<glm::vec2> check_loc;
-  glm::vec2 tangent;
-  glm::vec2 normal;
+  float lane_width;
+  float road_depth;
   CarNode(Graph* graph, std::vector<int> in);
   ~CarNode();
   void renderCar();

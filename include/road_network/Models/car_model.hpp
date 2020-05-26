@@ -1,5 +1,5 @@
-#ifndef car_hpp
-#define car_hpp
+#ifndef car_model_hpp
+#define car_model_hpp
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

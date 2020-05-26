@@ -11,12 +11,12 @@ Manager::Manager(Graph* graph, int s, int e) {
 
   for (unsigned int i = 0; i < g->v.size(); i++) {
     if (g->v[i].outgoing.size() > 1) {
-      lights.push_back(new IntersectionLights(g->v[i]));
+      lights.push_back(new IntersectionLights(g, i));
       std::cout << "Pushed\n";
     }
   }
 
-  frame_rate = 50;
+  frame_rate = 100;
   light_timeout = 1000;
   car_spawnin = 2000;
 }
@@ -26,11 +26,11 @@ void Manager::executeManager() {
 
   if (time % frame_rate == 0) {
     // Update IntersectionLights and store the green directions
-    e_no_go.clear();
+    edge_firsts_go.clear();
     if (time % light_timeout == 0) {
       for (unsigned int i = 0; i < lights.size(); i++) {
         lights[i]->updateLight();
-        e_no_go.push_back(lights[i]->returnEdgeNumber());
+        edge_firsts_go.push_back(lights[i]->returnEdgeNumber());
       }
     }
 
@@ -50,13 +50,15 @@ void Manager::executeManager() {
       }
 
       // If the next location already has a car there.
-      if (cars[i]->doCheck()) {
-        std::cout << "\n\nReached intersection";
-        go = false;
-        for (unsigned int j = 0; j < e_no_go.size(); j++) {
-          if (cars[i]->getLocation() == g->e[e_no_go[j]].path[0]) {
-            go = true;
-            break;
+      if (go) {
+        if (cars[i]->doCheck()) {
+          std::cout << "\n\nReached intersection";
+          go = false;
+          for (unsigned int j = 0; j < edge_firsts_go.size(); j++) {
+            if (cars[i]->getLocation() == edge_firsts_go[j]) {
+              go = true;
+              break;
+            }
           }
         }
       }
