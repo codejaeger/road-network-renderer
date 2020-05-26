@@ -22,6 +22,9 @@ public:
   std::vector<Light*> lights;
   std::vector<unsigned int> e_no_go;
   unsigned int time;
+  unsigned int frame_rate;
+  unsigned int light_timeout;
+  unsigned int car_spawnin;
   int start;
   int end;
   Manager(Graph* graph, int s, int e);

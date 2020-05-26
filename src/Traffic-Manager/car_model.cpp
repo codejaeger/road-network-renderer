@@ -5,8 +5,8 @@ namespace soc {
 Car::Car(Graph* graph, std::vector<int> in) {
   g = graph;
 
-  path.clear();
-  check_loc.clear();
+  path.clear(); // Stores the path
+  check_loc.clear(); // Stores the points just before intersections
 
   std::cout << "X\n";
   for (unsigned int i = 0; i < in.size(); i++) {
@@ -44,9 +44,15 @@ bool Car::updateCar() {
     return false;
   }
 
-  tangent = glm::vec2(path[current+1][0] - path[current][0], path[current+1][1] - path[current][1]);
-  normal = glm::vec2(path[current+1][1] - path[current+1][1], path[current+1][0] - path[current][0]);
-  std::cout << "Car Updated\n";
+  float x1 = path[current][0];
+  float y1 = path[current][1];
+  float x2 = path[current+1][0];
+  float y2 = path[current+1][1];
+  float nf = sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)); // normalization_factor
+  tangent = glm::vec2((x2-x1)/nf, (y2-y1)/nf);
+  normal = glm::vec2((y2-y1)/nf, (x1-x2)/nf);
+  std::cout << tangent[0] << "," << tangent[1] << "..."
+            << normal[0] << "," << normal[1] << " Car Updated\n";
 
   return true;
 }
@@ -61,7 +67,7 @@ glm::vec2 Car::getLocation() {
 
 glm::vec2 Car::getNextLocation() {
   if (path.size() <= current + 1) {
-    return glm::vec2(-50, -50);
+    return glm::vec2(-50, -50);  // Consider it as a dumping ground.
   }
   return path[current+1];
 }
