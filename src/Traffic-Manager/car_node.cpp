@@ -36,7 +36,7 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
 
   current = -1;
 
-  mod = new CarModel(0.025);
+  mod = new CarModel(0.020);
   updateCar();
 }
 
@@ -60,7 +60,7 @@ bool CarNode::updateCar() {
 
   float rz = atan(tangent[1]/tangent[0])*180/PI;
   std::cout << rz << "tangent\n";
-  mod->change_parameters(path[current][0], path[current][1], 0, 0, 0, rz);
+  mod->change_parameters(path[current][0], path[current][1], 0.020, 0, 0, rz);
 
   return true;
 }
