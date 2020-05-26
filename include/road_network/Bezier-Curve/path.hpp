@@ -31,12 +31,12 @@ private:
   // stores all the control points
   std::vector< std::vector<glm::vec2> > positions;
   // for rendering current path
-  std::vector<glm::vec2> current_bzc;
+  std::vector< std::vector<glm::vec2> > bzc;
   bool input_status;
-  int path_number;
-  GLuint vb, vao;
-  GLuint shaderProgram;
-  GLuint v_position;
+  unsigned int path_number;
+  GLuint vb_current, vb_rest, vao_current, vao_rest;
+  GLuint shaderProgram_current, shaderProgram_rest;
+  GLuint v_position_current, v_position_rest;
   std::vector<glm::vec2> bezier_curve_point(std::vector<glm::vec2> pos,
                                             float ratio);
   float distance(glm::vec2 &a, glm::vec2 &b);
@@ -46,6 +46,8 @@ private:
 public:
   Paths();
   void getPoints(GLFWwindow *window);
+  void renderLine(unsigned int i);
+  void renderAllLines();
   void renderLine();
   void next();
   void previous();

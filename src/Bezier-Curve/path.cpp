@@ -10,6 +10,7 @@ Paths::Paths() {
 
   // First path initialized
   positions.push_back(std::vector<glm::vec2>(0));
+  bzc.push_back(std::vector<glm::vec2>(0));
 
   // Input of control point starts
   input_status = true;
@@ -17,25 +18,41 @@ Paths::Paths() {
   // Shaders
   std::string vertex_shader_file(
       "./src/Bezier-Curve/vertex-shaders/v_bezier.glsl");
-  std::string fragment_shader_file(
-      "./src/Bezier-Curve/fragment-shaders/f_bezier.glsl");
+  std::string fragment_shader_file_current(
+      "./src/Bezier-Curve/fragment-shaders/f_current.glsl");
+  std::string fragment_shader_file_rest(
+      "./src/Bezier-Curve/fragment-shaders/f_rest.glsl");
 
-  std::vector<GLuint> shaderList;
-  shaderList.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
-  shaderList.push_back(
-      soc::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file));
+  std::vector<GLuint> shaderList_current;
+  shaderList_current.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
+  shaderList_current.push_back(
+      soc::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file_current));
+  shaderProgram_current = soc::CreateProgramGL(shaderList_current);
+  glUseProgram(shaderProgram_current);
+  v_position_current = glGetAttribLocation(shaderProgram_current, "vPosition");
 
-  shaderProgram = soc::CreateProgramGL(shaderList);
-  glUseProgram(shaderProgram);
-  v_position = glGetAttribLocation(shaderProgram, "vPosition");
+  std::vector<GLuint> shaderList_rest;
+  shaderList_rest.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));
+  shaderList_rest.push_back(
+      soc::LoadShaderGL(GL_FRAGMENT_SHADER, fragment_shader_file_rest));
+  shaderProgram_rest = soc::CreateProgramGL(shaderList_rest);
+  glUseProgram(shaderProgram_rest);
+  v_position_rest = glGetAttribLocation(shaderProgram_rest, "vPosition");
 
   // Create buffer which is used to render paths
-  glGenBuffers(1, &vb);
-  glBindBuffer(GL_ARRAY_BUFFER, vb);
-  glGenVertexArrays(1, &vao);
-  glBindVertexArray(vao);
-  glEnableVertexAttribArray(v_position);
-  glVertexAttribPointer(v_position, 2, GL_FLOAT, GL_FALSE, 0, (void *)(0));
+  glGenBuffers(1, &vb_current);
+  glBindBuffer(GL_ARRAY_BUFFER, vb_current);
+  glGenVertexArrays(1, &vao_current);
+  glBindVertexArray(vao_current);
+  glEnableVertexAttribArray(v_position_current);
+  glVertexAttribPointer(v_position_current, 2, GL_FLOAT, GL_FALSE, 0, (void *)(0));
+
+  glGenBuffers(1, &vb_rest);
+  glBindBuffer(GL_ARRAY_BUFFER, vb_rest);
+  glGenVertexArrays(1, &vao_rest);
+  glBindVertexArray(vao_rest);
+  glEnableVertexAttribArray(v_position_rest);
+  glVertexAttribPointer(v_position_rest, 2, GL_FLOAT, GL_FALSE, 0, (void *)(0));
 }
 
 std::vector<glm::vec2> Paths::bezier_curve_point(std::vector<glm::vec2> pos,
@@ -81,20 +98,20 @@ void Paths::positionsToCurve() {
   // }
 
   // Stores the newly processed Bezier Curve interpolated points
-  current_bzc.clear();
+  bzc[path_number].clear();
   float n = interpolate_count() + 1; // +1 is to avoid unexpected things
   if (!positions[path_number].empty()) {
     for (float i = 0; i <= n; i++) {
       std::vector<glm::vec2> pos =
           bezier_curve_point(positions[path_number], (i / n));
-      current_bzc.push_back(pos[0]);
+      bzc[path_number].push_back(pos[0]);
     }
   }
 
   // Prints all the interpolated points for the current path
-  // for (int i = 0; i < current_bzc.size(); i++) {
-  //   std::cout << current_bzc[int(i)][0] << "\\"
-  //             << current_bzc[int(i)][1] << std::endl;
+  // for (int i = 0; i < bzc[path_number].size(); i++) {
+  //   std::cout << bzc[path_number][int(i)][0] << "\\"
+  //             << bzc[path_number][int(i)][1] << std::endl;
   // }
   // std::cout <<"\n\n";
 }
@@ -122,16 +139,11 @@ void Paths::getPoints(GLFWwindow *window) {
   positionsToCurve();
 }
 
-void Paths::renderLine() {
-  // Bind the buffer for rendering path
-  glBindBuffer(GL_ARRAY_BUFFER, vb);
-  glUseProgram(shaderProgram);
-  glBindVertexArray(vao);
-
+void Paths::renderLine(unsigned int i) {
   // Convert the vector storing interpolated points to array
-  glm::vec2 cur[current_bzc.size()];
-  for (int i = 0; i < current_bzc.size(); i++) {
-    cur[i] = current_bzc[i];
+  glm::vec2 cur[bzc[i].size()];
+  for (unsigned int j = 0; j < bzc[i].size(); j++) {
+    cur[j] = bzc[i][j];
   }
 
   // Buffering the array to GPU
@@ -140,19 +152,38 @@ void Paths::renderLine() {
 
   // Joins consecutive interpolated points
   // Creates the approx Bezier Curve
-  for (int i = 0; i < int(current_bzc.size()) - 1; i++) {
-    glDrawArrays(GL_LINE_STRIP, i, 2);
+  for (unsigned int j = 0; j + 1 < bzc[i].size(); j++) {
+    glDrawArrays(GL_LINE_STRIP, j, 2);
+  }
+}
+
+void Paths::renderAllLines() {
+  positionsToCurve();
+  for (unsigned int i = 0; i < bzc.size(); i++) {
+    // Bind the buffer for rendering path
+    if (i == path_number) {
+      glBindBuffer(GL_ARRAY_BUFFER, vb_current);
+      glUseProgram(shaderProgram_current);
+      glBindVertexArray(vao_current);
+    }
+    else {
+      glBindBuffer(GL_ARRAY_BUFFER, vb_rest);
+      glUseProgram(shaderProgram_rest);
+      glBindVertexArray(vao_rest);
+    }
+    renderLine(i);
   }
 }
 
 void Paths::next() {
   // If the next path already exists
-  if (int(positions.size()) - 1 > path_number) {
+  if (positions.size() > path_number + 1) {
     stop();
   }
   // If the next path doesn't exist then create it and
   else {
     positions.push_back(std::vector<glm::vec2>(0));
+    bzc.push_back(std::vector<glm::vec2>(0));
     resume();
   }
 
@@ -167,26 +198,23 @@ void Paths::previous() {
   // If you are not at path 1
   if (path_number != 0) {
     path_number--;
-    // Converts the control points to interpolated points.
-    positionsToCurve();
   }
   stop();
 }
 
 void Paths::delete_last() {
-  // If there is a contol point in this path, then deleter the last one.
+  // If there is a contol point in this path, then delete the last one.
   if (positions[path_number].size() > 0) {
     positions[path_number].pop_back();
-    // Converts the control points to interpolated points.
-    positionsToCurve();
   }
 }
 
 void Paths::save() {
   std::fstream fp;
+  int size, count;
 
   // Open .min.raw file
-  std::cout << "Saving CP\n";
+  std::cout << "Saving 1.min.raw\n";
   fp.open("./models/Bezier-Model/1.min.raw", std::ios::binary | std::ios::out);
 
   // Check file's condition
@@ -196,28 +224,28 @@ void Paths::save() {
   }
 
   // Find the size of array of "values to store"
-  int cpsize = 0;
+  size = 0;
   for (int i = 0; i < positions.size(); i++) {
-    cpsize += (positions[i].size() + 1);
+    size += (positions[i].size() + 1);
   }
 
   // Generate an array of that size
-  glm::vec2 storecp[cpsize + 1];
+  glm::vec2 storecp[size + 1];
 
   // Start the counter
-  int countcp = 0;
+  count = 0;
 
-  // First, store the number of paths
-  storecp[countcp] = glm::vec2(int(positions.size()), 0);
-  countcp++;
+  // First, stores the number of paths
+  storecp[count] = glm::vec2(int(positions.size()), 0);
+  count++;
 
-  // Recursively store the number of points then the points
+  // Recursively stores the number of points then the points
   for (int i = 0; i < positions.size(); i++) {
-    storecp[countcp] = glm::vec2(int(positions[i].size()), 0);
-    countcp++;
+    storecp[count] = glm::vec2(int(positions[i].size()), 0);
+    count++;
     for (int j = 0; j < positions[i].size(); j++) {
-      storecp[countcp] = positions[i][j];
-      countcp++;
+      storecp[count] = positions[i][j];
+      count++;
     }
   }
 
@@ -225,8 +253,9 @@ void Paths::save() {
   fp.write((char *)&storecp, sizeof(storecp));
   fp.close();
 
+
   // Open .raw file
-  std::cout << "Saving IP\n";
+  std::cout << "Saving 1.raw\n";
   fp.open("./models/Bezier-Model/1.raw", std::ios::binary | std::ios::out);
 
   // Check file's condition
@@ -235,43 +264,31 @@ void Paths::save() {
     return;
   }
 
-  // Save the current path number
-  int save_pn = path_number;
-
   // Find the size of array of "values to store"
-  int ipsize = 0;
-  for (int i = 0; i < positions.size(); i++) {
-    path_number = i;
-    positionsToCurve();
-    ipsize += (current_bzc.size() + 1);
+  size = 0;
+  for (int i = 0; i < bzc.size(); i++) {
+    size += (bzc[i].size() + 1);
   }
 
   // Generate an array of that size
-  glm::vec2 storeip[ipsize + 1];
+  glm::vec2 storeip[size + 1];
 
   // Start the counter
-  int countip = 0;
+  count = 0;
 
-  // First, store the number of paths
-  storeip[countip] = glm::vec2(int(positions.size()), 0);
-  countip++;
+  // First, stores the number of paths
+  storeip[count] = glm::vec2(int(bzc.size()), 0);
+  count++;
 
-  // Recursively store the number of points then the points
-  for (int i = 0; i < positions.size(); i++) {
-    path_number = i;
-    positionsToCurve();
-    storeip[countip] = glm::vec2(int(current_bzc.size()), 0);
-    countip++;
-    for (int j = 0; j < current_bzc.size(); j++) {
-      storeip[countip] = current_bzc[j];
-      countip++;
+  // Recursively stores the number of points then the points
+  for (int i = 0; i < bzc.size(); i++) {
+    storeip[count] = glm::vec2(int(bzc[i].size()), 0);
+    count++;
+    for (int j = 0; j < bzc[i].size(); j++) {
+      storeip[count] = bzc[i][j];
+      count++;
     }
   }
-
-  // Reload the path where 'S' was pressed
-  path_number = save_pn;
-  // Converts the control points to interpolated points.
-  positionsToCurve();
 
   // Write to the file, then close it
   fp.write((char *)&storeip, sizeof(storeip));

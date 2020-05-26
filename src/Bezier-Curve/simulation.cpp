@@ -7,7 +7,7 @@ void initBuffersGL(void) { p = new soc::Paths(); }
 
 void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  p->renderLine();
+  p->renderAllLines();
 }
 
 void deleteBuffersGL() { delete p; }
