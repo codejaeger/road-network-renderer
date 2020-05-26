@@ -10,7 +10,6 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
     edge_firsts.push_back(graph->e[vertex.outgoing[i]].path[0]);
   }
 
-  flag = 0;
   size = edge_firsts.size();
 
   float x1 = center[0];
@@ -43,6 +42,9 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
     }
     mod[i]->change_parameters(loc[0], loc[1], 0, 0, 0, 90-rz);
   }
+  flag = 0;
+  mod[flag]->turnGreen();
+
 }
 
 void IntersectionLights::updateLight() {

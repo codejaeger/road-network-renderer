@@ -17,17 +17,15 @@ Manager::Manager(Graph* graph, int s, int e) {
   }
 
   frame_rate = 100;
-  light_timeout = 1000;
-  car_spawnin = 2000;
+  light_timeout = 100;
+  car_spawnin = 200;
 }
 
 void Manager::executeManager() {
-  time++;
-
   if (time % frame_rate == 0) {
     // Update IntersectionLights and store the green directions
-    edge_firsts_go.clear();
     if (time % light_timeout == 0) {
+      edge_firsts_go.clear();
       for (unsigned int i = 0; i < lights.size(); i++) {
         lights[i]->updateLight();
         edge_firsts_go.push_back(lights[i]->returnEdgeNumber());
@@ -91,6 +89,8 @@ void Manager::executeManager() {
 
     std::cout << "\nCars size : " <<  cars.size() << "\t\tTime: " << time << std::endl;
   }
+
+  time++;
 
 }
 

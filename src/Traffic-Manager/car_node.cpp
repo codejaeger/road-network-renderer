@@ -9,6 +9,7 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
   check_loc.clear(); // Stores the points just before intersections
 
   std::cout << "X\n";
+  std::cout << in.size() << "in\n";
   for (unsigned int i = 0; i < in.size(); i++) {
     if (i % 2) {
       std::vector<glm::vec2> temp = g->e[in[i]].path;
@@ -16,8 +17,7 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
         path.push_back(temp[j]);
       }
       if (int(temp.size()) != 0) {
-        glm::vec2 temp2 = temp.back();
-        check_loc.push_back(temp2);
+        check_loc.push_back(temp.back());
       }
     }
     else {
@@ -25,8 +25,12 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
     }
   }
 
+  std::cout << check_loc.size() << "check_loc\n";
+
   if (check_loc.size())
     check_loc.pop_back();
+
+  std::cout << check_loc.size() << "check_loc\n";
 
   std::cout << "creating car\n";
   for (unsigned int i = 0; i < path.size(); i++) {
