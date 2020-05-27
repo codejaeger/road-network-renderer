@@ -19,7 +19,7 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
   float lane_width = 0.05;
 
   for (unsigned int i = 0; i < size; i++) {
-    mod.push_back(new TrafficLightModel(0.02));
+    mod.push_back(new TrafficLightModel(0.04));
 
     float x2 = edge_firsts[i][0];
     float y2 = edge_firsts[i][1];
@@ -32,15 +32,15 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
 
     float rz;
     if (normal[0] > 0.0) {
-      rz = atan(normal[1]/normal[0])*180.0/PI;
+      rz = 180 + atan(normal[1]/normal[0])*180.0/PI;
     }
     else if (normal[0] == 0.0) {
       rz = 90.0;
     }
     else {
-      rz = 180.0 + (atan(normal[1]/normal[0])*180.0/PI);
+      rz = (atan(normal[1]/normal[0])*180.0/PI);
     }
-    mod[i]->change_parameters(loc[0], loc[1], 0, 0, 0, 90-rz);
+    mod[i]->change_parameters(loc[0], loc[1], 0, 0, 0, rz);
   }
   flag = 0;
   mod[flag]->turnGreen();
@@ -66,6 +66,13 @@ void IntersectionLights::renderLight() {
 
 glm::vec2 IntersectionLights::returnEdgeNumber() {
   return edge_firsts[flag];
+}
+
+IntersectionLights::~IntersectionLights() {
+  std::cout << "IntersectionLights Deleted\n";
+  for (unsigned int i = 0; i < mod.size(); i++) {
+    delete mod[i];
+  }
 }
 
 }

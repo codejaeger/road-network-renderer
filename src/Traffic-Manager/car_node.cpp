@@ -110,6 +110,7 @@ bool CarNode::doCheck() {
 
 CarNode::~CarNode() {
   std::cout << "CarNode Deleted\n";
+  delete mod;
 }
 
 }

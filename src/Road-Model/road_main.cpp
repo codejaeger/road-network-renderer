@@ -69,9 +69,8 @@ void renderGL() {
 }
 
 void deleteBuffersGL() {
-  // delete g;
-  // delete m;
   delete rn;
+  delete m;
 }
 
 int main(int argc, char **argv) {

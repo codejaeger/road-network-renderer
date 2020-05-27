@@ -185,9 +185,10 @@ namespace soc {
 		// add the edges indices also in between the vertices
 		for(int i=path.size()-1; i>0; i--) {
 			for(int j=0; j<v[path[i-1]].outgoing.size(); j++) {
-					if(e[v[path[i-1]].outgoing[j]].to == path[i])
-						path.insert(path.begin() + i, v[path[i-1]].outgoing[j]);
-            // break;
+				if(e[v[path[i-1]].outgoing[j]].to == path[i]) {
+					path.insert(path.begin() + i, v[path[i-1]].outgoing[j]);
+          break;
+        }
 			}
 		}
 

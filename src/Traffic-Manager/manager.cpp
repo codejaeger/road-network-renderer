@@ -17,7 +17,7 @@ Manager::Manager(Graph* graph, int s, int e) {
   }
 
   frame_rate = 50;
-  light_timeout = 100;
+  light_timeout = 200;
   car_spawnin = 200;
 }
 
@@ -109,6 +109,9 @@ void Manager::renderManager() {
 Manager::~Manager() {
   for (unsigned int i = 0; i < cars.size(); i++) {
     delete cars[i];
+  }
+  for (unsigned int i = 0; i < lights.size(); i++) {
+    delete lights[i];
   }
   std::cout << "Deleted Manager\n";
 }
