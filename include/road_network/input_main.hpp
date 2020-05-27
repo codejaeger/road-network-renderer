@@ -1,5 +1,5 @@
-#ifndef simulation_hpp
-#define simulation_hpp
+#ifndef input_main_hpp
+#define input_main_hpp
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -12,9 +12,10 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
-#include "road_network/Bezier-Curve/gl_framework.hpp"
-#include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/input_gl_framework.hpp"
 #include "road_network/shader_util.hpp"
+
+#include "road_network/Bezier-Curve/path.hpp"
 
 #define HEIGHT 900
 #define WIDTH 1440
@@ -26,4 +27,4 @@ bool solid = true;
 // Enable/Disable perspective view
 bool enable_perspective = false;
 
-#endif /* simulation_hpp */
+#endif /* input_main_hpp */

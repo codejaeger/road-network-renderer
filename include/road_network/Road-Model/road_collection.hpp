@@ -1,5 +1,6 @@
 #ifndef road_collection_hpp
 #define road_collection_hpp
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -14,10 +15,11 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
+#include "road_network/Road-Graph/graph.hpp"
+
 #include "road_network/Road-Model/road.hpp"
 #include "road_network/Road-Model/road_sep.hpp"
 #include "road_network/Road-Model/intersection.hpp"
-#include "road_network/Road-Graph/graph.hpp"
 
 namespace soc {
 

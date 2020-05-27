@@ -1,5 +1,4 @@
-#include "road_network/Bezier-Curve/gl_framework.hpp"
-#include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/input_gl_framework.hpp"
 
 extern soc::Paths *p;
 

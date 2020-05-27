@@ -1,4 +1,4 @@
-#include "road_network/Road-Model/road_collection.hpp"
+#include "road_network/output_gl_framework.hpp"
 
 extern GLfloat c_xrot, c_yrot, c_zrot;
 extern soc::RoadNetwork *rn;

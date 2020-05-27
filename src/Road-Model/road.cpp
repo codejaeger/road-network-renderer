@@ -1,8 +1,6 @@
 #include "road_network/Road-Model/road.hpp"
-#include "road_network/Road-Model/gl_framework.hpp"
 
 extern std::vector<glm::mat4> matrixStack;
-extern double PI;
 #define INTER_CYLINDER_DISTANCE 0.027
 
 namespace soc {
@@ -326,7 +324,7 @@ void Road::fill_border(int a, int b, int c, int d, glm::vec4 *positions) {
 void Road::cylinders(float d) {
   float r = calc_dist(x1, y1, x2, y2) / 50;
   float div = depth / 5;
-  float sec = PI / 5;
+  float sec = PI_MATH / 5;
 
   // Cylinders on the bottom part of the road
   float mpx1 = (x1 + k1[0]) / 2, mpy1 = (y1 + k1[1]) / 2;
@@ -337,7 +335,7 @@ void Road::cylinders(float d) {
     glm::vec2 v = int_div(mpx1, mpy1, mpx2, mpy2, distance / (dist - distance));
 
     for (float i = -depth / 4; i <= 5 * depth / 4; i += div) {
-      for (float j = 0; j <= 2 * PI; j += sec) {
+      for (float j = 0; j <= 2 * PI_MATH; j += sec) {
         v_positions_border[tri_idx] =
             glm::vec4(v[0] + r * sin(j), v[1] + r * cos(j), i, 1.0f);
         v_colors_border[tri_idx] = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -371,7 +369,7 @@ void Road::cylinders(float d) {
   for (distance = start_spacing_a; distance < dist; distance += d) {
     glm::vec2 v = int_div(mpx1, mpy1, mpx2, mpy2, distance / (dist - distance));
     for (float i = -depth / 4; i <= 5 * depth / 4; i += div) {
-      for (float j = 0; j <= 2 * PI; j += sec) {
+      for (float j = 0; j <= 2 * PI_MATH; j += sec) {
         v_positions_border[tri_idx] =
             glm::vec4(v[0] + r * sin(j), v[1] + r * cos(j), i, 1.0f);
         v_colors_border[tri_idx] = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);

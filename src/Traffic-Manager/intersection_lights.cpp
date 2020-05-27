@@ -32,13 +32,13 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
 
     float rz;
     if (normal[0] > 0.0) {
-      rz = 180 + atan(normal[1]/normal[0])*180.0/PI;
+      rz = 180 + atan(normal[1]/normal[0])*180.0/PI_MATH;
     }
     else if (normal[0] == 0.0) {
       rz = 90.0;
     }
     else {
-      rz = (atan(normal[1]/normal[0])*180.0/PI);
+      rz = (atan(normal[1]/normal[0])*180.0/PI_MATH);
     }
     mod[i]->change_parameters(loc[0], loc[1], 0, 0, 0, rz);
   }

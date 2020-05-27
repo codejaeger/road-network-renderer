@@ -1,8 +1,5 @@
-#include "road_network/Road-Model/road.hpp"
-#include "road_network/Road-Model/gl_framework.hpp"
 #include "road_network/Road-Model/road_sep.hpp"
 
-double PI = 3.14159265;
 extern std::vector<glm::mat4> matrixStack;
 
 namespace soc {
@@ -189,11 +186,11 @@ void RoadSep::build_handle() {
   float r = 0.15 * s;
   float R = 1.5 * s - r;
   float div = 4 * s / 20;
-  float sec = PI / 5;
+  float sec = PI_MATH / 5;
 
   // create the cylindrical handle using parameteric equation of the cylinders
   for (float i = s; i <= 5 * s; i += div) {
-    for (float j = 0; j <= 2 * PI; j += sec) {
+    for (float j = 0; j <= 2 * PI_MATH; j += sec) {
       v_positions_handle[tri_idx] =
           glm::vec4(r * sin(j), R - r * cos(j), i, 1.0f);
       v_colors_handle[tri_idx] = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -212,9 +209,9 @@ void RoadSep::build_handle() {
   }
 
   // generate the other handle of the separator
-  float slice = PI / 50;
-  for (float i = 0.0; i <= PI; i += slice) {
-    for (float j = 0.0; j <= 2 * PI; j += sec) {
+  float slice = PI_MATH / 50;
+  for (float i = 0.0; i <= PI_MATH; i += slice) {
+    for (float j = 0.0; j <= 2 * PI_MATH; j += sec) {
       float x = r * sin(j);
       float y = (R - r * cos(j)) * cos(i);
       float z = (R - r * cos(j)) * sin(i) + 5 * s;
@@ -222,8 +219,8 @@ void RoadSep::build_handle() {
       v_positions_handle[tri_idx] = glm::vec4(x, y, z, 1.0f);
       tri_idx++;
       float next;
-      if (i + slice > PI)
-        next = PI;
+      if (i + slice > PI_MATH)
+        next = PI_MATH;
       else
         next = i + slice;
       x = r * sin(j);
@@ -238,7 +235,7 @@ void RoadSep::build_handle() {
 
   // generate the middle semicircular disc part
   for (float i = s; i <= 5 * s; i += div) {
-    for (float j = 0; j <= 2 * PI; j += sec) {
+    for (float j = 0; j <= 2 * PI_MATH; j += sec) {
       v_positions_handle[tri_idx] =
           glm::vec4(r * sin(j), -R + r * cos(j), i, 1.0f);
       v_colors_handle[tri_idx] = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);

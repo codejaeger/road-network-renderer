@@ -69,13 +69,13 @@ bool CarNode::updateCar() {
 
   float rz;
   if (tangent[0] > 0.0) {
-    rz = atan(tangent[1]/tangent[0])*180.0/PI;
+    rz = atan(tangent[1]/tangent[0])*180.0/PI_MATH;
   }
   else if (tangent[0] == 0.0) {
     rz = 90.0;
   }
   else {
-    rz = 180.0 + (atan(tangent[1]/tangent[0])*180.0/PI);
+    rz = 180.0 + (atan(tangent[1]/tangent[0])*180.0/PI_MATH);
   }
 
   mod->change_parameters(loc[0], loc[1], road_depth, 0, 0, rz);

@@ -1,7 +1,5 @@
 #include "road_network/Road-Model/road_collection.hpp"
 
-extern double PI;
-
 namespace soc {
 
 glm::vec2 p0;
@@ -131,7 +129,7 @@ void RoadNetwork::initRoadSeps() {
       RoadSep rs_temp(glm::vec3(0, 0, 0), (d/10));
       rs_temp.change_parameters(bezier_positions[i][j][0],
                                 bezier_positions[i][j][1], road_depth / 2 + 0.01, 0, 0,
-                                180 / PI * atan(tangent_directions[i][j][1] /
+                                180 / PI_MATH * atan(tangent_directions[i][j][1] /
                                                 tangent_directions[i][j][0]));
       rs[i].push_back(rs_temp);
     }

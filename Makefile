@@ -11,9 +11,11 @@ FRAMEWORKS=-framework CoreVideo -framework OpenGL -framework IOKit -framework Co
 INCLUDES=$(CPPFLAGS) -I./include
 OBJECTFILES=./obj
 
-BINDIR1=./bin/Road-Model
-SRCDIR1=./src/Road-Model
-SRCDIR2=./src/Bezier-Curve
+BINDIR1=./bin
+
+SRCDIR0=./src
+SRCDIR1=./src/Bezier-Curve
+SRCDIR2=./src/Road-Model
 SRCDIR3=./src/Road-Graph
 SRCDIR4=./src/Traffic-Manager
 SRCDIR5=./src/Models
@@ -21,30 +23,34 @@ SRCDIR5=./src/Models
 SHADERCPP=./src/shader_util.cpp
 SHADEROBJ=$(OBJECTFILES)/shader_util.o
 
-BIN1=$(BINDIR1)/road-model
-BIN2=$(BINDIR1)/bezier-curve
-SRCS1=$(SRCDIR1)/road.cpp $(SRCDIR1)/gl_framework.cpp $(SRCDIR1)/road_sep.cpp $(SRCDIR1)/texture.cpp $(SRCDIR1)/road_main.cpp $(SRCDIR1)/road_collection.cpp $(SRCDIR1)/intersection.cpp
-SRCS2=$(SRCDIR2)/path.cpp $(SRCDIR2)/gl_framework.cpp $(SRCDIR2)/simulation.cpp
-SRCS3=$(SRCDIR3)/graph.cpp
-SRCS4=$(SRCDIR4)/car_node.cpp $(SRCDIR4)/intersection_lights.cpp $(SRCDIR4)/manager.cpp
-SRCS5=$(SRCDIR5)/car_model.cpp $(SRCDIR5)/traffic_light_model.cpp
+BIN1=$(BINDIR1)/input
+BIN2=$(BINDIR1)/output
+
+SRCS1=$(SRCDIR0)/input_main.cpp $(SRCDIR0)/input_gl_framework.cpp
+SRCS2=$(SRCDIR1)/path.cpp
+
+SRCS3=$(SRCDIR0)/output_main.cpp $(SRCDIR0)/output_gl_framework.cpp
+SRCS4=$(SRCDIR2)/road_collection.cpp $(SRCDIR2)/road.cpp $(SRCDIR2)/road_sep.cpp $(SRCDIR2)/intersection.cpp $(SRCDIR2)/texture.cpp
+SRCS5=$(SRCDIR3)/graph.cpp
+SRCS6=$(SRCDIR4)/car_node.cpp $(SRCDIR4)/intersection_lights.cpp $(SRCDIR4)/manager.cpp
+SRCS7=$(SRCDIR5)/car_model.cpp $(SRCDIR5)/traffic_light_model.cpp
 
 all: $(SHADEROBJ) $(BIN1) $(BIN2)
 
-$(BIN1): $(SRCS1) $(SHADEROBJ)
+$(BIN1): $(SRCS1) $(SRCS2) $(SHADEROBJ)
 	@if [ $(UNAME_S) = "Linux" ]; then\
-		g++ $(INCLUDES) $(SRCS1) $(SRCS3) $(SRCS4) $(SRCS5) -o $(BIN1) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
+		g++ $(INCLUDES) $(SRCS1) $(SRCS2) -o $(BIN1) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
   fi
 	@if [ $(UNAME_S) = "Darwin" ]; then\
-		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) $(SRCS3) $(SRCS4) $(SRCS5) -o $(BIN1) $(SHADEROBJ);\
+		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS1) $(SRCS2) -o $(BIN1) $(SHADEROBJ);\
   fi
 
-$(BIN2): $(SHADEROBJ)
+$(BIN2): $(SRCS3) $(SRCS4) $(SRCS5) $(SRCS6) $(SRCS7) $(SHADEROBJ)
 	@if [ $(UNAME_S) = "Linux" ]; then\
-		g++ $(INCLUDES) $(SRCS2) -o $(BIN2) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
+		g++ $(INCLUDES) $(SRCS3) $(SRCS4) $(SRCS5) $(SRCS6) $(SRCS7) -o $(BIN2) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
   fi
 	@if [ $(UNAME_S) = "Darwin" ]; then\
-		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS2) -o $(BIN2) $(SHADEROBJ);\
+		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS3) $(SRCS4) $(SRCS5) $(SRCS6) $(SRCS7) -o $(BIN2) $(SHADEROBJ);\
   fi
 
 $(SHADEROBJ): $(SHADERCPP)

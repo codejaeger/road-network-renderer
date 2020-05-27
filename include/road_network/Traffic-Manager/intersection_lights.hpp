@@ -10,7 +10,7 @@
 #include "road_network/Road-Graph/graph.hpp"
 #include "road_network/Models/traffic_light_model.hpp"
 
-#define PI 3.14159
+#define PI_MATH 3.14159265
 
 namespace soc {
 
@@ -30,4 +30,4 @@ public:
 
 }
 
-#endif
+#endif /* intersection_lights_hpp */

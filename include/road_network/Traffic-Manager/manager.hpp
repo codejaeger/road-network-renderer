@@ -8,6 +8,7 @@
 #include <math.h>
 
 #include "road_network/Road-Graph/graph.hpp"
+
 #include "road_network/Traffic-Manager/car_node.hpp"
 #include "road_network/Traffic-Manager/intersection_lights.hpp"
 
@@ -34,7 +35,6 @@ public:
 
 };
 
-
 }
 
-#endif
+#endif /* manager_hpp */

@@ -13,9 +13,10 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
-#include "road_network/Road-Model/gl_framework.hpp"
-#include "road_network/Road-Model/road.hpp"
+#include "road_network/output_gl_framework.hpp"
 #include "road_network/shader_util.hpp"
+
+#include "road_network/Road-Model/road.hpp"
 
 namespace soc {
 
@@ -47,4 +48,4 @@ public:
 
 } // End namespace soc
 
-#endif /* road_sep_hpp */
+#endif /* traffic_light_model_hpp */

@@ -1,5 +1,4 @@
-#include "road_network/Bezier-Curve/simulation.hpp"
-#include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/input_main.hpp"
 
 soc::Paths *p;
 
