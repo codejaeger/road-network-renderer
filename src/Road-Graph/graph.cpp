@@ -10,8 +10,8 @@ namespace soc {
 	  vertices.resize(v.size());
   }
 
-  void Graph::addEdge(std::vector<glm::vec2> path) 
-  { 
+  void Graph::addEdge(std::vector<glm::vec2> path)
+  {
 		Edge edge;
 		edge.from = -1;
 		edge.to = -1;
@@ -45,7 +45,7 @@ namespace soc {
 						start_match = i;
 						break;
 					}
-				}   
+				}
 			}
 		// if the end point is not any of the vertices then check it lies inside which intersection
 		if(edge.to == -1)
@@ -68,7 +68,7 @@ namespace soc {
 			}
 			edge.distance = dist;
 		}
-		// if only endpoints is a part of the intersection 
+		// if only endpoints is a part of the intersection
 		else if(a) {
 			path.erase(path.begin());
 			edge.path = path;
@@ -76,7 +76,7 @@ namespace soc {
 			for(int i=0; i<path.size()-1; i++){
 				dist += calc_dist(path[i], path[i+1]);
 			}
-			edge.distance = dist; 
+			edge.distance = dist;
 		}
 		// if only start point is a part of the intersection
 		else if(b) {
@@ -107,13 +107,13 @@ namespace soc {
 		edge_rev.distance = edge.distance;
 		edge_rev.from = edge.to;
 		edge_rev.to = edge.from;
-		edge_rev.path = edge.path; 
+		edge_rev.path = edge.path;
 		std::reverse(edge_rev.path.begin(), edge_rev.path.end());
 		e.push_back(edge_rev);
 		v[end_match].outgoing.push_back(e.size() - 1);
 		vertices[end_match].push_back(start_match);
-  } 
-	
+  }
+
 	float Graph::calc_dist(glm::vec2 a, glm::vec2 b) {
 		return sqrt((b[0]-a[0])*(b[0]-a[0]) + (b[1]-a[1])*(b[1]-a[1]));
 	}
@@ -153,7 +153,7 @@ namespace soc {
       }
 	    count++;
 		}
-		std::vector<int> nodes; 
+		std::vector<int> nodes;
 	  if(endnode!=startnode) {
       nodes.push_back(endnode);
       j=endnode;
@@ -187,9 +187,10 @@ namespace soc {
 			for(int j=0; j<v[path[i-1]].outgoing.size(); j++) {
 					if(e[v[path[i-1]].outgoing[j]].to == path[i])
 						path.insert(path.begin() + i, v[path[i-1]].outgoing[j]);
+            // break;
 			}
 		}
 
 		return path;
-	} 
+	}
 }

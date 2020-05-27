@@ -19,10 +19,11 @@ void initBuffersGL(std::string file) {
   rn = new soc::RoadNetwork(0.02, 0.05, file); // road-depth=0.02, road-width=0.1
   rn->initRoadNetwork();
   g = rn->getGraph();
-  // for (unsigned int i = 0; i < g->v.size(); i++) {
-  //   std::cout << g->v[i].origin[0] << "pp" << g->v[i].origin[1] << std::endl;
-  // }
-  m = new soc::Manager(g, 1, 3);
+  std::cout << g->v.size() << "ss" << g->e.size() << "\n";
+  for (unsigned int i = 0; i < g->v.size(); i++) {
+    std::cout << g->v[i].origin[0] << "pp" << g->v[i].origin[1] << std::endl;
+  }
+  m = new soc::Manager(g, 3, 5);
 }
 
 void renderGL() {

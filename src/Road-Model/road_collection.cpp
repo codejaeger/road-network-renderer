@@ -447,26 +447,17 @@ void RoadNetwork::mergeCloseIntersections() {
 
 // check which all roads segments lie inside and intersection and erase them
 void RoadNetwork::deleteRoadsInsideIntersection() {
-  for(int i=0; i<intersection.size(); i++){
-    glm::vec2 origin = intersection[i].origin;
-    std::vector<int> type1 = intersection[i].type1;
-    std::vector<int> type2 = intersection[i].type2;
-    std::vector<int> both_type(type1);
-    both_type.insert(both_type.end(), type2.begin() ,type2.end());
-
-    //remove the consecutive-duplicates from this vector which occur in self intersections
-    std::vector<int>::iterator ip;
-    ip = std::unique(both_type.begin(), both_type.end());
-    both_type.resize(std::distance(both_type.begin(), ip));
-
-    //delete those element which lie inside the intersection
-    for(int j=0; j<both_type.size(); j++){
-      for(int k = (bezier_positions[both_type[j]].size())-1; k>=1; k--){
-        if(calc_dist(bezier_positions[both_type[j]][k], origin)>4*d && calc_dist(bezier_positions[both_type[j]][k-1], origin)<4*d){
-          r[both_type[j]].erase(r[both_type[j]].begin() + k-1);
+  for (int i = 0; i < bezier_positions.size(); i++) {
+    for (int j = bezier_positions[i].size()-1; j>0; j--) {
+      for(int k =0; k < intersection.size(); k++) {
+        if(calc_dist(bezier_positions[i][j], intersection[k].origin)>4*d && calc_dist(bezier_positions[i][j-1], intersection[k].origin)<4*d){
+          r[i].erase(r[i].begin() + j-1);
+          break;
         }
-        else if(calc_dist(bezier_positions[both_type[j]][k], origin)<4*d)
-          r[both_type[j]].erase(r[both_type[j]].begin() + k-1);
+        else if(calc_dist(bezier_positions[i][j], intersection[k].origin) < 4*d) {
+          r[i].erase(r[i].begin() + j-1);
+          break;
+        }
       }
     }
   }

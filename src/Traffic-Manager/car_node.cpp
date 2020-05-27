@@ -11,6 +11,7 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
   std::cout << "X\n";
   std::cout << in.size() << "in\n";
   for (unsigned int i = 0; i < in.size(); i++) {
+    std::cout << in[i] << "--\n";
     if (i % 2) {
       std::vector<glm::vec2> temp = g->e[in[i]].path;
       for (unsigned int j = 0; j < temp.size(); j++) {
