@@ -6,9 +6,6 @@
 
 #include <iostream>
 
-#include "road_network/Road-Model/road_collection.hpp"
-#include "road_network/Traffic-Manager/manager.hpp"
-
 #define BUFFER_OFFSET(offset) ((GLvoid *)(offset))
 
 #define PI_MATH 3.14159265
