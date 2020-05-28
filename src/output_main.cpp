@@ -23,7 +23,7 @@ void initBuffersGL(std::string file) {
   for (unsigned int i = 0; i < g->v.size(); i++) {
     std::cout << g->v[i].origin[0] << "pp" << g->v[i].origin[1] << std::endl;
   }
-  m = new soc::Manager(g, 3, 5);
+  m = new soc::Manager(g, 1, 3);
 }
 
 void renderGL() {

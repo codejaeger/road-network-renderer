@@ -54,11 +54,11 @@ void IntersectionLights::updateLight() {
     flag = 0;
   }
   mod[flag]->turnGreen();
-  std::cout << "Updated IntersectionLights to " << flag << std::endl;
+  // std::cout << "Updated IntersectionLights to " << flag << std::endl;
 }
 
 void IntersectionLights::renderLight() {
-  std::cout << "renderLight\n";
+  // std::cout << "renderLight\n";
   for (unsigned int i = 0; i < size; i++) {
     mod[i]->render();
   }

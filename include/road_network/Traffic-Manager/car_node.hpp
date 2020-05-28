@@ -16,11 +16,10 @@ namespace soc {
 
 class CarNode	{
 public:
-  Graph *g;
   CarModel *mod;
-  std::vector<glm::vec2> path;
+  std::vector<glm::vec2> path, path_centered;
   unsigned int current;
-  std::vector<glm::vec2> check_loc;
+  std::vector<glm::vec2> check_loc, check_loc_centered;
   float lane_width;
   float road_depth;
   CarNode(Graph* graph, std::vector<int> in);
@@ -28,8 +27,10 @@ public:
   void renderCar();
   bool updateCar();
   glm::vec2 getLocation();
-  glm::vec2 getNextLocation();
+  glm::vec2 getLocationCentered();
+  glm::vec2 getCollisionLocation();
   bool doCheck();
+  void assignLane();
 };
 
 }

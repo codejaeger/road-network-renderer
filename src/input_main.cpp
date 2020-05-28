@@ -90,5 +90,17 @@ int main(int argc, char **argv) {
   // Close the window
   glfwTerminate();
 
+  std::vector<int> v;
+  v.push_back(14);
+  v.push_back(14);
+  v.push_back(14);
+  v.push_back(14);
+
+  v.assign(3,12);
+
+  for (unsigned int i = 0; i < v.size(); i++) {
+    std::cout << v[i] << "\n";
+  }
+
   return 0;
 }

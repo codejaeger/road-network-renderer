@@ -34,6 +34,7 @@ void Manager::executeManager() {
 
     // for each car
     std::vector<CarNode*> cars_temp;
+    std::vector<unsigned int> del_car_ind;
     for (unsigned int i = 0; i < cars.size(); i++) {
       // good to go
       bool go = true;
@@ -42,7 +43,7 @@ void Manager::executeManager() {
       for (unsigned int j = 0; j < cars.size(); j++) {
         if (j == i)
           continue;
-        if (cars[j]->getLocation() == cars[i]->getNextLocation()) {
+        if (cars[j]->getLocation() == cars[i]->getCollisionLocation()) {
           go = false;
         }
       }
@@ -50,10 +51,10 @@ void Manager::executeManager() {
       // If the next location already has a car there.
       if (go) {
         if (cars[i]->doCheck()) {
-          std::cout << "\n\nReached intersection";
+          // std::cout << "\n\nReached intersection";
           go = false;
           for (unsigned int j = 0; j < edge_firsts_go.size(); j++) {
-            if (cars[i]->getLocation() == edge_firsts_go[j]) {
+            if (cars[i]->getLocationCentered() == edge_firsts_go[j]) {
               go = true;
               break;
             }
@@ -66,42 +67,44 @@ void Manager::executeManager() {
         if (cars[i]->updateCar())
           cars_temp.push_back(cars[i]);
         else // If at the end, delete it.
-          delete cars[i];
+          del_car_ind.push_back(i);
       }
       else {
         cars_temp.push_back(cars[i]);
       }
+    }
+    for (unsigned int i = 0; i < del_car_ind.size(); i++) {
+      delete cars[del_car_ind[i]];
     }
     cars = cars_temp;
 
     // If a car is already there at start, don't spawn.
     bool no_new = false;
     for (unsigned int i = 0; i < cars.size(); i++) {
-      if (cars[i]->current == 0) {
+      if (cars[i]->current == 0 || cars[i]->current == 1) {
         no_new = true;
+        std::cout << "X\n";
       }
     }
 
     // CarNode spawning
-    if ((!cars.size() || (time % car_spawnin == 0)) && !no_new) {
+    if ((time % car_spawnin == 0) && !no_new) {
       cars.push_back(new CarNode(g, g->getPath(start, end)));
     }
 
     std::cout << "\nCars size : " <<  cars.size() << "\t\tTime: " << time << std::endl;
   }
-
   time++;
-
 }
 
 void Manager::renderManager() {
   for (unsigned int i = 0; i < cars.size(); i++) {
-    std::cout << "\nCar " << i << std::endl;
+    // std::cout << "\nCar " << i << std::endl;
     cars[i]->renderCar();
   }
 
   for (unsigned int i = 0; i < lights.size(); i++) {
-    std::cout << "IntersectionLights " << i << std::endl;
+    // std::cout << "IntersectionLights " << i << std::endl;
     lights[i]->renderLight();
   }
 }
