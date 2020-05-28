@@ -17,15 +17,17 @@ namespace soc {
 class IntersectionLights {
 public:
   glm::vec2 center;
-  std::vector<glm::vec2> edge_firsts;
+  std::vector<glm::vec2> edge_seconds;
   std::vector<TrafficLightModel*> mod;
   unsigned int size;
   unsigned int flag;
+  bool is_green;
   IntersectionLights(Graph *graph, unsigned int index);
   ~IntersectionLights();
-  void updateLight();
+  void updateLightGreen();
+  void updateLightYellow();
   void renderLight();
-  glm::vec2 returnEdgeNumber();
+  glm::vec2 returnGoPoint();
 };
 
 }

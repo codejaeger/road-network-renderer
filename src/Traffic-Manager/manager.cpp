@@ -17,20 +17,32 @@ Manager::Manager(Graph* graph, std::vector<int> s, std::vector<int> e) {
     }
   }
 
-  frame_rate = 50;
-  light_timeout = 200;
-  car_spawnin = 200;
+  frame_rate = 40;
+  light_timeout_green = 10;
+  light_timeout_yellow = 5;
+  light_timeout = light_timeout_green + light_timeout_yellow;
+  car_spawnin = 2;
 
 }
 
 void Manager::executeManager() {
   if (time % frame_rate == 0) {
-    // Update IntersectionLights and store the green directions
-    if (time % light_timeout == 0) {
+    unsigned int clock = time / frame_rate;
+
+    // Update IntersectionLights and store the go directions
+    if (clock % light_timeout == 0) {
       edge_firsts_go.clear();
       for (unsigned int i = 0; i < lights.size(); i++) {
-        lights[i]->updateLight();
-        edge_firsts_go.push_back(lights[i]->returnEdgeNumber());
+        lights[i]->updateLightGreen();
+        edge_firsts_go.push_back(lights[i]->returnGoPoint());
+      }
+    }
+
+    // When green is timed out, the color changes to yellow.
+    if (clock % light_timeout == light_timeout_green) {
+      edge_firsts_go.clear();
+      for (unsigned int i = 0; i < lights.size(); i++) {
+        lights[i]->updateLightYellow();
       }
     }
 
@@ -84,7 +96,7 @@ void Manager::executeManager() {
     cars = cars_temp;
 
     // CarNode spawning
-    if ((time % car_spawnin == 0)) {
+    if ((clock % car_spawnin == 0)) {
       // If a car is already there at start, don't spawn.
       bool no_new = false;
       for (unsigned int i = 0; i < cars.size(); i++) {

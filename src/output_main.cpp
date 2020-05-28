@@ -32,6 +32,12 @@ void initBuffersGL(std::string file) {
   end.push_back(1);
   start.push_back(2);
   end.push_back(4);
+  start.push_back(1);
+  end.push_back(2);
+  start.push_back(5);
+  end.push_back(1);
+  start.push_back(6);
+  end.push_back(5);
   m = new soc::Manager(g, start, end);
 }
 

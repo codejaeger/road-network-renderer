@@ -8,10 +8,10 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
 
   for (unsigned int i = 0; i < vertex.outgoing.size(); i++) {
     if (int(graph->e[vertex.outgoing[i]].path.size()) > 1)
-      edge_firsts.push_back(graph->e[vertex.outgoing[i]].path[1]);
+      edge_seconds.push_back(graph->e[vertex.outgoing[i]].path[1]);
   }
 
-  size = edge_firsts.size();
+  size = edge_seconds.size();
 
   float x1 = center[0];
   float y1 = center[1];
@@ -22,14 +22,14 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
   for (unsigned int i = 0; i < size; i++) {
     mod.push_back(new TrafficLightModel(0.04));
 
-    float x2 = edge_firsts[i][0];
-    float y2 = edge_firsts[i][1];
+    float x2 = edge_seconds[i][0];
+    float y2 = edge_seconds[i][1];
     glm::vec2 tangent = glm::vec2((x2-x1)/2, (y2-y1)/2);
     glm::vec2 normal = glm::vec2((y2-y1), (x1-x2));
     std::cout << tangent[0] << "," << tangent[1] << "..."
               << normal[0] << "," << normal[1] << " Traffic Light Model Updated\n";
 
-    glm::vec2 loc = edge_firsts[i] - tangent;
+    glm::vec2 loc = edge_seconds[i] - tangent;
 
     float rz;
     if (normal[0] > 0.0) {
@@ -44,11 +44,13 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
     mod[i]->change_parameters(loc[0], loc[1], 0, 0, 0, rz);
   }
   flag = 0;
+  is_green = true;
   mod[flag]->turnGreen();
 
 }
 
-void IntersectionLights::updateLight() {
+void IntersectionLights::updateLightGreen() {
+  is_green = true;
   mod[flag]->turnRed();
   flag++;
   if (flag >= size) {
@@ -58,6 +60,11 @@ void IntersectionLights::updateLight() {
   // std::cout << "Updated IntersectionLights to " << flag << std::endl;
 }
 
+void IntersectionLights::updateLightYellow() {
+  is_green = false;
+  mod[flag]->turnYellow();
+}
+
 void IntersectionLights::renderLight() {
   // std::cout << "renderLight\n";
   for (unsigned int i = 0; i < size; i++) {
@@ -65,8 +72,8 @@ void IntersectionLights::renderLight() {
   }
 }
 
-glm::vec2 IntersectionLights::returnEdgeNumber() {
-  return edge_firsts[flag];
+glm::vec2 IntersectionLights::returnGoPoint() {
+  return edge_seconds[flag];
 }
 
 IntersectionLights::~IntersectionLights() {

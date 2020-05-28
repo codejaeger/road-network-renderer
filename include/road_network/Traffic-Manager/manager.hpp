@@ -22,9 +22,7 @@ public:
   std::vector<CarNode*> cars;
   std::vector<IntersectionLights*> lights;
   std::vector<glm::vec2> edge_firsts_go;
-  unsigned int time;
-  unsigned int frame_rate;
-  unsigned int light_timeout;
+  unsigned int time, frame_rate, light_timeout, light_timeout_green, light_timeout_yellow;
   unsigned int car_spawnin;
   std::vector<int> starts;
   std::vector<int> ends;
