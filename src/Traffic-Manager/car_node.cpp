@@ -1,4 +1,5 @@
 #include "road_network/Traffic-Manager/car_node.hpp"
+#include "road_network/Bezier-Curve/path.hpp"
 
 namespace soc {
 
@@ -17,7 +18,8 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
       for (unsigned int j = 0; j < temp.size(); j++) {
         path_centered.push_back(temp[j]);
       }
-      if (int(temp.size()) != 0) {
+      if (int(temp.size()) > 1) {
+        temp.pop_back();
         check_loc_centered.push_back(temp.back());
       }
     }
@@ -29,11 +31,13 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
   if (check_loc_centered.size())
     check_loc_centered.pop_back();
 
+  bezierCurve();
   // std::cout << "creating car\n";
   // for (unsigned int i = 0; i < path_centered.size(); i++) {
   //   std::cout << path_centered[i][0] << "``" << path_centered[i][1] << std::endl;
   // }
   // std::cout << path_centered.size() << "CarNode created\n";
+
 
   assignLane();
 
@@ -132,6 +136,39 @@ void CarNode::assignLane() {
 
     path[i] = path_centered[i] - normal*(lane_width/2);
   }
+}
+
+
+void CarNode::bezierCurve() {
+  std::vector<glm::vec2> path_new;
+  std::vector<glm::vec2> path_temp;
+  unsigned int flag = 5;
+
+  for (unsigned int i = 0; i < path_centered.size(); i++) {
+    for (unsigned int j = 0; j < check_loc_centered.size(); j++) {
+      if (check_loc_centered[j] == path_centered[i])
+        flag = 0;
+    }
+
+    if (flag < 5) {
+      path_temp.push_back(path_centered[i]);
+
+      if (flag == 4) {
+        float n = interpolate_count(path_temp) + 1; // +1 is to avoid unexpected things
+        for (float j = 0; j <= n; j++) {
+          std::vector<glm::vec2> pos =
+              bezier_curve_point(path_temp, (j / n));
+          path_new.push_back(pos[0]);
+        }
+      }
+    }
+    else {
+      path_new.push_back(path_centered[i]);
+    }
+    flag++;
+  }
+
+  path_centered = path_new;
 }
 
 CarNode::~CarNode() {

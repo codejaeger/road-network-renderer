@@ -7,7 +7,8 @@ IntersectionLights::IntersectionLights(Graph *graph, unsigned int index) {
   center = vertex.origin;
 
   for (unsigned int i = 0; i < vertex.outgoing.size(); i++) {
-    edge_firsts.push_back(graph->e[vertex.outgoing[i]].path[0]);
+    if (int(graph->e[vertex.outgoing[i]].path.size()) > 1)
+      edge_firsts.push_back(graph->e[vertex.outgoing[i]].path[1]);
   }
 
   size = edge_firsts.size();

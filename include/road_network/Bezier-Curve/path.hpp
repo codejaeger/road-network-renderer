@@ -26,6 +26,11 @@
 
 namespace soc {
 
+std::vector<glm::vec2> bezier_curve_point(std::vector<glm::vec2> &pos,
+                                          float ratio);
+float distance(glm::vec2 &a, glm::vec2 &b);
+int interpolate_count(std::vector<glm::vec2> &positions);
+
 class Paths {
 
 private:
@@ -38,10 +43,6 @@ private:
   GLuint vb_current, vb_rest, vao_current, vao_rest;
   GLuint shaderProgram_current, shaderProgram_rest;
   GLuint v_position_current, v_position_rest;
-  std::vector<glm::vec2> bezier_curve_point(std::vector<glm::vec2> pos,
-                                            float ratio);
-  float distance(glm::vec2 &a, glm::vec2 &b);
-  int interpolate_count(unsigned int i);
   void positionsToCurve(unsigned int i);
 
 public:

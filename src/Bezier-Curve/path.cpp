@@ -2,6 +2,40 @@
 
 namespace soc {
 
+std::vector<glm::vec2> bezier_curve_point(std::vector<glm::vec2> &pos,
+                                                 float ratio) {
+  // For logic goto
+  //   https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Higher-order_curves
+  if (pos.size() == 1)
+    return pos;
+
+  std::vector<glm::vec2> new_pos;
+  glm::vec2 temp;
+  for (int i = 0; i < (pos.size() - 1); i++) {
+    temp = glm::vec2((pos[i][0] * (1 - ratio)) + (pos[i + 1][0] * ratio),
+                     (pos[i][1] * (1 - ratio)) + (pos[i + 1][1] * ratio));
+    new_pos.push_back(temp);
+  }
+
+  return bezier_curve_point(new_pos, ratio);
+}
+
+float distance(glm::vec2 &a, glm::vec2 &b) {
+  // Basic distance formula
+  return sqrt(((a[0] - b[0]) * (a[0] - b[0])) +
+              ((a[1] - b[1]) * (a[1] - b[1])));
+}
+
+int interpolate_count(std::vector<glm::vec2> &positions) {
+  float tot_dis = 0.0;
+  for (unsigned int i = 0; i + 1 < positions.size(); i++) {
+    tot_dis +=
+        distance(positions[i], positions[i + 1]);
+  }
+  return int(tot_dis / AIPD);
+}
+
+
 Paths::Paths() {
   // Path number initialized
   path_number = 0;
@@ -53,41 +87,6 @@ Paths::Paths() {
   glVertexAttribPointer(v_position_rest, 2, GL_FLOAT, GL_FALSE, 0, (void *)(0));
 }
 
-std::vector<glm::vec2> Paths::bezier_curve_point(std::vector<glm::vec2> pos,
-                                                 float ratio) {
-  // For logic goto
-  //   https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Higher-order_curves
-  if (pos.size() == 1)
-    return pos;
-
-  std::vector<glm::vec2> new_pos;
-  glm::vec2 temp;
-  for (int i = 0; i < (pos.size() - 1); i++) {
-    temp = glm::vec2((pos[i][0] * (1 - ratio)) + (pos[i + 1][0] * ratio),
-                     (pos[i][1] * (1 - ratio)) + (pos[i + 1][1] * ratio));
-    new_pos.push_back(temp);
-  }
-
-  return bezier_curve_point(new_pos, ratio);
-}
-
-float Paths::distance(glm::vec2 &a, glm::vec2 &b) {
-  // Basic distance formula
-  return sqrt(((a[0] - b[0]) * (a[0] - b[0])) +
-              ((a[1] - b[1]) * (a[1] - b[1])));
-}
-
-int Paths::interpolate_count(unsigned int i) {
-  // Calculating interpolation counts
-  // It controls the distance between interpolation points
-  float tot_dis = 0.0;
-  for (unsigned int j = 0; j + 1 < positions[i].size(); j++) {
-    tot_dis +=
-        distance(positions[i][j], positions[i][j + 1]);
-  }
-  return int(tot_dis / AIPD);
-}
-
 void Paths::positionsToCurve(unsigned int i) {
   // Prints all the control points given by user for the current path
   // for (int i = 0; i < positions[i].size(); i++) {
@@ -97,7 +96,7 @@ void Paths::positionsToCurve(unsigned int i) {
 
   // Stores the newly processed Bezier Curve interpolated points
   bzc[i].clear();
-  float n = interpolate_count(i) + 1; // +1 is to avoid unexpected things
+  float n = interpolate_count(positions[i]) + 1; // +1 is to avoid unexpected things
   if (!positions[i].empty()) {
     for (float j = 0; j <= n; j++) {
       std::vector<glm::vec2> pos =

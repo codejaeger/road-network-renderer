@@ -31,6 +31,7 @@ public:
   glm::vec2 getCollisionLocation();
   bool doCheck();
   void assignLane();
+  void bezierCurve();
 };
 
 }
