@@ -2,12 +2,13 @@
 
 namespace soc {
 
-Manager::Manager(Graph* graph, int s, int e) {
+Manager::Manager(Graph* graph, std::vector<int> s, std::vector<int> e) {
   g = graph;
-  start = s;
-  end = e;
+  starts = s;
+  ends = e;
 
   time = 0;
+  spawn_flag = 0;
 
   for (unsigned int i = 0; i < g->v.size(); i++) {
     if (g->v[i].outgoing.size() > 1) {
@@ -19,6 +20,7 @@ Manager::Manager(Graph* graph, int s, int e) {
   frame_rate = 50;
   light_timeout = 200;
   car_spawnin = 200;
+
 }
 
 void Manager::executeManager() {
@@ -39,16 +41,19 @@ void Manager::executeManager() {
       // good to go
       bool go = true;
 
-      // If just before intersection and not a green direction, don't go.
-      for (unsigned int j = 0; j < cars.size(); j++) {
-        if (j == i)
-          continue;
-        if (cars[j]->getLocation() == cars[i]->getCollisionLocation()) {
-          go = false;
+      std::vector<glm::vec2> collisionlocs = cars[i]->getCollisionLocations();
+      for (unsigned int j = 0; j < collisionlocs.size(); j++) {
+        // If the next location already has a car there.
+        for (unsigned int k = 0; k < cars.size(); k++) {
+          if (k == i)
+            continue;
+          if (cars[k]->getLocation() == collisionlocs[j]) {
+            go = false;
+          }
         }
       }
 
-      // If the next location already has a car there.
+      // If just before intersection and not a green direction, don't go.
       if (go) {
         if (cars[i]->doCheck()) {
           // std::cout << "\n\nReached intersection";
@@ -78,18 +83,26 @@ void Manager::executeManager() {
     }
     cars = cars_temp;
 
-    // If a car is already there at start, don't spawn.
-    bool no_new = false;
-    for (unsigned int i = 0; i < cars.size(); i++) {
-      if (cars[i]->current == 0 || cars[i]->current == 1) {
-        no_new = true;
-        std::cout << "X\n";
-      }
-    }
-
     // CarNode spawning
-    if ((time % car_spawnin == 0) && !no_new) {
-      cars.push_back(new CarNode(g, g->getPath(start, end)));
+    if ((time % car_spawnin == 0)) {
+      // If a car is already there at start, don't spawn.
+      bool no_new = false;
+      for (unsigned int i = 0; i < cars.size(); i++) {
+        if (cars[i]->start_vertex_no == starts[spawn_flag]) {
+          if (cars[i]->current >= 0 && cars[i]->current <= 2) {
+            no_new = true;
+          }
+        }
+      }
+
+      if (!no_new) {
+        cars.push_back(new CarNode(g, g->getPath(starts[spawn_flag], ends[spawn_flag])));
+      }
+
+      spawn_flag++;
+      if (spawn_flag == starts.size()) {
+        spawn_flag = 0;
+      }
     }
 
     std::cout << "\nCars size : " <<  cars.size() << "\t\tTime: " << time << std::endl;

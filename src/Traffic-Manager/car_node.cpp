@@ -6,12 +6,13 @@ namespace soc {
 CarNode::CarNode(Graph* graph, std::vector<int> in) {
   road_depth = 0.02;
   lane_width = 0.05;
+  start_vertex_no = in[0];
 
   path_centered.clear(); // Stores the path
   check_loc_centered.clear(); // Stores the points just before intersections
 
   // std::cout << in.size() << "in\n";
-  for (unsigned int i = 0; i < in.size(); i++) {
+  for (unsigned int i = 1; i < in.size(); i++) {
     // std::cout << in[i] << "--\n";
     if (i % 2) {
       std::vector<glm::vec2> temp = graph->e[in[i]].path;
@@ -42,10 +43,10 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
   assignLane();
 
 
-  // for (unsigned int i = 0; i < path.size(); i++) {
-  //   std::cout << path[i][0] << "``" << path[i][1] << std::endl;
-  // }
-  // std::cout << path.size() << "CarNode created\n";
+  for (unsigned int i = 0; i < path.size(); i++) {
+    std::cout << path[i][0] << "``" << path[i][1] << std::endl;
+  }
+  std::cout << path.size() << "CarNode created\n";
 
 
   current = -1;
@@ -96,11 +97,19 @@ glm::vec2 CarNode::getLocationCentered() {
   return path_centered[current];
 }
 
-glm::vec2 CarNode::getCollisionLocation() {
-  if (path.size() <= current + 2) {
-    return glm::vec2(-50, -50);  // Consider it as a dumping ground.
+std::vector<glm::vec2> CarNode::getCollisionLocations() {
+  std::vector<glm::vec2> collisionlocs;
+
+  if (path.size() <= current + 3) {
+    collisionlocs.push_back(glm::vec2(-50, -50));  // Consider it as a dumping ground.
   }
-  return path[current+2];
+  else {
+    collisionlocs.push_back(path[current+1]);
+    collisionlocs.push_back(path[current+2]);
+    collisionlocs.push_back(path[current+3]);
+  }
+
+  return collisionlocs;
 }
 
 bool CarNode::doCheck() {
@@ -142,18 +151,18 @@ void CarNode::assignLane() {
 void CarNode::bezierCurve() {
   std::vector<glm::vec2> path_new;
   std::vector<glm::vec2> path_temp;
-  unsigned int flag = 5;
+  int flag = 5;
 
   for (unsigned int i = 0; i < path_centered.size(); i++) {
     for (unsigned int j = 0; j < check_loc_centered.size(); j++) {
       if (check_loc_centered[j] == path_centered[i])
-        flag = 0;
+        flag = -1;
     }
 
-    if (flag < 5) {
+    if (flag < 3 && flag >= 0) {
       path_temp.push_back(path_centered[i]);
 
-      if (flag == 4) {
+      if (flag == 2) {
         float n = interpolate_count(path_temp) + 1; // +1 is to avoid unexpected things
         for (float j = 0; j <= n; j++) {
           std::vector<glm::vec2> pos =

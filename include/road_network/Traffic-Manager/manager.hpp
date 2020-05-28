@@ -26,9 +26,10 @@ public:
   unsigned int frame_rate;
   unsigned int light_timeout;
   unsigned int car_spawnin;
-  int start;
-  int end;
-  Manager(Graph* graph, int s, int e);
+  std::vector<int> starts;
+  std::vector<int> ends;
+  unsigned int spawn_flag;
+  Manager(Graph* graph, std::vector<int> s, std::vector<int> e);
   ~Manager();
   void executeManager();
   void renderManager();

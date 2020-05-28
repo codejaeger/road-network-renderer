@@ -17,6 +17,7 @@ namespace soc {
 class CarNode	{
 public:
   CarModel *mod;
+  int start_vertex_no;
   std::vector<glm::vec2> path, path_centered;
   unsigned int current;
   std::vector<glm::vec2> check_loc, check_loc_centered;
@@ -28,7 +29,7 @@ public:
   bool updateCar();
   glm::vec2 getLocation();
   glm::vec2 getLocationCentered();
-  glm::vec2 getCollisionLocation();
+  std::vector<glm::vec2> getCollisionLocations();
   bool doCheck();
   void assignLane();
   void bezierCurve();
