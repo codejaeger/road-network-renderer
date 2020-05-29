@@ -1,23 +1,33 @@
 #include "road_network/output_main.hpp"
 
+glm::mat4 model_view_matrix;
 glm::mat4 rotation_matrix;
-glm::mat4 projection_matrix;
-glm::mat4 c_rotation_matrix;
-glm::mat4 lookat_matrix;
-
-glm::mat4 model_matrix;
 glm::mat4 view_matrix;
+glm::mat4 projection_matrix;
+glm::quat MyQuaternion;
 
-glm::mat4 modelview_matrix;
-
-// pointer to RoadNetwork object
 soc::RoadNetwork *rn;
 soc::Graph *g;
 soc::Manager *m;
+soc::SkyMaps *sm;
+
+const unsigned int SCR_WIDTH = 1440;
+const unsigned int SCR_HEIGHT = 900;
+
+// camera
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastX = SCR_WIDTH / 2.0f;
+float lastY = SCR_HEIGHT / 2.0f;
+bool firstMouse = true;
+
+// timing
+float deltaTime = 0.0f; // time between current frame and last frame
+float lastFrame = 0.0f;
 
 void initBuffersGL(std::string file) {
   rn = new soc::RoadNetwork(0.02, 0.05, file); // road-depth=0.02, road-width=0.1
   rn->initRoadNetwork();
+  sm = new soc::SkyMaps();
   g = rn->getGraph();
   std::cout << g->v.size() << "ss" << g->e.size() << "\n";
   for (unsigned int i = 0; i < g->v.size(); i++) {
@@ -26,58 +36,50 @@ void initBuffersGL(std::string file) {
   std::vector<int> start, end;
   start.push_back(1);
   end.push_back(3);
-  start.push_back(3);
-  end.push_back(4);
-  start.push_back(4);
-  end.push_back(1);
-  start.push_back(2);
-  end.push_back(4);
-  start.push_back(1);
-  end.push_back(2);
-  start.push_back(5);
-  end.push_back(1);
-  start.push_back(6);
-  end.push_back(5);
+  // start.push_back(3);
+  // end.push_back(4);
+  // start.push_back(4);
+  // end.push_back(1);
+  // start.push_back(2);
+  // end.push_back(4);
+  // start.push_back(1);
+  // end.push_back(2);
+  // start.push_back(5);
+  // end.push_back(1);
+  // start.push_back(6);
+  // end.push_back(5);
   m = new soc::Manager(g, start, end);
 }
 
 void renderGL() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  // per-frame time logic
+  float currentFrame = glfwGetTime();
+  deltaTime = currentFrame - lastFrame;
+  lastFrame = currentFrame;
+  glm::vec3 EulerAngles(glm::radians(xrot), glm::radians(yrot), glm::radians(zrot));
+  MyQuaternion = glm::quat(EulerAngles);
+  rotation_matrix = glm::toMat4(MyQuaternion);
+  
+  if(enable_perspective)
+    projection_matrix = glm::perspective((float)glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 50.0f);
+  else
+    projection_matrix = glm::ortho(-(double)camera.Zoom/30, (double)camera.Zoom/30, -(double)camera.Zoom/30, (double)camera.Zoom/30, -1.0, 10.0);
+  
+  // camera/view transformation
+  glm::mat4 view = camera.GetViewMatrix();
+  view_matrix = projection_matrix * view;
+  model_view_matrix = view_matrix * rotation_matrix;
   matrixStack.clear();
-
-  // Creating the lookat and the up vectors for the camera
-  c_rotation_matrix = glm::rotate(glm::mat4(1.0f), glm::radians(c_xrot),
-                                  glm::vec3(1.0f, 0.0f, 0.0f));
-  c_rotation_matrix = glm::rotate(c_rotation_matrix, glm::radians(c_yrot),
-                                  glm::vec3(0.0f, 1.0f, 0.0f));
-  c_rotation_matrix = glm::rotate(c_rotation_matrix, glm::radians(c_zrot),
-                                  glm::vec3(0.0f, 0.0f, 1.0f));
-
-  glm::vec4 c_pos = glm::vec4(c_xpos, c_ypos, c_zpos, 1.0) * c_rotation_matrix;
-  glm::vec4 c_up = glm::vec4(c_up_x, c_up_y, c_up_z, 1.0) * c_rotation_matrix;
-  // Creating the lookat matrix
-  lookat_matrix =
-      glm::lookAt(glm::vec3(c_pos), glm::vec3(0.0), glm::vec3(c_up));
-
-  // Creating the projection matrix
-  if (enable_perspective) {
-    projection_matrix = glm::frustum(-1.0, 1.0, -1.0, 1.0, 1.0, 7.0);
-    // projection_matrix = glm::perspective(glm::radians(90.0),1.0,0.1,5.0);
-  } else {
-    projection_matrix = glm::ortho(-1.0, 1.0, -1.0, 1.0, -2.0, 5.0);
-  }
-
-  view_matrix = projection_matrix * lookat_matrix;
-
-  matrixStack.push_back(view_matrix);
+  matrixStack.push_back(model_view_matrix);
 
   // render the roads in the RoadNetwork
   rn->renderRoads();
   // render the RoadSeps in the RoadNetwork
   rn->renderRoadSeps();
   rn->renderIntersections();
-
+  sm->render();
   m->executeManager();
   m->renderManager();
 
@@ -86,6 +88,7 @@ void renderGL() {
 void deleteBuffersGL() {
   delete rn;
   delete m;
+  delete sm;
 }
 
 int main(int argc, char **argv) {
@@ -128,15 +131,19 @@ int main(int argc, char **argv) {
 
   // Keyboard Callback
   glfwSetKeyCallback(window, soc::key_callback);
-  // Mouse Button Callback
-  glfwSetMouseButtonCallback(window, soc::mouse_button_callback);
   // Framebuffer resize callback
   glfwSetFramebufferSizeCallback(window, soc::framebuffer_size_callback);
   // To ensure we can capture key being pressed
   glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
   // To ensure we can capture mouse button being pressed
   glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GL_TRUE);
-
+  // Cursor Position Callback
+  glfwSetCursorPosCallback(window, soc::mouse_callback);
+  // Mouse Scrool Callback
+  glfwSetScrollCallback(window, soc::scroll_callback);
+  // tell GLFW to capture our mouse
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  
   std::string file_name;
   file_name = "1.raw";
   if (argc > 1) {

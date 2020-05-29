@@ -125,10 +125,10 @@ void RoadNetwork::initRoads() {
 void RoadNetwork::initRoadSeps() {
   rs.resize(bezier_positions.size());
   for (int i = 0; i < bezier_positions.size(); i++) {
-    for (int j = 5; j < bezier_positions[i].size() - 5; j += 15) {
-      RoadSep rs_temp(glm::vec3(0, 0, 0), (d/10));
+    for (int j = 5; j < bezier_positions[i].size() - 5; j += 5) {
+      RoadSep rs_temp(glm::vec3(0, 0, 0), (d/15));
       rs_temp.change_parameters(bezier_positions[i][j][0],
-                                bezier_positions[i][j][1], road_depth / 2 + 0.01, 0, 0,
+                                bezier_positions[i][j][1], road_depth / 2, 0, 0,
                                 180 / PI_MATH * atan(tangent_directions[i][j][1] /
                                                 tangent_directions[i][j][0]));
       rs[i].push_back(rs_temp);
@@ -464,7 +464,7 @@ void RoadNetwork::deleteRoadsInsideIntersection() {
 // erase the separators from the region inside the intersection
 void RoadNetwork::deleteRoadSepsInsideIntersection() {
   for (int i = 0; i < bezier_positions.size(); i++) {
-    for (int j = 15*((bezier_positions[i].size()-11)/15)+5 , m = rs[i].size()-1; j>=5; j-=15 , m--) {
+    for (int j = 5*((bezier_positions[i].size()-5)/5) , m = rs[i].size()-1; j>=5; j-=5 , m--) {
       for(int k =0; k < intersection.size(); k++) {
         if(calc_dist(bezier_positions[i][j], intersection[k].origin) < 4*d) {
           rs[i].erase(rs[i].begin() + m);

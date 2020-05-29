@@ -1,9 +1,16 @@
 #include "road_network/Road-Model/road_collection.hpp"
 #include "road_network/output_gl_framework.hpp"
+#include "road_network/camera.h"
 
-extern GLfloat c_xrot, c_yrot, c_zrot;
 extern soc::RoadNetwork *rn;
 extern bool enable_perspective;
+extern float lastX;
+extern float lastY;
+extern bool firstMouse;
+extern float deltaTime;
+extern float lastFrame;
+extern Camera camera;
+extern GLfloat xrot, yrot, zrot;
 
 namespace soc {
 // Initialize GL State
@@ -29,7 +36,6 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
-// GLFW keyboard callback
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods) {
   // Close the window if the Esc key was pressed.
@@ -37,26 +43,57 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     std::cout << "Escaped\n";
     glfwSetWindowShouldClose(window, GL_TRUE);
   }
-
   else if (key == GLFW_KEY_P && action == GLFW_PRESS)
     enable_perspective = !enable_perspective;
   // press these keys to rotate the model
   else if (key == GLFW_KEY_A)
-    c_yrot -= 1.0;
+    yrot -= 1.0;
   else if (key == GLFW_KEY_D)
-    c_yrot += 1.0;
+    yrot += 1.0;
   else if (key == GLFW_KEY_W)
-    c_xrot -= 1.0;
+    xrot -= 1.0;
   else if (key == GLFW_KEY_S)
-    c_xrot += 1.0;
+    xrot += 1.0;
   else if (key == GLFW_KEY_Q)
-    c_zrot -= 1.0;
+    zrot -= 1.0;
   else if (key == GLFW_KEY_E)
-    c_zrot += 1.0;
+    zrot += 1.0;
+  else if (key == GLFW_KEY_I)
+    camera.ProcessKeyboard(FORWARD, deltaTime);
+  else if (key == GLFW_KEY_O)
+    camera.ProcessKeyboard(BACKWARD, deltaTime);
+  else if (key == GLFW_KEY_LEFT)
+    camera.ProcessKeyboard(LEFT, deltaTime);
+  else if (key == GLFW_KEY_RIGHT)
+    camera.ProcessKeyboard(RIGHT, deltaTime);
+  else if (key == GLFW_KEY_DOWN)
+      camera.ProcessKeyboard(DOWN, deltaTime);
+  else if (key == GLFW_KEY_UP)
+    camera.ProcessKeyboard(UP, deltaTime);
 }
 
-// GLFW mouse button callback
-void mouse_button_callback(GLFWwindow *window, int button, int action,
-                           int mods) {}
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+  if (firstMouse)
+  {
+      lastX = xpos;
+      lastY = ypos;
+      firstMouse = false;
+  }
+
+  float xoffset = xpos - lastX;
+  float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+  lastX = xpos;
+  lastY = ypos;
+
+  camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+// glfw: whenever the mouse scroll wheel scrolls, this callback is called
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{   
+  camera.ProcessMouseScroll(yoffset);
+}
 
 } // End namespace soc

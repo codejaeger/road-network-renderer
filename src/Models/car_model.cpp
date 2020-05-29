@@ -46,7 +46,7 @@ CarModel::CarModel(GLfloat size) {
                             glm::vec4(-0.75 * s, 0.35 * s, 0.5 * s, 1.0),
                             glm::vec4(0.45 * s, 0.35 * s, 0.5 * s, 1.0),
                             glm::vec4(0.45 * s, -0.35 * s, 0.5 * s, 1.0)};
-  glm::vec4 color_glass(1.0f, 0.647f, 0.0f, 1.0f);
+  glm::vec4 color_glass(0.5f, 0.89f, 0.74f, 1.0f);
   glm::vec4 colors2[6] = {color_glass, color_glass, color_glass, color_glass, color_glass, glm::vec4(abs(color_b[0]-0.1), abs(color_b[1]-0.1), abs(color_b[2]-0.1), 1.0f)};
 
   glm::vec4 positions3[8] = {glm::vec4(-0.90 * s, -0.25 * s, 0.25 * s, 1.0),

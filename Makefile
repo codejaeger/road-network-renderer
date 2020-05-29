@@ -19,6 +19,7 @@ SRCDIR2=./src/Road-Model
 SRCDIR3=./src/Road-Graph
 SRCDIR4=./src/Traffic-Manager
 SRCDIR5=./src/Models
+SRCDIR6=./src/SkyMaps
 
 SHADERCPP=./src/shader_util.cpp
 SHADEROBJ=$(OBJECTFILES)/shader_util.o
@@ -34,6 +35,7 @@ SRCS4=$(SRCDIR2)/road_collection.cpp $(SRCDIR2)/road.cpp $(SRCDIR2)/road_sep.cpp
 SRCS5=$(SRCDIR3)/graph.cpp
 SRCS6=$(SRCDIR4)/car_node.cpp $(SRCDIR1)/path.cpp $(SRCDIR4)/intersection_lights.cpp $(SRCDIR4)/manager.cpp
 SRCS7=$(SRCDIR5)/car_model.cpp $(SRCDIR5)/traffic_light_model.cpp
+SRCS8=$(SRCDIR6)/skymaps.cpp
 
 all: $(SHADEROBJ) $(BIN1) $(BIN2)
 
@@ -47,10 +49,10 @@ $(BIN1): $(SRCS1) $(SRCS2) $(SHADEROBJ)
 
 $(BIN2): $(SRCS3) $(SRCS4) $(SRCS5) $(SRCS6) $(SRCS7) $(SHADEROBJ)
 	@if [ $(UNAME_S) = "Linux" ]; then\
-		g++ $(INCLUDES) $(SRCS3) $(SRCS4) $(SRCS5) $(SRCS6) $(SRCS7) -o $(BIN2) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
+		g++ $(INCLUDES) $(SRCS3) $(SRCS4) $(SRCS5) $(SRCS6) $(SRCS7) $(SRCS8) -o $(BIN2) $(SHADEROBJ) $(LDFLAGS) $(LIBS);\
   fi
 	@if [ $(UNAME_S) = "Darwin" ]; then\
-		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS3) $(SRCS4) $(SRCS5) $(SRCS6) $(SRCS7) -o $(BIN2) $(SHADEROBJ);\
+		g++ $(GLFWLIB) $(GLEWLIB) $(FRAMEWORKS) $(INCLUDES) $(SRCS3) $(SRCS4) $(SRCS5) $(SRCS6) $(SRCS7) $(SRCS8) -o $(BIN2) $(SHADEROBJ);\
   fi
 
 $(SHADEROBJ): $(SHADERCPP)

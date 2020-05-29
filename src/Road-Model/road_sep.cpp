@@ -178,7 +178,7 @@ void RoadSep::roadSep(glm::vec4 *positions) {
   quad(2, 6, 5, 1, positions);
   quad(1, 5, 4, 0, positions);
   quad(0, 4, 7, 3, positions);
-  quad(5, 4, 6, 7, positions);
+  quad(5, 4, 7, 6, positions);
 }
 
 void RoadSep::build_handle() {
