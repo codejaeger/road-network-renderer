@@ -1,6 +1,7 @@
-#include "road_network/Road-Model/road_collection.hpp"
 #include "road_network/output_gl_framework.hpp"
 #include "road_network/camera.h"
+
+#include "road_network/Road-Model/road_collection.hpp"
 
 extern soc::RoadNetwork *rn;
 extern float lastX;
@@ -89,7 +90,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{   
+{
   camera.ProcessMouseScroll(yoffset);
 }
 

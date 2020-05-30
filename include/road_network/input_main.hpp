@@ -16,6 +16,7 @@
 #include "road_network/shader_util.hpp"
 
 #include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/Bezier-Curve/start_end.hpp"
 
 #define HEIGHT 900
 #define WIDTH 1440

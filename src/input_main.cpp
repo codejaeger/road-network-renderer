@@ -1,6 +1,7 @@
 #include "road_network/input_main.hpp"
 
 soc::Paths *p;
+soc::Pairs *pairs;
 bool is_paths;
 
 void initBuffersGL(void) {
@@ -11,6 +12,9 @@ void initBuffersGL(void) {
 void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   p->renderAllLines();
+  if (pairs) {
+    pairs->renderAllPoints();
+  }
 }
 
 void deleteBuffersGL() { delete p; }
@@ -93,18 +97,6 @@ int main(int argc, char **argv) {
 
   // Close the window
   glfwTerminate();
-
-  std::vector<int> v;
-  v.push_back(14);
-  v.push_back(14);
-  v.push_back(14);
-  v.push_back(14);
-
-  v.assign(3,12);
-
-  for (unsigned int i = 0; i < v.size(); i++) {
-    std::cout << v[i] << "\n";
-  }
 
   return 0;
 }

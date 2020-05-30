@@ -14,6 +14,7 @@
 #include <glm/vec2.hpp>
 
 #include "road_network/shader_util.hpp"
+
 #include "road_network/Bezier-Curve/path.hpp"
 
 #ifdef _WIN32
@@ -43,6 +44,7 @@ public:
   void renderPoints(std::vector<glm::vec2> &ren);
   void renderAllPoints();
   void save();
+  unsigned int return_path_terminals_size();
   ~Pairs();
 };
 

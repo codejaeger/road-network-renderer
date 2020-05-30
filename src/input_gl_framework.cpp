@@ -1,6 +1,10 @@
 #include "road_network/input_gl_framework.hpp"
 
+#include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/Bezier-Curve/start_end.hpp"
+
 extern soc::Paths *p;
+extern soc::Pairs *pairs;
 extern bool is_paths;
 
 namespace soc {
@@ -32,7 +36,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods) {
   // Close the window if the Esc key was pressed.
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-    std::cout << "Escaped\n";
+    std::cout << "Escaped, but not saved new changes\n";
     glfwSetWindowShouldClose(window, GL_TRUE);
   }
   // Resumes the input of control points if the R key was pressed.
@@ -58,6 +62,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     if (is_paths) {
       p->delete_last();
     }
+    else {
+      pairs->delete_last();
+    }
   }
   // Saves the control points in a raw file if the S key was pressed.
   // Saves the interpolated points in a raw files if the S key is pressed.
@@ -65,7 +72,13 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     if (is_paths) {
       p->save();
       is_paths = false;
+      pairs = new Pairs(p->return_positions());
+
+      if (pairs->return_path_terminals_size() > 0)
+        return;
     }
+    std::cout << "Ended\n";
+    glfwSetWindowShouldClose(window, GL_TRUE);
   }
   // Loads the control points from a raw file if the L key was pressed.
   else if (key == GLFW_KEY_L && action == GLFW_PRESS) {
@@ -84,6 +97,12 @@ void mouse_button_callback(GLFWwindow *window, int button, int action,
       if (p->return_input_status()) {
         p->getPoints(window);
       }
+    }
+    else if (pairs) {
+      pairs->getPoints(window);
+    }
+    else {
+      glfwSetWindowShouldClose(window, GL_TRUE);
     }
   }
   // Stops the input of control points if the right mouse button was pressed.

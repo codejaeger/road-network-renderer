@@ -6,8 +6,6 @@
 
 #include <iostream>
 
-#include "road_network/Bezier-Curve/path.hpp"
-
 #define BUFFER_OFFSET(offset) ((GLvoid *)(offset))
 
 namespace soc {

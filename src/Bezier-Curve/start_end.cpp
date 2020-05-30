@@ -4,7 +4,7 @@ namespace soc {
 
 Pairs::Pairs(std::vector< std::vector<glm::vec2> > positions) {
   for (unsigned int i = 0; i < positions.size(); i++) {
-    if (positions[i].size()) {
+    if (positions[i].size() > 1) {
       path_terminals.push_back(positions[i][0]);
       path_terminals.push_back(positions[i].back());
     }
@@ -15,7 +15,7 @@ Pairs::Pairs(std::vector< std::vector<glm::vec2> > positions) {
   end.clear();
 
   if (path_terminals.size() == 0) {
-    save();
+    return;
   }
 
   // Shaders
@@ -56,6 +56,10 @@ Pairs::Pairs(std::vector< std::vector<glm::vec2> > positions) {
   glBindVertexArray(vao_end);
   glEnableVertexAttribArray(v_position_end);
   glVertexAttribPointer(v_position_end, 2, GL_FLOAT, GL_FALSE, 0, (void *)(0));
+
+  for (unsigned int i = 0; i < path_terminals.size(); i++) {
+    std::cout << path_terminals[i][0] << "....." << path_terminals[i][1] << "\n";
+  }
 }
 
 unsigned int Pairs::findNearest(glm::vec2 pos) {
@@ -68,6 +72,7 @@ unsigned int Pairs::findNearest(glm::vec2 pos) {
       min_distance = curr_dis;
     }
   }
+  std::cout << path_terminals[index][0] << "....." << path_terminals[index][1] << "\n";
   return index;
 }
 
@@ -112,13 +117,13 @@ void Pairs::delete_last() {
 
 void Pairs::renderPoints(std::vector<glm::vec2> &ren) {
   glm::vec2 change[4] = {
-    glm::vec2( 0.1,  0.0),
-    glm::vec2(-0.1,  0.0),
-    glm::vec2( 0.0,  0.1),
-    glm::vec2( 0.0, -0.1),
+    glm::vec2( 0.03,  0.00),
+    glm::vec2(-0.03,  0.00),
+    glm::vec2( 0.00,  0.03),
+    glm::vec2( 0.00, -0.03)
   };
   glm::vec2 cur[4 * ren.size()];
-  for (unsigned int i = 0; i + 1 < 4 * ren.size(); i++) {
+  for (unsigned int i = 0; i < 4 * ren.size(); i++) {
     cur[i] = ren[i/4] + change[i%4];
   }
 
@@ -126,7 +131,7 @@ void Pairs::renderPoints(std::vector<glm::vec2> &ren) {
   glBufferData(GL_ARRAY_BUFFER, sizeof(cur), NULL, GL_DYNAMIC_DRAW);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cur), cur);
 
-  for (unsigned int j = 0; j + 1 < 4 * ren.size(); j = j + 2) {
+  for (unsigned int j = 0; j < 4 * ren.size(); j = j + 2) {
     glDrawArrays(GL_LINE_STRIP, j, 2);
   }
 }
@@ -152,6 +157,39 @@ void Pairs::save() {
   for (unsigned int i = 0; i < end.size(); i++) {
     std::cout << end[i][0] << "//" << end[i][1] << "\n";
   }
+
+  std::fstream fp;
+
+  std::cout << "Saving points.raw\n";
+  fp.open("./models/Bezier-Model/points.raw", std::ios::binary | std::ios::out);
+
+  // Check file's condition
+  if (!fp.good()) {
+    std::cout << "could not read from the min raw file" << std::endl;
+    return;
+  }
+
+  // Find the size of array of "values to store"
+  unsigned int size = end.size(); // There might be a stand-alone start.
+
+  glm::vec2 store[size * 2];
+
+  for (unsigned int i = 0; i < end.size(); i++) {
+    store[i] = start[i];
+    store[size + i] = end[i];
+  }
+
+  // Write to the file, then close it
+  fp.write((char *)&store, sizeof(store));
+  fp.close();
+}
+
+unsigned int Pairs::return_path_terminals_size() {
+  return path_terminals.size();
+}
+
+Pairs::~Pairs() {
+  std::cout << "Bye\n";
 }
 
 }
