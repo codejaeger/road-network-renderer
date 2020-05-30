@@ -17,7 +17,7 @@
 namespace soc {
 
 class Manager {
-public:
+private:
   Graph *g;
   std::vector<CarNode*> cars;
   std::vector<IntersectionLights*> lights;
@@ -27,7 +27,8 @@ public:
   std::vector<int> starts;
   std::vector<int> ends;
   unsigned int spawn_flag;
-  Manager(Graph* graph, std::vector<int> s, std::vector<int> e);
+public:
+  Manager(Graph* graph, std::string file_name);
   ~Manager();
   void executeManager();
   void renderManager();

@@ -172,11 +172,12 @@ void Pairs::save() {
   // Find the size of array of "values to store"
   unsigned int size = end.size(); // There might be a stand-alone start.
 
-  glm::vec2 store[size * 2];
+  glm::vec2 store[size * 2 + 1];
 
+  store[0] = glm::vec2(int(size), 0);
   for (unsigned int i = 0; i < end.size(); i++) {
-    store[i] = start[i];
-    store[size + i] = end[i];
+    store[i + 1] = start[i];
+    store[size + i + 1] = end[i];
   }
 
   // Write to the file, then close it

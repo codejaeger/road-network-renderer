@@ -2,10 +2,54 @@
 
 namespace soc {
 
-Manager::Manager(Graph* graph, std::vector<int> s, std::vector<int> e) {
+Manager::Manager(Graph* graph, std::string file) {
   g = graph;
-  starts = s;
-  ends = e;
+
+  // Data from the file
+  std::fstream fp;
+
+  std::string file_name = "./models/Bezier-Model/" + file;
+  fp.open(file_name.c_str(), std::ios::binary | std::ios::in);
+
+  if (!fp.good()) {
+    std::cout << "could not read from the raw file" << std::endl;
+    return;
+  }
+
+  glm::vec2 total_pairs;
+
+  fp.read((char *)&total_pairs, sizeof(total_pairs));
+  glm::vec2 s[int(total_pairs[0])], e[int(total_pairs[0])];
+  fp.read((char *)&s, sizeof(s));
+  fp.read((char *)&e, sizeof(e));
+
+  for (unsigned int i = 0; i < (int)(total_pairs[0]); i++) {
+    if (s[i] == e[i])
+      continue;
+
+    std::cout << e[i][0] << "\t\t" << e[i][1] << "\n";
+
+    for (unsigned int j = 0; j < g->v.size(); j++) {
+      std::cout << g->v[j].origin[0] << g->v[j].origin[1] << "mm\n";
+      if (s[i] == g->v[j].origin) {
+        starts.push_back(int(j));
+      }
+      else if (e[i] == g->v[j].origin) {
+        ends.push_back(int(j));
+        std::cout << "Y\n";
+      }
+    }
+  }
+
+  fp.close();
+
+  for (unsigned int i = 0; i < starts.size(); i++) {
+    std::cout << starts[i] << "--" << ends[i] << "\n";
+  }
+
+  if (!starts.size()) {
+    return;
+  }
 
   time = 0;
   spawn_flag = 0;

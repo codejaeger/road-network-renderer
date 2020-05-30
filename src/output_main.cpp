@@ -24,31 +24,16 @@ bool firstMouse = true;
 float deltaTime = 0.0f; // time between current frame and last frame
 float lastFrame = 0.0f;
 
-void initBuffersGL(std::string file) {
-  rn = new soc::RoadNetwork(0.02, 0.05, file); // road-depth=0.02, road-width=0.1
+void initBuffersGL() {
+  rn = new soc::RoadNetwork(0.02, 0.05, "1.raw"); // road-depth=0.02, road-width=0.1
   rn->initRoadNetwork();
   sm = new soc::SkyMaps();
   g = rn->getGraph();
-  std::cout << g->v.size() << "ss" << g->e.size() << "\n";
-  for (unsigned int i = 0; i < g->v.size(); i++) {
-    std::cout << g->v[i].origin[0] << "pp" << g->v[i].origin[1] << std::endl;
-  }
-  std::vector<int> start, end;
-  start.push_back(1);
-  end.push_back(3);
-  // start.push_back(3);
-  // end.push_back(4);
-  // start.push_back(4);
-  // end.push_back(1);
-  // start.push_back(2);
-  // end.push_back(4);
-  // start.push_back(1);
-  // end.push_back(2);
-  // start.push_back(5);
-  // end.push_back(1);
-  // start.push_back(6);
-  // end.push_back(5);
-  m = new soc::Manager(g, start, end);
+  // std::cout << g->v.size() << "ss" << g->e.size() << "\n";
+  // for (unsigned int i = 0; i < g->v.size(); i++) {
+  //   std::cout << g->v[i].origin[0] << "pp" << g->v[i].origin[1] << std::endl;
+  // }
+  m = new soc::Manager(g, "points.raw");
 }
 
 void renderGL() {
@@ -140,15 +125,9 @@ int main(int argc, char **argv) {
   // tell GLFW to capture our mouse
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-  std::string file_name;
-  file_name = "1.raw";
-  if (argc > 1) {
-    file_name = argv[1];
-  }
-
   // Initialize GL state
   soc::initGL();
-  initBuffersGL(file_name);
+  initBuffersGL();
   // Loop until the user closes the window
   while (glfwWindowShouldClose(window) == 0) {
     // Render here

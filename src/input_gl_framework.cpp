@@ -77,6 +77,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
       if (pairs->return_path_terminals_size() > 0)
         return;
     }
+    pairs->save();
     std::cout << "Ended\n";
     glfwSetWindowShouldClose(window, GL_TRUE);
   }
