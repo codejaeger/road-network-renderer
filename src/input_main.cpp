@@ -1,8 +1,12 @@
 #include "road_network/input_main.hpp"
 
 soc::Paths *p;
+bool is_paths;
 
-void initBuffersGL(void) { p = new soc::Paths(); }
+void initBuffersGL(void) {
+  p = new soc::Paths();
+  is_paths = true;
+}
 
 void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

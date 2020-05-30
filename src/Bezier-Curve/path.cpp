@@ -106,11 +106,11 @@ void Paths::positionsToCurve(unsigned int i) {
   }
 
   // Prints all the interpolated points for the current path
-  // for (int i = 0; i < bzc[i].size(); i++) {
-  //   std::cout << bzc[i][int(i)][0] << "\\"
-  //             << bzc[i][int(i)][1] << std::endl;
-  // }
-  // std::cout <<"\n\n";
+  for (unsigned int j = 0; j < bzc[i].size(); j++) {
+    std::cout << bzc[i][j][0] << "\\"
+              << bzc[i][j][1] << std::endl;
+  }
+  std::cout << "\n\n";
 }
 
 void Paths::getPoints(GLFWwindow *window) {
@@ -129,11 +129,11 @@ void Paths::getPoints(GLFWwindow *window) {
 
   positions[path_number].push_back(glm::vec2(xpos, ypos));
 
-  // Need this as a click lasts few milliseconds
-  usleep(200000);
-
   // Converts the control points to interpolated points.
   positionsToCurve(path_number);
+
+  // Need this as a click lasts few milliseconds
+  usleep(200000);
 }
 
 void Paths::renderLine(unsigned int i) {
@@ -305,6 +305,12 @@ void Paths::save() {
   // Write to the file, then close it
   fp.write((char *)&storeip, sizeof(storeip));
   fp.close();
+
+  load();
+
+  path_number = positions.size() - 1;
+
+  next();
 }
 
 void Paths::load() {
@@ -365,6 +371,10 @@ void Paths::resume() {
 bool Paths::return_input_status() {
   // Returns input_status (As it is a private variable)
   return input_status;
+}
+
+std::vector< std::vector<glm::vec2> > Paths::return_positions() {
+  return positions;
 }
 
 } // End namespace soc

@@ -61,8 +61,8 @@ void renderGL() {
   glm::vec3 EulerAngles(glm::radians(xrot), glm::radians(yrot), glm::radians(zrot));
   MyQuaternion = glm::quat(EulerAngles);
   rotation_matrix = glm::toMat4(MyQuaternion);
-  
-    projection_matrix = glm::perspective((float)glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 50.0f);  
+
+    projection_matrix = glm::perspective((float)glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 50.0f);
   // camera/view transformation
   glm::mat4 view = camera.GetViewMatrix();
   view_matrix = projection_matrix * view;
@@ -139,7 +139,7 @@ int main(int argc, char **argv) {
   glfwSetScrollCallback(window, soc::scroll_callback);
   // tell GLFW to capture our mouse
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-  
+
   std::string file_name;
   file_name = "1.raw";
   if (argc > 1) {

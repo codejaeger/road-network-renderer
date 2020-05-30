@@ -28,7 +28,7 @@ BIN1=$(BINDIR1)/input
 BIN2=$(BINDIR1)/output
 
 SRCS1=$(SRCDIR0)/input_main.cpp $(SRCDIR0)/input_gl_framework.cpp
-SRCS2=$(SRCDIR1)/path.cpp
+SRCS2=$(SRCDIR1)/path.cpp $(SRCDIR1)/start_end.cpp
 
 SRCS3=$(SRCDIR0)/output_main.cpp $(SRCDIR0)/output_gl_framework.cpp
 SRCS4=$(SRCDIR2)/road_collection.cpp $(SRCDIR2)/road.cpp $(SRCDIR2)/road_sep.cpp $(SRCDIR2)/intersection.cpp $(SRCDIR2)/texture.cpp

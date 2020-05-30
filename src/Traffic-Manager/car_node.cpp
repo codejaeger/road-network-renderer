@@ -163,11 +163,14 @@ void CarNode::bezierCurve() {
       path_temp.push_back(path_centered[i]);
 
       if (flag == 2) {
-        float n = interpolate_count(path_temp) + 1; // +1 is to avoid unexpected things
-        for (float j = 0; j <= n; j++) {
-          std::vector<glm::vec2> pos =
-              bezier_curve_point(path_temp, (j / n));
-          path_new.push_back(pos[0]);
+        float n = interpolate_count(path_temp) / 2 + 1; // +1 is to avoid unexpected things
+        std::cout << n;
+        if (!path_temp.empty()) {
+          for (float j = 0; j <= n; j++) {
+            std::vector<glm::vec2> pos =
+                bezier_curve_point(path_temp, (j / n));
+            path_new.push_back(pos[0]);
+          }
         }
       }
     }

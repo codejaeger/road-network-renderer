@@ -50,7 +50,6 @@ public:
   void getPoints(GLFWwindow *window);
   void renderLine(unsigned int i);
   void renderAllLines();
-  void renderLine();
   void next();
   void previous();
   void delete_last();
@@ -59,6 +58,7 @@ public:
   void stop();
   void resume();
   bool return_input_status();
+  std::vector< std::vector<glm::vec2> > return_positions();
 };
 
 } // End namespace soc
