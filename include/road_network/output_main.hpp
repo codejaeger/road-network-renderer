@@ -22,9 +22,7 @@
 #include "road_network/Traffic-Manager/manager.hpp"
 #include "road_network/SkyMaps/skymaps.hpp"
 
-GLfloat xrot = 0.0, yrot = 0.0, zrot = 0.0;
-// Enable/Disable perspective view
-bool enable_perspective = false;
+GLfloat xrot = -45.0, yrot = 0.0, zrot = 0.0;
 // Shader program attribs
 std::vector<glm::mat4> matrixStack;
 

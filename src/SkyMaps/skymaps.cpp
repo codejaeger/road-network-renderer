@@ -83,7 +83,11 @@ namespace soc {
     // draw skybox as last
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
     glUseProgram(skyboxShader);
+    glm::vec3 EulerAngles(1.57, 0, 0);
+    glm::quat Quaternion = glm::quat(EulerAngles);
+    glm::mat4 rotation_matrix = glm::toMat4(Quaternion);
     glm::mat4 *ms_mult = multiply_stack(matrixStack);
+    *ms_mult = *ms_mult * rotation_matrix;
     glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(*ms_mult));
     // skybox cube
     glBindVertexArray(skyboxVAO);

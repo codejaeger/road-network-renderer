@@ -3,7 +3,6 @@
 #include "road_network/camera.h"
 
 extern soc::RoadNetwork *rn;
-extern bool enable_perspective;
 extern float lastX;
 extern float lastY;
 extern bool firstMouse;
@@ -43,8 +42,6 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     std::cout << "Escaped\n";
     glfwSetWindowShouldClose(window, GL_TRUE);
   }
-  else if (key == GLFW_KEY_P && action == GLFW_PRESS)
-    enable_perspective = !enable_perspective;
   // press these keys to rotate the model
   else if (key == GLFW_KEY_A)
     yrot -= 1.0;

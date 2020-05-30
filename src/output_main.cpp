@@ -62,11 +62,7 @@ void renderGL() {
   MyQuaternion = glm::quat(EulerAngles);
   rotation_matrix = glm::toMat4(MyQuaternion);
   
-  if(enable_perspective)
-    projection_matrix = glm::perspective((float)glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 50.0f);
-  else
-    projection_matrix = glm::ortho(-(double)camera.Zoom/30, (double)camera.Zoom/30, -(double)camera.Zoom/30, (double)camera.Zoom/30, -1.0, 10.0);
-  
+    projection_matrix = glm::perspective((float)glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 50.0f);  
   // camera/view transformation
   glm::mat4 view = camera.GetViewMatrix();
   view_matrix = projection_matrix * view;
