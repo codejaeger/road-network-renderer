@@ -217,7 +217,7 @@ void RoadNetwork::fill_endpoints_type(int m, int n, glm::vec2 origin, int i, int
     if(dist>2*x)
       break;
   }
-  if(s!=bezier_positions[m].size()){
+  if(s!=bezier_positions[n].size()){
     endpoints.push_back(road_corners[n][2*s]);
     endpoints.push_back(road_corners[n][2*s+1]);
   }
