@@ -1,6 +1,7 @@
 #include "road_network/SkyMaps/skymaps.hpp"
 #define STB_IMAGE_IMPLEMENTATION
-#include "road_network/stb_image.h"
+#include "road_network/SkyMaps/stb_image.h"
+
 namespace soc {
 	SkyMaps::SkyMaps() {
 	  std::string vertex_shader_file("./src/SkyMaps/vertex-shaders/skybox.vs");
@@ -13,7 +14,7 @@ namespace soc {
 	  skyboxShader = soc::CreateProgramGL(shaderList);
 
     GLfloat skyboxVertices[] = {
-      // positions          
+      // positions
       -5.0f,  5.0f, -5.0f,
       -5.0f, -5.0f, -5.0f,
        5.0f, -5.0f, -5.0f,
@@ -67,7 +68,7 @@ namespace soc {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 
     std::vector<std::string> faces;
-    
+
     faces.push_back(std::string("./data/SkyBox/right.jpg"));
     faces.push_back(std::string("./data/SkyBox/left.jpg"));
     faces.push_back(std::string("./data/SkyBox/top.jpg"));
@@ -143,7 +144,7 @@ namespace soc {
 	// -X (left)
 	// +Y (top)
 	// -Y (bottom)
-	// +Z (front) 
+	// +Z (front)
 	// -Z (back)
 	// -------------------------------------------------------
 	GLuint SkyMaps::loadCubemap(std::vector<std::string> faces)

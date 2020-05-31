@@ -1,5 +1,5 @@
 #include "road_network/output_gl_framework.hpp"
-#include "road_network/camera.h"
+#include "road_network/Camera/camera.hpp"
 
 #include "road_network/Road-Model/road_collection.hpp"
 
