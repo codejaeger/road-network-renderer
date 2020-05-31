@@ -3,8 +3,8 @@
 #include "road_network/stb_image.h"
 namespace soc {
 	SkyMaps::SkyMaps() {
-	  std::string vertex_shader_file("./src/SkyMaps/vertex-shaders/skybox.vs");
-  	std::string fragment_shader_file("./src/SkyMaps/fragment-shaders/skybox.fs");
+	  std::string vertex_shader_file("./src/SkyMaps/vertex-shaders/v_skybox.glsl");
+  	std::string fragment_shader_file("./src/SkyMaps/fragment-shaders/f_skybox.glsl");
 
 	  std::vector<GLuint> shaderList;
 	  shaderList.push_back(soc::LoadShaderGL(GL_VERTEX_SHADER, vertex_shader_file));

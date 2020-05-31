@@ -1,3 +1,5 @@
+#ifndef SKYMAPS_HPP
+#define SKYMAPS_HPP
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "road_network/shader_util.hpp"
@@ -28,3 +30,5 @@ namespace soc {
 		void render();
 	};
 }
+
+#endif
