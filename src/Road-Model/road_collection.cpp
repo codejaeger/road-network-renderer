@@ -47,15 +47,21 @@ void RoadNetwork::initRoadNetwork() {
   using the values stores in bezier-curve positions*/
   fill_tangent_directions();
   fill_road_corners();
+  std::cout<<"Initializing Roads....\n";
   initRoads();
+  std::cout<<"Initializing Road-separators...\n";
   initRoadSeps();
   // detect intersections of curves and initialize intersections at those junctionss
+  std::cout<<"Detecting and Initializing Intersctions...\n";
   initIntersections();
   /* this is to merge very close intersections into a big one
   with all the connections from the constituent ones */
+  std::cout<<"Merging close intersections...\n";
   mergeCloseIntersections();
   //delete the roads and road-seps from the region where intersection was created
+  std::cout<<"Saving Intersections...\n";
   saveIntersections();
+  std::cout<<"Initializing Road-Network Graph...\n";
   initGraph();
   deleteRoadsInsideIntersection();
   deleteRoadSepsInsideIntersection();
@@ -372,7 +378,7 @@ void RoadNetwork::mergeCloseIntersections() {
     // check if there are more than 1 intersections to merge
     if(common_intersections.size()!=1){
       Intersection common;
-      glm::vec2 origin;
+      glm::vec2 origin(0, 0);
       std::vector<int> type1;
       std::vector<int> type2;
       std::vector<glm::vec2> endpoints;
@@ -650,6 +656,10 @@ void RoadNetwork::initGraph(){
           path_points[path_points.size()-1].push_back(bezier_positions[i][j-1]);
         }
       }
+    }
+    for(int j=path_points.size()-1; j>=0; j--) {
+      if(path_points[j].size()==0)
+        path_points.erase(path_points.begin() + j);
     }
     // intialize the edges from all the segments obtained form the graph
     for(int j=0; j<path_points.size(); j++) {
