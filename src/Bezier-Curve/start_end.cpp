@@ -116,23 +116,22 @@ void Pairs::delete_last() {
 }
 
 void Pairs::renderPoints(std::vector<glm::vec2> &ren) {
-  glm::vec2 change[4] = {
-    glm::vec2( 0.03,  0.00),
-    glm::vec2(-0.03,  0.00),
-    glm::vec2( 0.00,  0.03),
-    glm::vec2( 0.00, -0.03)
-  };
   glm::vec2 cur[4 * ren.size()];
-  for (unsigned int i = 0; i < 4 * ren.size(); i++) {
-    cur[i] = ren[i/4] + change[i%4];
+  for (unsigned int i = 0; i < ren.size(); i++) {
+    float angle = int(i) * 10 * (PI / 180);
+    std::cout << angle << "\tcos:" << cos(angle) << "\tsin:" << sin(angle) << "\n";
+    cur[4 * i]     = ren[i]     + glm::vec2( cos(angle),  sin(angle)) * 0.03f;
+    cur[4 * i + 1] = ren[i] + glm::vec2(-cos(angle), -sin(angle)) * 0.03f;
+    cur[4 * i + 2] = ren[i] + glm::vec2(-sin(angle),  cos(angle)) * 0.03f;
+    cur[4 * i + 3] = ren[i] + glm::vec2( sin(angle), -cos(angle)) * 0.03f;
   }
 
   // Buffering the array to GPU
   glBufferData(GL_ARRAY_BUFFER, sizeof(cur), NULL, GL_DYNAMIC_DRAW);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cur), cur);
 
-  for (unsigned int j = 0; j < 4 * ren.size(); j = j + 2) {
-    glDrawArrays(GL_LINE_STRIP, j, 2);
+  for (unsigned int i = 0; i < 4 * ren.size(); i = i + 2) {
+    glDrawArrays(GL_LINE_STRIP, i, 2);
   }
 }
 

@@ -23,6 +23,8 @@
 #include <unistd.h>
 #endif
 
+#define PI 3.14159
+
 namespace soc {
 
 class Pairs {

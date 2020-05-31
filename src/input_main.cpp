@@ -11,10 +11,10 @@ void initBuffersGL(void) {
 
 void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  p->renderAllLines();
   if (pairs) {
     pairs->renderAllPoints();
   }
+  p->renderAllLines();
 }
 
 void deleteBuffersGL() { delete p; }
