@@ -17,9 +17,7 @@
 
 #include "road_network/Bezier-Curve/path.hpp"
 #include "road_network/Bezier-Curve/start_end.hpp"
-
-#define HEIGHT 900
-#define WIDTH 1440
+#include "constants.hpp"
 
 // Running variable to toggle culling on/off
 bool enable_culling = true;

@@ -21,6 +21,7 @@
 #include "road_network/Road-Model/road_collection.hpp"
 #include "road_network/Traffic-Manager/manager.hpp"
 #include "road_network/SkyMaps/skymaps.hpp"
+#include "constants.hpp"
 
 GLfloat xrot = -45.0, yrot = 0.0, zrot = 0.0;
 // Shader program attribs

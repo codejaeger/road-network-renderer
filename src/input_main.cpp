@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   //! Create a windowed mode window and its OpenGL context
-  window = glfwCreateWindow(WIDTH, HEIGHT, "Simulation", NULL, NULL);
+  window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Simulation", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;

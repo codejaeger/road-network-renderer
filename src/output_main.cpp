@@ -11,9 +11,6 @@ soc::Graph *g;
 soc::Manager *m;
 soc::SkyMaps *sm;
 
-const unsigned int SCR_WIDTH = 1440;
-const unsigned int SCR_HEIGHT = 900;
-
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 2.0f));
 float lastX = SCR_WIDTH / 2.0f;
@@ -25,7 +22,7 @@ float deltaTime = 0.0f; // time between current frame and last frame
 float lastFrame = 0.0f;
 
 void initBuffersGL() {
-  rn = new soc::RoadNetwork(0.02, 0.05, "1.raw"); // road-depth=0.02, road-width=0.1
+  rn = new soc::RoadNetwork(ROAD_DEPTH, ROAD_WIDTH/2, "1.raw");
   rn->initRoadNetwork();
   sm = new soc::SkyMaps();
   g = rn->getGraph();
@@ -47,7 +44,7 @@ void renderGL() {
   MyQuaternion = glm::quat(EulerAngles);
   rotation_matrix = glm::toMat4(MyQuaternion);
 
-    projection_matrix = glm::perspective((float)glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 50.0f);
+  projection_matrix = glm::perspective((float)glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 50.0f);
   // camera/view transformation
   glm::mat4 view = camera.GetViewMatrix();
   view_matrix = projection_matrix * view;
@@ -84,15 +81,15 @@ int main(int argc, char **argv) {
     return -1;
 
   // We want OpenGL 4.0
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
   // This is for MacOSX - can be omitted otherwise
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   // We don't want the old OpenGL
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   // Create a windowed mode window and its OpenGL context
-  window = glfwCreateWindow(1440, 900, "Road Network", NULL, NULL);
+  window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Road Network", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;

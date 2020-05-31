@@ -14,4 +14,12 @@
 // Least count
 #define LC 5
 
+#define SCR_WIDTH 1440
+
+#define SCR_HEIGHT 900
+
+#define ROAD_DEPTH 0.02
+
+#define ROAD_WIDTH 0.05
+
 #endif /* constants_hpp */
