@@ -8,6 +8,8 @@
 #include <math.h>
 #include <algorithm>
 
+#include "road_network/constants.hpp"
+
 namespace soc {
 
 struct Edge{

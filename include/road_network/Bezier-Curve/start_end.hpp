@@ -14,6 +14,7 @@
 #include <glm/vec2.hpp>
 
 #include "road_network/shader_util.hpp"
+#include "road_network/constants.hpp"
 
 #include "road_network/Bezier-Curve/path.hpp"
 
@@ -22,8 +23,6 @@
 #else
 #include <unistd.h>
 #endif
-
-#define PI 3.14159
 
 namespace soc {
 

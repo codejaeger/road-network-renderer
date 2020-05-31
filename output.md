@@ -31,8 +31,8 @@ Very close intersections are merged into one and after this, road-network graph 
   * ##### Mouse cursor movement -
   Direction of the front and consequently right vector of the camera is changed preserving its position.  
   Can be used to look-around the model from one-place. At the start of the program the cursor is snapped to the center of the screen.
-  
-  
+
+
 ### Code:
-Source directory - /src/Road-Model and /src/Road-Graph.  
-Include directory - /include/road-network/Road-Model and /include/road-network/Road-Graph. 
+Source directory - /src/Road-Model and /src/Road-Graph  
+Include directory - /include/road-network/Road-Model and /include/road-network/Road-Graph.

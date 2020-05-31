@@ -8,11 +8,10 @@
 #include <math.h>
 
 #include "road_network/Road-Graph/graph.hpp"
+#include "road_network/constants.hpp"
 
 #include "road_network/Traffic-Manager/car_node.hpp"
 #include "road_network/Traffic-Manager/intersection_lights.hpp"
-
-#define LC 5
 
 namespace soc {
 

@@ -6,10 +6,6 @@
 
 #include <iostream>
 
-#define BUFFER_OFFSET(offset) ((GLvoid *)(offset))
-
-#define PI_MATH 3.14159265
-
 namespace soc {
 
 // Initialize GL State

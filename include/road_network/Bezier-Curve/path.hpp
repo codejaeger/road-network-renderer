@@ -14,15 +14,13 @@
 #include <glm/vec2.hpp>
 
 #include "road_network/shader_util.hpp"
+#include "road_network/constants.hpp"
 
 #ifdef _WIN32
 #include <Windows.h>
 #else
 #include <unistd.h>
 #endif
-
-// Average Interpolation Distance
-#define AIPD (1.0 / 30.0)
 
 namespace soc {
 

@@ -15,10 +15,9 @@
 #include <glm/vec4.hpp>
 
 #include "road_network/shader_util.hpp"
+#include "road_network/constants.hpp"
 
 #include "road_network/Road-Model/road.hpp"
-
-#define BZC_COUNT 20
 
 namespace soc {
 

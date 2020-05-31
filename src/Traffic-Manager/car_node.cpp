@@ -4,8 +4,6 @@
 namespace soc {
 
 CarNode::CarNode(Graph* graph, std::vector<int> in) {
-  road_depth = 0.02;
-  lane_width = 0.05;
   start_vertex_no = in[0];
 
   path_centered.clear(); // Stores the path
@@ -51,7 +49,7 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
 
   current = -1;
 
-  mod = new CarModel(0.020);
+  mod = new CarModel(ROAD_WIDTH * 0.25);
   updateCar();
 }
 
@@ -70,16 +68,16 @@ bool CarNode::updateCar() {
 
   float rz;
   if (tangent[0] > 0.0) {
-    rz = atan(tangent[1]/tangent[0])*180.0/PI_MATH;
+    rz = atan(tangent[1]/tangent[0])*180.0/PI;
   }
   else if (tangent[0] == 0.0) {
     rz = 90.0;
   }
   else {
-    rz = 180.0 + (atan(tangent[1]/tangent[0])*180.0/PI_MATH);
+    rz = 180.0 + (atan(tangent[1]/tangent[0])*180.0/PI);
   }
 
-  mod->change_parameters(path[current][0], path[current][1], road_depth, 0, 0, rz);
+  mod->change_parameters(path[current][0], path[current][1], ROAD_DEPTH / 2, 0, 0, rz);
 
   return true;
 }
@@ -127,7 +125,7 @@ void CarNode::assignLane() {
   glm::vec2 normal;
   for (unsigned int i = 0; i < path_centered.size(); i++) {
     if (i + 1 == path_centered.size()) {
-      path[i] = path_centered[i] - normal*(lane_width/2);
+      path[i] = path_centered[i] - normal * float(ROAD_WIDTH / 4);
       continue;
     }
 
@@ -140,10 +138,10 @@ void CarNode::assignLane() {
 
     for (unsigned int j = 0; j < check_loc_centered.size(); j++) {
       if (check_loc_centered[j] == path_centered[i])
-        check_loc[j] = check_loc_centered[j] - normal*(lane_width/2);
+        check_loc[j] = check_loc_centered[j] - normal * float(ROAD_WIDTH / 4);
     }
 
-    path[i] = path_centered[i] - normal*(lane_width/2);
+    path[i] = path_centered[i] - normal * float(ROAD_WIDTH / 4);
   }
 }
 

@@ -16,6 +16,7 @@
 #include <glm/vec4.hpp>
 
 #include "road_network/Road-Graph/graph.hpp"
+#include "road_network/constants.hpp"
 
 #include "road_network/Road-Model/road.hpp"
 #include "road_network/Road-Model/road_sep.hpp"

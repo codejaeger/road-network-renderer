@@ -10,7 +10,7 @@
 #include "road_network/Road-Graph/graph.hpp"
 #include "road_network/Models/car_model.hpp"
 
-#define PI_MATH 3.14159265
+#include "road_network/constants.hpp"
 
 namespace soc {
 
