@@ -30,7 +30,7 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
   if (check_loc_centered.size())
     check_loc_centered.pop_back();
 
-  bezierCurve();
+  // bezierCurve();
   // std::cout << "creating car\n";
   // for (unsigned int i = 0; i < path_centered.size(); i++) {
   //   std::cout << path_centered[i][0] << "``" << path_centered[i][1] << std::endl;
