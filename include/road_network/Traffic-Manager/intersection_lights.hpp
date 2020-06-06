@@ -30,6 +30,6 @@ public:
   glm::vec2 returnGoPoint();
 };
 
-}
+} // End namespace soc
 
 #endif /* intersection_lights_hpp */

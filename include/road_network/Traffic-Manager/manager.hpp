@@ -34,6 +34,6 @@ public:
 
 };
 
-}
+} // End namespace soc
 
 #endif /* manager_hpp */

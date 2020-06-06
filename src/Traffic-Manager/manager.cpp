@@ -3,9 +3,10 @@
 namespace soc {
 
 Manager::Manager(Graph* graph, std::string file) {
+  // Save the graph
   g = graph;
 
-  // Data from the file
+  // Get data from the file
   std::fstream fp;
 
   std::string file_name = "./models/Bezier-Model/" + file;
@@ -51,6 +52,7 @@ Manager::Manager(Graph* graph, std::string file) {
     return;
   }
 
+  // Start timer
   time = 0;
   spawn_flag = 0;
 
@@ -63,7 +65,9 @@ Manager::Manager(Graph* graph, std::string file) {
 }
 
 void Manager::executeManager() {
+  // After FRAMES_PER_CHANGE frames
   if (time % FRAMES_PER_CHANGE == 0) {
+    // Store the current clock time
     unsigned int clock = time / FRAMES_PER_CHANGE;
 
     // Update IntersectionLights and store the go directions
@@ -120,7 +124,7 @@ void Manager::executeManager() {
       if (go) {
         if (cars[i]->updateCar())
           cars_temp.push_back(cars[i]);
-        else // If at the end, delete it.
+        else // If at the end, needs to be deleted.
           del_car_ind.push_back(i);
       }
       else {
@@ -160,6 +164,7 @@ void Manager::executeManager() {
 }
 
 void Manager::renderManager() {
+  // Renders the Cars and Traffic Lights
   for (unsigned int i = 0; i < cars.size(); i++) {
     // std::cout << "\nCar " << i << std::endl;
     cars[i]->renderCar();
@@ -172,6 +177,7 @@ void Manager::renderManager() {
 }
 
 Manager::~Manager() {
+  // destructor
   for (unsigned int i = 0; i < cars.size(); i++) {
     delete cars[i];
   }
@@ -181,4 +187,4 @@ Manager::~Manager() {
   std::cout << "Deleted Manager\n";
 }
 
-}
+} // End namespace soc

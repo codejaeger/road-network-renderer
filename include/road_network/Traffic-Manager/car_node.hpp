@@ -35,6 +35,6 @@ public:
   void bezierCurve();
 };
 
-}
+} // End namespace soc
 
 #endif /* car_node_hpp */

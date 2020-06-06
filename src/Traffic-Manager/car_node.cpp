@@ -4,14 +4,14 @@
 namespace soc {
 
 CarNode::CarNode(Graph* graph, std::vector<int> in) {
+  // Save the start vertex
   start_vertex_no = in[0];
 
   path_centered.clear(); // Stores the path
   check_loc_centered.clear(); // Stores the points just before intersections
 
-  // std::cout << in.size() << "in\n";
+  // Convert the input of vector of indices to the centered path.
   for (unsigned int i = 1; i < in.size(); i++) {
-    // std::cout << in[i] << "--\n";
     if (i % 2) {
       std::vector<glm::vec2> temp = graph->e[in[i]].path;
       for (unsigned int j = 0; j < temp.size(); j++) {
@@ -30,36 +30,38 @@ CarNode::CarNode(Graph* graph, std::vector<int> in) {
   if (check_loc_centered.size())
     check_loc_centered.pop_back();
 
-  // bezierCurve();
+  // bezierCurve(); // To be worked upon.
+
   // std::cout << "creating car\n";
   // for (unsigned int i = 0; i < path_centered.size(); i++) {
   //   std::cout << path_centered[i][0] << "``" << path_centered[i][1] << std::endl;
   // }
   // std::cout << path_centered.size() << "CarNode created\n";
 
-
   assignLane();
 
-
-  for (unsigned int i = 0; i < path.size(); i++) {
-    std::cout << path[i][0] << "``" << path[i][1] << std::endl;
-  }
-  std::cout << path.size() << "CarNode created\n";
-
+  // for (unsigned int i = 0; i < path.size(); i++) {
+  //   std::cout << path[i][0] << "``" << path[i][1] << std::endl;
+  // }
+  // std::cout << path.size() << "CarNode created\n";
 
   current = -1;
 
+  // Attach a CarModel to the Node
   mod = new CarModel(ROAD_WIDTH * 0.25);
   updateCar();
 }
 
 bool CarNode::updateCar() {
+  // Increment the current
   current++;
 
+  // If at the end, return false. To be deleted by the Manager
   if (path.size() <= current + 1) {
     return false;
   }
 
+  // Calculating the direction of the car front
   float x1 = path[current][0];
   float y1 = path[current][1];
   float x2 = path[current+1][0];
@@ -77,25 +79,32 @@ bool CarNode::updateCar() {
     rz = 180.0 + (atan(tangent[1]/tangent[0])*180.0/PI);
   }
 
+  // Updating the car model
   mod->change_parameters(path[current][0], path[current][1], ROAD_DEPTH / 2, 0, 0, rz);
 
   return true;
 }
 
 void CarNode::renderCar() {
+  // Render the car Model
   // std::cout << path[current][0] << "//" << path[current][1] << "\n";
   mod->render();
 }
 
 glm::vec2 CarNode::getLocation() {
+  // Returns the current non-centered location
   return path[current];
 }
 
 glm::vec2 CarNode::getLocationCentered() {
+  // Returns the centered location
   return path_centered[current];
 }
 
 std::vector<glm::vec2> CarNode::getCollisionLocations() {
+  // Returns the collision locations,
+  // i.e. the locations where another car if present.
+  // There would be a collision.
   std::vector<glm::vec2> collisionlocs;
 
   if (path.size() <= current + 3) {
@@ -111,6 +120,7 @@ std::vector<glm::vec2> CarNode::getCollisionLocations() {
 }
 
 bool CarNode::doCheck() {
+  // Checks if reaching an intersection
   for (unsigned int i = 0; i < check_loc.size(); i++) {
     if (check_loc[i] == path[current])
       return true;
@@ -120,6 +130,9 @@ bool CarNode::doCheck() {
 }
 
 void CarNode::assignLane() {
+  // Assigns the lane to the car,
+  // i.e. converts the centered path to actual path.
+
   check_loc.resize(check_loc_centered.size());
   path.resize(path_centered.size());
   glm::vec2 normal;
@@ -147,6 +160,8 @@ void CarNode::assignLane() {
 
 
 void CarNode::bezierCurve() {
+  // Has a bug
+  // Curves the route at the intersection
   std::vector<glm::vec2> path_new;
   std::vector<glm::vec2> path_temp;
   int flag = 5;
@@ -162,7 +177,6 @@ void CarNode::bezierCurve() {
 
       if (flag == 2) {
         float n = interpolate_count(path_temp) / 2 + 1; // +1 is to avoid unexpected things
-        std::cout << n;
         if (!path_temp.empty()) {
           for (float j = 0; j <= n; j++) {
             std::vector<glm::vec2> pos =
@@ -182,8 +196,9 @@ void CarNode::bezierCurve() {
 }
 
 CarNode::~CarNode() {
+  // destructor
   std::cout << "CarNode Deleted\n";
   delete mod;
 }
 
-}
+} // End namespace soc
