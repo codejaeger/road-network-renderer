@@ -1,13 +1,20 @@
-#include "road_network/Bezier-Curve/simulation.hpp"
-#include "road_network/Bezier-Curve/path.hpp"
+#include "road_network/input_main.hpp"
 
 soc::Paths *p;
+soc::Pairs *pairs;
+bool is_paths;
 
-void initBuffersGL(void) { p = new soc::Paths(); }
+void initBuffersGL(void) {
+  p = new soc::Paths();
+  is_paths = true;
+}
 
 void renderGL(GLFWwindow *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  p->renderLine();
+  if (pairs) {
+    pairs->renderAllPoints();
+  }
+  p->renderAllLines();
 }
 
 void deleteBuffersGL() { delete p; }
@@ -32,7 +39,7 @@ int main(int argc, char **argv) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   //! Create a windowed mode window and its OpenGL context
-  window = glfwCreateWindow(WIDTH, HEIGHT, "Simulation", NULL, NULL);
+  window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Simulation", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;

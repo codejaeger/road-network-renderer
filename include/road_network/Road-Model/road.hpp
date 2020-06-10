@@ -13,9 +13,10 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
-#include "road_network/Road-Model/gl_framework.hpp"
-#include "road_network/Road-Model/texture.hpp"
 #include "road_network/shader_util.hpp"
+#include "road_network/constants.hpp"
+
+#include "road_network/Road-Model/texture.hpp"
 
 namespace soc {
 
@@ -26,6 +27,8 @@ private:
   GLfloat tx, ty, tz, rx, ry, rz;
   // depth of the road
   GLfloat depth;
+  //whether to draw above and below borders or not
+  bool a_border, b_border;
   // coordinates of the four corners of the road projected on x-y plane
   GLfloat x1, y1, x2, y2, x3, y3, x4, y4;
   // points where road-border ends
@@ -48,7 +51,7 @@ private:
   glm::vec4 v_colors_border[100000];
   int num_vertices_border_count;
   int num_vertices_per_cylinder_count;
-  int num_cylinders;
+  int num_cylinders, num_cylinders_b, num_cylinders_a;
   int tri_idx;
   void update_matrices();
   void road(glm::vec4 *positions, glm::vec2 *t_coords);
@@ -65,7 +68,7 @@ private:
 public:
   float end_spacing_b, end_spacing_a;
   Road(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4, GLfloat depth,
-       float start_spacing_b, float start_spacing_a);
+       float start_spacing_b, float start_spacing_a, bool b=true, bool a=true);
   ~Road();
   void render();
   void change_parameters(GLfloat tx, GLfloat ty, GLfloat tz, GLfloat rx,
