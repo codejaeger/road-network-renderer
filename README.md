@@ -1,3 +1,4 @@
+![Build Status](https://travis-ci.com/codejaeger/road-network-renderer.svg?branch=master)
 # Road Network 3D Rendering using OpenGL
 
 ### Abstract
