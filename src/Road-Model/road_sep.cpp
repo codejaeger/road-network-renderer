@@ -1,8 +1,5 @@
-#include "road_network/Road-Model/road.hpp"
-#include "road_network/Road-Model/gl_framework.hpp"
 #include "road_network/Road-Model/road_sep.hpp"
 
-double PI = 3.14159265;
 extern std::vector<glm::mat4> matrixStack;
 
 namespace soc {
@@ -181,7 +178,7 @@ void RoadSep::roadSep(glm::vec4 *positions) {
   quad(2, 6, 5, 1, positions);
   quad(1, 5, 4, 0, positions);
   quad(0, 4, 7, 3, positions);
-  quad(5, 4, 6, 7, positions);
+  quad(5, 4, 7, 6, positions);
 }
 
 void RoadSep::build_handle() {
@@ -236,7 +233,7 @@ void RoadSep::build_handle() {
     }
   }
 
-  // generate the middle semicrcular disc part
+  // generate the middle semicircular disc part
   for (float i = s; i <= 5 * s; i += div) {
     for (float j = 0; j <= 2 * PI; j += sec) {
       v_positions_handle[tri_idx] =

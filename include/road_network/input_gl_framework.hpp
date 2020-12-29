@@ -1,5 +1,5 @@
-#ifndef gl_framework_hpp
-#define gl_framework_hpp
+#ifndef input_gl_framework_hpp
+#define input_gl_framework_hpp
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -24,4 +24,4 @@ void mouse_button_callback(GLFWwindow *window, int button, int action,
                            int mods);
 } // End namespace soc
 
-#endif /* gl_framework_hpp */
+#endif /* input_gl_framework_hpp */
